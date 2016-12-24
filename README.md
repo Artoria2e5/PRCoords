@@ -13,7 +13,7 @@ Languages
 - [x] JavaScript
   - [ ] Web demo
 - [ ] Python
-- [ ] (Obj-)C/C++
+- [ ] \(Obj-\)C/C++
 - [ ] Ruby
 - [ ] Swift
 - [ ] C#/UWP
