@@ -50,3 +50,5 @@ See also
 * [eviltransform][] is among the most popular cross-language soltions to the problem. It borrows its name directly from [EvilTransform.cs](https://github.com/Leask/EvilTransform/blob/master/EvilTransform.cs), an early refactored version of a raw-flesh Java implementation.
 * [geoChina][] by caijun is a clear, concise implementation written in R. It features a much faster iterative method for precise conversion reproduced here
 * I am planning on moving some of the comments on the algorithm found in [my initial JavaScript implementation](https://zh.wikipedia.org/wiki/User:Artoria2e5/PRCoords.js) to the [GitHub Wiki](https://github.com/Artoria2e5/PRCoords/wiki). I don't think anyone is going to be interested in copying comments on these idiocy when translating my implementation to other languages.
+
+Oh, and finally, here is an official [news report](https://archive.fo/20110804185923/http://cxzy.people.com.cn/GB/196034/14908095.html) on that particular *\[bleep\]* who came up with GCJ-02.
