@@ -72,7 +72,7 @@ inline static double diff_sum(PRCoords a, PRCoords b) {
 
 // These conversions are for bored people: too accurate to be useful
 // given pseudo-random noises added to GCJ.
-template<std::function fwd, std::function rev>
+template<std::function<PRCoords(PRCoords)> fwd, std::function<PRCoords(PRCoords)> rev>
 PRCoords bored_reverse_conversion(PRcoords bad) {
     PRCoords wgs = rev(bad);
     // ...
