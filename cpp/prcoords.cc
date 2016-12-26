@@ -1,7 +1,6 @@
 /**
  * People's Rectified Coordinates, C++11 implementation
  * Should yield a C-compatible ABI.
- * 
  */
 #define PRCOORDS_TEST
 
@@ -18,16 +17,20 @@ typedef struct PRCoords {
     double lat, lon;
 } PRCoords;
 
-PRCoords wgs_gcj(PRCoords, bool);
-PRCoords gcj_wgs(PRCoords, bool);
-PRCoords gcj_bd(PRCoords, bool);
-PRCoords bd_gcj(PRCoords, bool);
-PRCoords wgs_bd(PRCoords, bool);
-PRCoords bd_wgs(PRCoords, bool);
+/// GCJ APIs should all probably turn on china-checks.
+/// But we should allow some override.... Damn C.
+PRCoords prcoords_wgs_gcj(PRCoords);
+PRCoords prcoords_gcj_wgs(PRCoords);
+PRCoords prcoords_gcj_bd(PRCoords);
+PRCoords prcoords_bd_gcj(PRCoords);
+PRCoords prcoords_wgs_bd(PRCoords);
+PRCoords prcoords_bd_wgs(PRCoords);
 
-PRCoords gcj_wgs_bored(PRCoords, bool);
-PRCoords bd_gcj_bored(PRCoords, bool);
-PRCoords bd_wgs_bored(PRCoords, bool);
+PRCoords prcoords_gcj_wgs_bored(PRCoords);
+PRCoords prcoords_bd_gcj_bored(PRCoords);
+PRCoords prcoords_bd_wgs_bored(PRCoords);
+
+bool prcoords_in_china(PRCoords);
 
 #ifdef __cplusplus
 }
@@ -58,10 +61,17 @@ inline bool operator!=(PRCoords a, PRCoords b) { return !(a == b); }
 #include <cmath>
 #include <functional>
 
+/// Krasovsky 1940 ellipsoid
+/// @const
+const double GCJ_A = 6378245;
+const double GCJ_EE = 0.00669342162296594323;  // f = 1/298.3; e^2 = 2*f - f**2
+
+/// Epsilon to use for "exact" iterations.
+/// Wanna troll? Use Number.EPSILON. 1e-13 in 15 calls for gcj.
+/// @const
 const double PRCOORDS_EPS = 1e-5;
 
-inline static bool sanity_in_china(PRCoords a);
-inline static bool sanity_in_china(PRCoords a) {
+prcoords_in_china(PRCoords a) {
     return a >= PRCoords{0.8293, 72.004} && a <= PRCoords{55.8271, 137.8347};
 }
 
@@ -70,11 +80,14 @@ inline static double diff_sum(PRCoords a, PRCoords b) {
     return fabs(d.lat) + fabs(d.lon);
 }
 
+
+
+typedef PRCoords (*ptr_prcoords_conv)(PRCoords);
 // These conversions are for bored people: too accurate to be useful
 // given pseudo-random noises added to GCJ.
-template<std::function<PRCoords(PRCoords)> fwd, std::function<PRCoords(PRCoords)> rev>
-PRCoords bored_reverse_conversion(PRcoords bad) {
-    PRCoords wgs = rev(bad);
+template<ptr_prcoords_conv fwd, ptr_prcoords_conv rev>
+PRCoords bored_reverse_conversion(PRCoords bad) {
+    PRCoords wgs = rev(bad, false);
     // ...
     return wgs;
 }
