@@ -27,9 +27,9 @@ PRCoord's APIs operate on, and returns, dedicated structures for coordinates. In
 
 ### Notes on "in China" sanity check
 
-Typically PRCoords is only supposed to be ran on obfuscated input data, which are primarily Chinese coordinates. For this reason, initial implementations includes this [very very rough](https://news.ycombinator.com/item?id=10965506) sanity check that spans a rectangle region on a mercator-projected map. This check can be overrided by passing a boolean value, or may be not at all implemented in certain implemnetations.
+Typically PRCoords is only supposed to be ran on obfuscated input data, which are primarily Chinese coordinates. For this reason, initial implementations includes this [very very rough](https://news.ycombinator.com/item?id=10965506) sanity check that spans a rectangle region on a mercator-projected map. This check can be overridden by passing a boolean value, or may be not at all implemented in certain implemnetations if I am not in the right mood for doing silly things.
 
-For a saner sanity check, try to find a few (twenty-ish) points on the map and do a ray-casting polygon check. I may come up with a separate function for that later.
+For a saner sanity check, try to find a few (twenty-ish) points on the map and do a ray-casting polygon check. I may come up with a separate function for that later. You, as the caller, should be responsible for telling whether a point is part of the gov-screwed Chinese data.
 
 Why another wheel?
 ------------------
