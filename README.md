@@ -25,6 +25,12 @@ API
 
 PRCoord's APIs operate on, and returns, dedicated structures for coordinates. In API names, we generally refer to WGS-84 as `wgs`, GCJ-02 as `gcj`, and BD-09 (lat-lon) as `bd`. 
 
+### Notes on "in China" sanity check
+
+Typically PRCoords is only supposed to be ran on obfuscated input data, which are primarily Chinese coordinates. For this reason, initial implementations includes this [very very rough](https://news.ycombinator.com/item?id=10965506) sanity check that spans a rectangle region on a mercator-projected map. This check can be overrided by passing a boolean value, or may be not at all implemented in certain implemnetations.
+
+For a saner sanity check, try to find a few (twenty-ish) points on the map and do a ray-casting polygon check. I may come up with a separate function for that later.
+
 Why another wheel?
 ------------------
 
