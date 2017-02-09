@@ -61,7 +61,7 @@ var EARTH_R = 6371000
 /// conversion deviation checking
 function distance(a, b) {
 	function hav(θ) {
-		return (1 - Math.cos(θ))/2
+		return Math.pow(Math.sin(θ/2), 2)
 	}
 	
 	var Δ = _coord_diff(a, b)
