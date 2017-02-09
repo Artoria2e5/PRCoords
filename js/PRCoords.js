@@ -87,7 +87,7 @@ function _coord_diff(a, b) {
 
 function _coord_error(a, b) {
 	var diff = _coord_diff(a, b)
-	return Math.max(Math.abs(diff.lat), Math.abs(diff.lot))
+	return Math.max(Math.abs(diff.lat), Math.abs(diff.lon))
 }
 
 function wgs_gcj(wgs, checkChina = true) {
