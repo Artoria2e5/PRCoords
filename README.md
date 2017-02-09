@@ -11,7 +11,7 @@ Languages
 ---------
 
 - [x] JavaScript
-  - [ ] Web demo
+  - Web demo on JS Bin: http://jsbin.com/zonafut ([Gist Export](https://gist.github.com/anonymous/c87ee43557781b59913cd3f8146f014a))
 - [ ] Python
 - [ ] \(Obj-\)C/C++
 - [ ] Ruby
