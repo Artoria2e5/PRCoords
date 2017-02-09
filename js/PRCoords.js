@@ -67,8 +67,8 @@ function distance(a, b) {
 	var Δ = _coord_diff(a, b)
 	return 2 * EARTH_R * Math.asin(Math.sqrt(
 		hav(Δ.lat * Math.PI / 180) +
-			Math.cos(a.lon * Math.PI / 180) *
-			Math.cos(b.lon * Math.PI / 180) *
+			Math.cos(a.lat * Math.PI / 180) *
+			Math.cos(b.lat * Math.PI / 180) *
 			hav(Δ.lon  * Math.PI / 180)
 	))
 }
