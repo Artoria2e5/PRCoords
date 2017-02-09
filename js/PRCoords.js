@@ -185,7 +185,7 @@ function wgs_bd(bd, checkChina = true) {
 // gcj: 4 calls to wgs_gcj; ~0.1mm acc
 function __bored__(fwd, rev) {
 	return function rev_bored(bad, checkChina = true) {
-		var wgs = rev(bad)
+		var wgs = rev(bad, checkChina)
 		var old = bad
 		
 		// Wait till we hit fixed point or get bored
