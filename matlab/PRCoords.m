@@ -3,7 +3,7 @@ function v = PRCoords()
   %% Dedicated to the Public Domain under CC0.
   %% Mingye Wang (Artoria2e5), 2017.
   %% @url https://github.com/Artoria2e5/PRCoords
-  v = "Check out the help instead."
+  v = "To be split"
 end
 
 function [glat, glon] = wgs_gcj (wlat, wlon)
@@ -19,24 +19,23 @@ function [glat, glon] = wgs_gcj (wlat, wlon)
   % [x, y] are relative coords from a common mapped "center" of China.
   x = wlat - 35;
   y = wlon - 105;
-  dLat = -100 + 2 .* x + 3 .* y + 0.2 .* y .* y + 0.1 .* x .* y + ...
+  dlat = -100 + 2 .* x + 3 .* y + 0.2 .* y .* y + 0.1 .* x .* y + ...
       0.2 .* sqrt(abs(x)) + (2 .* sin(x .* 6 .* pi) + ...
       2 .* sin(x .* 2 .* pi) + 2 .* sin(y .* pi) + 4 .* sin(y ./ 3 .* pi) + ...
       16 .* sin(y ./ 12 .* pi) + 32 .* sin(y ./ 30 .* pi)) .* 20 ./ 3;
-  dLon = 300 + x + 2 .* y + 0.1 .* x .* x + 0.1 .* x .* y + ...
+  dlon = 300 + x + 2 .* y + 0.1 .* x .* x + 0.1 .* x .* y + ...
       0.1 .* sqrt(abs(x)) + (2 .* sin(x .* 6 .* pi) + ...
       2 .* sin(x .* 2 .* pi) + 2 .* sin(x .* pi) + 4 .* sin(x ./ 3 .* pi) + ...
       15 .* sin(x ./ 12 .* pi) + 30 .* sin(x ./ 30 .* pi)) .* 20 ./ 3;
-   
-  rLat = wlat ./ 180 .* pi;
-  magic = 1 - GCJ_EE .* (sin(rLat) .^ 2); % A common expression
-  
+
   % Arc lengths for one degree on the wrong ellipsoid
+  magic = 1 - GCJ_EE .* (sind(wlat) .^ 2); % A common expression
   arclen_1lat = pi / 180 .* (GCJ_A .* (1 - GCJ_EE)) .* magic .^ 1.5;
-  arclen_1lon = pi / 180 .*  GCJ_A .* cos(rLat) ./ magic .^ 0.5;
-  
-  glat = wlat + dLat ./ arclen_1lat;
-  glon = wlon + dLon ./ arclen_1lon;
+  arclen_1lon = pi / 180 .*  GCJ_A .* cosd(wlat) ./ magic .^ 0.5;
+
+  % Pack deviations into degrees
+  glat = wlat + dlat ./ arclen_1lat;
+  glon = wlon + dlon ./ arclen_1lon;
 endfunction
 
 function [wlat, wlon] = gcj_wgs (glat, glon)
@@ -65,31 +64,44 @@ function fun = caijun_precise (fwd, rev, eps, maxn)
   %
   % (caijun/geoChina; 2014)
   if (~exist('eps', 'var'))
-    eps = 1e-4
+    eps = 1e-4;
   end
 
   % 10 iterations ought to be enough for anybody. I wonder why I am adding this.
   if (~exist('maxn', 'var'))
-    maxn = 10
+    maxn = 10;
   end
 
   % scope magic?
-  fwd = fwd
-  rev = rev
-  eps = eps
-  maxn = maxn
+  fwd = fwd;
+  rev = rev;
+  eps = eps;
+  maxn = maxn;
   
   function [clat, clon] = rectify (olat, olon)
     % usage: [clat, clon] = rectify (olat, olon)
     %
-    % Returns something that appears much less wrong to us.
-    [clat, clon] = rev(olat, olon)
+    % Given obfuscated coords,
+    % return something that appears much less wrong to us.
+    [clat, clon] = rev(olat, olon);
+    plat = olat;
+    plon = olon;
     
     % Hmm. If something falls behind, we all go for another iter.
     % Can't we just execute these failing outliers and use an average for eps?
-    for _i = 1:maxn
-      
+    for i = 1:maxn
+      if (max(max(abs(clat - olat)), max(abs(clon - olon))) < eps)
+        break;
+      end
+      % prev = curr
+      plat = clat;
+      plon = clon;
+      % get two distortions
+      [flat, flon] = fwd(clat, clon);
+      % apply iterative step: good -= (fwd(good) - orig)
+      clat -= flat - olat;
+      clon -= flon - olon;
     end
-  end
-  fun = rectify
+  endfunction
+  fun = rectify;
 endfunction
