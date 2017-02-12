@@ -104,10 +104,30 @@ for (let i = 0; i < lats.length; i++) {
   b[i] =
 }
 
+var bdlats = lats.filter((ditch, i) => i == 0 || i - 1 > HK_LENGTH)
+var bdlons = lats.filter((ditch, i) => i == 0 || i - 1 > HK_LENGTH)
+
+for (let i = 0; i < bdlats.length; i++) {
+  // blah blah
+  bd_k[i] =
+  bd_b[i] =
+}
+
+// dont need that anyway
+bdlats = bdlons = lats = lons = null
+
 // I expect you to call this *after* doing the rough check.
 // Perform check.
 function isInGoogle(lat, lon) {
   // Yank out South China Sea
+  if (lat <= 17.75455)
+    return false;
+  
+}
+
+function isInBaidu(lat, lon) {
+  // Yank out South China Sea
+  // Their Sansha data is crap too.
   if (lat <= 17.75455)
     return false;
   
