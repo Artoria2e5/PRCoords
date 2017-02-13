@@ -38,7 +38,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 function pnpoly(xs, ys, x, y) {
   if (! (xs.length === ys.length))
-    throw new ValueError("pnpoly: assert(xs.length === ys.length)")
+    throw new Error("pnpoly: assert(xs.length === ys.length)")
   var inside = 0
   // j records previous value. Also handles wrapping around.
   for (let i = 0, j = xs.length - 1; i < xs.length - 1; j = i++)
