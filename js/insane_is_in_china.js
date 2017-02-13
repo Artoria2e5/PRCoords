@@ -1,11 +1,53 @@
 // Insane version of the "is in China" check (70 points. I tried.)
-// Dedicated to the Public Domain under CC0
+//
+// Dedicated to the Public Domain under CC0, except for pnpoly by
+// Wm. Randolph Franklin (BSD3)
 //
 // Incorrect use of this polygon can lead to adverse geopolitical issues.
 // This set of points is only intended to approximate the scope of a type of distortion,
 // and has nothing to do with any political entities.
 //
 // Also, screw geodetics. The Earth is flat according to this approximation.
+
+/// *** pnpoly *** ///
+// Copyright (c) 1970-2003, Wm. Randolph Franklin
+//
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+//
+//   1. Redistributions of source code must retain the above copyright
+//      notice, this list of conditions and the following disclaimers.
+//   2. Redistributions in binary form must reproduce the above
+//      copyright notice in the documentation and/or other materials
+//      provided with the distribution.
+//   3. The name of W. Randolph Franklin may not be used to endorse or
+//      promote products derived from this Software without specific
+//      prior written permission. 
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+function pnpoly(xs, ys, x, y) {
+  if (! (xs.length === ys.length))
+    throw new ValueError("pnpoly: assert(xs.length === ys.length)")
+  var inside = 0
+  // j records previous value. Also handles wrapping around.
+  for (let i = 0, j = xs.length - 1; i < xs.length - 1; j = i++)
+    inside ^= (((ys[i] > y) !== (ys[j] > y)) &&
+              (x < (xs[j] - xs[i]) * (y - ys[i]) / (ys[j] - ys[i]) + xs[i]))
+  // Let's make js as magical as C. Yay.
+  return !!inside
+}
+/// ^^^ pnpoly ^^^ ///
 
 // We will need to filter out these points for Baidu.
 // (We will need South China Sea too.)
@@ -17,8 +59,6 @@ var HK_LENGTH = 12
 
 // lon, lat
 var POINTS = [
-  // dup for a ring
-  110.669856, 17.754550,
   // start hkmo
   114.433722, 22.064310,
   114.009458, 22.182105,
@@ -91,44 +131,26 @@ var POINTS = [
   107.730505, 18.193406,
   110.669856, 17.754550,
 ]
+POINTS = null // no need
 
 var lats = POINTS.filter((ditch, i) => i % 2 == 1)
 var lons = POINTS.filter((ditch, i) => i % 2 == 0)
-POINTS = null // gotta ditch that
 
-// Perform precalculation:
-// http://alienryderflex.com/polygon/
-for (let i = 0; i < lats.length; i++) {
-  // blah blah
-  k[i] =
-  b[i] =
-}
+var bdlats = lats.slice(HK_LENGTH)
+var bdlons = lons.slice(HK_LENGTH)
 
-var bdlats = lats.filter((ditch, i) => i == 0 || i - 1 > HK_LENGTH)
-var bdlons = lats.filter((ditch, i) => i == 0 || i - 1 > HK_LENGTH)
-
-for (let i = 0; i < bdlats.length; i++) {
-  // blah blah
-  bd_k[i] =
-  bd_b[i] =
-}
-
-// dont need that anyway
-bdlats = bdlons = lats = lons = null
-
-// I expect you to call this *after* doing the rough check.
-// Perform check.
 function isInGoogle(lat, lon) {
   // Yank out South China Sea
   if (lat <= 17.75455)
     return false;
-  
+  return pnpoly(lats, lons, lat, lon)
 }
 
 function isInBaidu(lat, lon) {
-  // Yank out South China Sea
-  // Their Sansha data is crap too.
+  // Yank out South China Sea, as:
+  // 1. Nobody wants Baidu's crap Sansha data
+  // 2. I am too lazy to add like four points
   if (lat <= 17.75455)
     return false;
-  
+  return pnpoly(bdlats, bdlons, lat, lon)
 }
