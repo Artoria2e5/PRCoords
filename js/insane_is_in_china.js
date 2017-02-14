@@ -41,7 +41,7 @@ function pnpoly(xs, ys, x, y) {
     throw new Error("pnpoly: assert(xs.length === ys.length)")
   var inside = 0
   // j records previous value. Also handles wrapping around.
-  for (let i = 0, j = xs.length - 1; i < xs.length - 1; j = i++)
+  for (let i = 0, j = xs.length - 1; i < xs.length; j = i++)
     inside ^= (((ys[i] > y) !== (ys[j] > y)) &&
               (x < (xs[j] - xs[i]) * (y - ys[i]) / (ys[j] - ys[i]) + xs[i]))
   // Let's make js as magical as C. Yay.
