@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<!--
+Snapshot from http://jsbin.com/zonafut/32/edit
+-->
+  <meta name="viewport" content="width=device-width">
+  <meta name="author" content="Mingye Wang">
+  <meta name="description" content="A Public Domain GCJ-02 & BD-09 Deobfscator (not eviltransform, but PRCoords)">
+  <link href="https://Artoria2e5.github.io/PRCoords/Globe%2C_distorted_China.svg" type="image/svg+xml" rel="icon">
+  <title>People Rectify Coordinates</title>
+<style id="jsbin-css">
+body {
+  font-family: sans-serif;
+  margin: 0 auto;
+  max-width: 50em;
+  padding: 0 1em;
+}
+
+@media print {
+  body {
+    max-width: none;
+    padding: 0;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: serif;
+}
+
+dt {
+  font-weight: bold;
+}
+
+h1, h2, h3 {
+  border-bottom: 1px solid #a2a9b1;
+}
+
+input[type='number'].dnum {
+  -moz-appearance:textfield;
+}
+
+input[type='number'].dnum::-webkit-outer-spin-button,
+input[type='number'].dnum::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type='number'] {
+  width: 4em;
+}
+
+input[type='number'][name^=s] {
+  width: 6em
+}
+
+#deg-in input[type='number'] {
+  width: 8em
+}
+
+#output > table {
+  width: 100%
+}
+
+img.logo {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  border: none;
+}
+
+footer {
+  font-size: smaller;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  border: thin solid #a2a9b1;
+  padding: 0.2em 0.4em;
+}
+
+tbody td:nth-child(n+2) {
+  font-family: monospace;
+}
+
+#egcj td:nth-child(1), #ebd td:nth-child(1), #bbd td:nth-child(1) {
+  background: LightSalmon;
+}
+#dgcj td:nth-child(1), #dbd td:nth-child(1), #bgcj td:nth-child(1) {
+  background: PaleGreen;
+}
+#cgcj td:nth-child(1), #cbd td:nth-child(1), #bcgcj td:nth-child(1) {
+  background: Aquamarine;
+}
+
+</style>
+</head>
+<body onload="from_query()">
+  <h1>People Rectify Coordinates</h1>
+  <div style="margin-top: -1em"><small>With <a href="https://en.wikipedia.org/wiki/GCJ-02">restrictions</a> from the People’s Republic of China</small></div>
+  <a href="https://commons.wikimedia.org/wiki/File:Globe,_distorted_China.svg">
+  <img class="logo" src="https://Artoria2e5.github.io/PRCoords/Globe%2C_distorted_China.svg" width="100" height="100" alt="logo: China? Where?"></a>
+  <article>
+    <article><section>
+      <h2>Input</h2>
+      <form id="inputc" onsubmit="return false"><!-- also make edge happy -->
+        <ul>
+        <li><label>Degrees:</label><ul id="deg-in">
+          <li><label>lat=</label> <input type="number" class="dnum" name="lat" value="35" step="any" min="-90" max="90">;
+          <li><label>lon=</label> <input type="number" class="dnum" name="lon" value="105" step="any" min="-180" max="180">.</ul>
+        <li><label>Or dms:</label><ul id="dms-in">
+          <li><label>lat=</label>
+              <input type="number" name="dlat" min="0" max="90" step="1" value="35">°
+              <input type="number" name="mlat" min="0" max="59" step="1" value="0">′
+              <input type="number" name="slat" min="0" max="60" value="0" step=any>″
+              <select name="hlat"><option>N</option><option>S</option></select>;
+          <li><label>lon=</label>
+              <input type="number" name="dlon" min="0" max="180" step="1" value="105">°
+              <input type="number" name="mlon" min="0" max="59" step="1" value="0">′
+              <input type="number" name="slon" min="0" max="69" value="0" step=any>″
+              <select name="hlon"><option>E</option><option>W</option></select>.</ul></ul>
+        <button onclick="return fill_output() && false">Screw that!</button>
+      </form>
+      <script src="https://cdn.rawgit.com/Artoria2e5/PRCoords/1ea97f2/js/PRCoords.js"></script>
+      
+      <h2>Results</h2>
+      <table id="output">
+        <tr>
+          <th>Operation
+          <th>Result
+          <th title="How wrong have I been?">ΔObfs/m
+          <th title="How precise is this operation?">ΔRoundtrip/m</tr>
+        <tr id="egcj"><td>WGS → GCJ<td><td><td>
+        <tr id="ebd"><td>WGS → BD<td><td><td>
+        <tr id="dgcj"><td>GCJ → WGS<td><td><td>
+        <tr id="dbd"><td>BD → WGS<td><td><td>
+        <tr id="cgcj"><td>GCJ →<sup>cai</sup> WGS<td><td><td>
+        <tr id="cbd"><td>BD →<sup>cai</sup> WGS<td><td><td>
+        <tr id="bbd"><td>GCJ → BD<td><td><td>
+        <tr id="bgcj"><td>BD → GCJ<td><td><td>
+        <tr id="bcgcj"><td>BD →<sup>cai</sup> GCJ<td><td><td>
+      </table>
+      <p><a id="permalink" href="https://artoria2e5.github.io/PRCoords/demo.html">Permalink to this result</a>. Toggle sections: <a href="javascript:toggle('notes')">Notes</a>, <a href="javascript:toggle('faq')">FAQ</a>, <a href="javascript:toggle('footer')">footer</a>.
+    </section></article>
+    <section id="notes">
+      <h2>Notes</h2>
+      <ol>
+        <li>caijun’s iterative method is included for precise decoding.
+            It's most useful for bored folks whose GPS data is pretty accurate
+            and GCJ-02 obfuscation not tainted by the original LMPRNG.
+        <li>BD is defined in terms of GCJ, hence the last three functions.
+        <li>This demo omits the “in China” sanity check. Data regarding
+            Baidu’s behavior with overseas maps is needed for further
+            decisions. Observations:<ul>
+            <li>Unlike Google Maps, Baidu's map in Hong Kong is fully subject to
+                BD-09&nbsp;∘&nbsp;GCJ-02 chained distortions.
+            <li>Coordinates in Russia, outside of the sanity check rectangle, uses WGS-84 or and/or friends.
+            <li>TODO: check along the boundary.
+      </ol>
+    </section>
+    <section id="faq">
+      <h2>FAQ</h2>
+      <dl>
+        <dt id="what">What is this all about?</dt>
+        <dd>The PRC government requires all local map services to use an
+            obfuscated, <a href="https://github.com/Artoria2e5/PRCoords/blob/1ea97f2/js/PRCoords.js#L102-L109">
+            deivation-orienated<a> coordinate system.
+            Click on the “restriction” link to read the full Wikipedia article.</dd>
+        <dt id="why">Why should I care?</dt>
+        <dd>With half a kilometer of deviation, GCJ-02 and friends fucks up your
+            <a href="https://github.com/iitc-project/ingress-intel-total-conversion/blob/75a517b/plugins/fix-googlemap-china-offset.user.js">Ingress games</a>,
+            causes <a href="https://www.zhihu.com/question/29806566/answer/46099380">crazy errors</a>
+            in elevation profiles along cycle routes, and cheerfully leads you
+            into roadside ditches plus a bone fracture.</dd>
+        <dt id="google">Why doesn’t Google/Bing correct its Chinese data served to global users?</dt>
+        <dd><a href="https://productforums.google.com/forum/#!topic/maps/NunCUpRwLA0">I don’t know</a>.
+            Perhaps they are afraid of getting fined or further kicked out of China.
+            Maybe try <a href="https://openstreetmap.org">OpenStreetMap</a> next time?</dd>
+        <dt id="wheel">Why are you writing another implementation?</dt>
+        <dd><a href="https://github.com/Artoria2e5/PRCoords#why-another-wheel">Because I got bored</a>.</dd>
+        <dt id="caijun">How does Caijun’s iterative method work?</dt>
+        <dd>Cai has explained the method in full in his
+            <a href="https://github.com/caijun/geoChina/blob/5c6284b/R/cst.R#L101-L107"> R implementation</a>. Go read it, or read Wikipedia.
+    </section>
+  </article>
+  <footer id="footer">
+    <hr>
+    Powered by <a href="https://github.com/Artoria2e5/PRCoords">PRCoords</a>. Try playing with <code>window.PRCoords</code> in your console!
+
+    <p xmlns:dct="http://purl.org/dc/terms/" xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#">
+      <a rel="license"
+        href="http://creativecommons.org/publicdomain/zero/1.0/">
+        <img src="https://licensebuttons.net/p/zero/1.0/88x31.png" style="border-style: none;" alt="CC0"></a>
+        <br>
+        To the extent possible under law,
+      <a rel="dct:publisher"
+        href="https://zh.wikipedia.org/wiki/User:Artoria2e5">
+        <span property="dct:title">Mingye Wang</span></a>
+      has waived all copyright and related or neighboring rights to
+      <span property="dct:title">People Rectify Coordinates</span>.
+      This work is published from:
+      <span property="vcard:Country" datatype="dct:ISO3166"
+          content="US" about="http://jsbin.com/zonafut">
+      United States</span>.</p>
+    </footer>
+<script>
+"use strict";
+
+// dms/deg
+var coordInfo = {
+	'N': [+1, 'lat'],
+	'S': [-1, 'lat'],
+	'E': [+1, 'lon'],
+	'W': [-1, 'lon'],
+}
+
+var coordBack = {
+	'+lat': 'N',
+	'-lat': 'S',
+	'+lon': 'E',
+	'-lon': 'W',
+}
+
+function dmsToDec(d, m, s, hemisphere = 'N', type = '') {
+	if (type !== '') {
+		if (coordInfo[hemisphere][1] !== type) {
+			throw new RangeError('' + hemisphere + ' ' + type)
+		}
+	}
+	return coordInfo[hemisphere][0] * Math.round(((+d) + (+m)/60 + (+s)/3600)*1e8)/1e8
+}
+
+function decToDms(dec, type) {
+	var sign = (+dec) >= 0 ? 1 : -1
+	var hemi = coordBack[(sign == -1 ? '-' : '+') + type]
+	
+	dec *= sign
+	var d = Math.floor(dec)
+	var m = Math.floor((dec-d)*60)
+	var s = Math.round((dec-d-m/60)*3600*1e4)/1e4
+	
+	return [d, m, s, hemi]
+}
+
+// hooks
+var inputs = document.getElementById('inputc')
+function updFromDeg (ev) {
+  if (ev.target.value === '')
+    return;
+  var type = ev.target.name
+  var dmsh = [
+    inputs['d'+type],
+    inputs['m'+type],
+    inputs['s'+type],
+    inputs['h'+type],
+  ]
+  ;[
+    dmsh[0].value,
+    dmsh[1].value,
+    dmsh[2].value,
+    dmsh[3].value,
+  ] = decToDms(+ev.target.value, type)
+}
+function updFromDms (ev) {
+  if (ev.target.value === '')
+    return;
+  var type = ev.target.name.substring(1)
+  inputs[type].value = dmsToDec(
+    inputs['d'+type].value,
+    inputs['m'+type].value,
+    inputs['s'+type].value,
+    inputs['h'+type].value,
+    type
+  )
+}; // <- happy edge
+
+// note: make edge happy:
+// * make an array for a iterator in Edge
+// * Don't use spread or Edge freaks out
+for (let i of Array.from(inputs.querySelectorAll('#deg-in input')))
+  i.onchange = updFromDeg
+
+for (let i of Array.from(inputs.querySelectorAll('#dms-in input, #dms-in select')))
+  i.onchange = updFromDms
+
+// handler..
+var a_perm = document.getElementById('permalink')
+var baseurl = a_perm.href
+function fill_output() {
+  // Edge shit
+  a_perm = a_perm || document.getElementById('permalink')
+  baseurl = baseurl || a_perm.href
+  // end Edge
+  var get_inverse = function (fname) {
+    var comp = fname.split('_')
+    return comp[1] + '_' + comp[0]/* +
+          (bored &&
+           comp[0] !== 'wgs'  &&
+           !(comp[0] === 'gcj' && comp[1] === 'bd')) ?
+          '_bored' : ''*/
+  }
+  var fnames = {
+    dgcj: 'gcj_wgs',
+    dbd: 'bd_wgs',
+    egcj: 'wgs_gcj',
+    ebd: 'wgs_bd',
+    cgcj: 'gcj_wgs_bored',
+    cbd: 'bd_wgs_bored',
+    bgcj: 'bd_gcj',
+    bbd: 'gcj_bd',
+    bcgcj: 'bd_gcj_bored',
+  }
+  var incoords = {
+    lat: +inputs.lat.value,
+    lon: +inputs.lon.value,
+  }
+  console.log(incoords)
+  var coordToHtml = function(c) {
+    var lat = c.lat.toFixed(8)
+    var lon = c.lon.toFixed(8)
+    var ret = '(' + lat + ', ' + lon + ')<br/>'
+    
+    var dms = decToDms(lat, 'lat')
+    ret += dms[0] + '°' + dms[1] + '′' + dms[2] + '″&nbsp;' + dms[3] + ', '
+    dms = decToDms(lon, 'lon')
+    return ret + dms[0] + '°' + dms[1] + '′' + dms[2] + '″ ' + dms[3]
+  }
+  
+  for (var i in fnames) {
+    var row = document.getElementById(i)
+    var fun = PRCoords[fnames[i]]
+    var inv = PRCoords[get_inverse(fnames[i])]
+    var out = Array.from(row.childNodes).slice(1)
+    
+    var res = fun(incoords, false)
+    var dObfs = PRCoords.distance(res, incoords)
+    var dRoundtrip = PRCoords.distance(inv(res, false), incoords)
+    out[0].innerHTML = coordToHtml(res)
+    out[1].innerText = dObfs.toExponential()
+    out[2].innerText = dRoundtrip.toExponential()
+  }
+  a_perm.href = baseurl + '?lat=' + incoords.lat + '&lon=' + incoords.lon // + '#output'
+  return false
+}
+
+/// *** polyfill handling *** ///
+
+// https://philipwalton.com/articles/loading-polyfills-only-when-needed/
+function loadScript(src, done) {
+  var js = document.createElement('script')
+  js.src = src
+  js.onload = function() {
+    done()
+  }
+  js.onerror = function() {
+    done(new Error('Failed to load script ' + src))
+  }
+  document.head.appendChild(js)
+}
+/// ^^^ polyfill handling ^^^ ///
+
+function __from_query() {
+  function qe(s, d) {
+    return s ? s : d
+  }
+  try {
+    let params = new URLSearchParams(location.search.slice(1))
+    inputs.lat.value = qe(params.get('lat'), inputs.lat.value)
+    inputs.lon.value = qe(params.get('lon'), inputs.lon.value)
+    // trigger a dms update
+    var event = new Event("change")
+    for (let i of  Array.from(inputs.querySelectorAll('#deg-in input')))
+      i.dispatchEvent(event)
+  }
+  catch (e) {
+    console.error(e)
+  }
+  return fill_output()
+}
+
+function from_query() {
+  if (typeof URLSearchParams !== 'undefined') {
+    return __from_query()
+  } else {
+  // https://github.com/WebReflection/url-search-params
+    loadScript("https://cdn.rawgit.com/WebReflection/url-search-params/774ee42/build/url-search-params.js", __from_query)
+  }
+}
+
+function toggle(id) {
+  var el = document.getElementById(id)
+  if (el.style.display !== 'none')
+    el.style.display = 'none'
+  else
+    el.style.display = ''
+}
+console.log('syntax looks right')
+</script>
+
+</body>
+</html>

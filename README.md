@@ -11,7 +11,7 @@ Languages
 ---------
 
 - [x] JavaScript
-  - Web demo: https://Artoria2e5.github.io/PRCoords/demo.html ([JS Bin canary](http://jsbin.com/zonafut))
+  * Web demo: https://Artoria2e5.github.io/PRCoords/demo.html ([JS Bin canary](http://jsbin.com/zonafut))
 - [ ] Python
 - [ ] \(Obj-\)C/C++ (C structs)
 - [ ] Ruby
