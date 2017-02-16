@@ -1,7 +1,7 @@
 PRCoords
 ========
 
-People's Rectified Coordinates (PRCoords) is a cross-language implementation of "public secret" Chinese coordinate obfuscation methods including GCJ-02 and BD-09, along with general deobfuscation methods previously established in [pycoordtrans][], [eviltransform][], and [geoChina][].
+People's Rectified Coordinates (PRCoords) is a cross-language implementation of "public secret" Chinese coordinate obfuscation methods including GCJ-02 and BD-09, along with general deobfuscation methods previously established in [pycoordtrans][], [eviltransform][], and [geoChina][]. (Referring to the process of replacing straight lines with wavy ones as a "transform" is euphemism overdone.)
 
 [pycoordtrans]: https://github.com/zxteloiv/pycoordtrans
 [geoChina]: https://github.com/caijun/geoChina/blob/master/R/cst.R
