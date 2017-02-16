@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
 <!--
-Snapshot from http://jsbin.com/zonafut/32/edit
+Snapshot from http://jsbin.com/zonafut/34/edit
 -->
   <meta name="viewport" content="width=device-width">
   <meta name="author" content="Mingye Wang">
-  <meta name="description" content="A Public Domain GCJ-02 & BD-09 Deobfscator (not eviltransform, but PRCoords)">
+  <meta name="description" content="A Public Domain GCJ-02/BD-09 to WGS-84 Deobfscator (not eviltransform, but PRCoords)">
   <link href="https://Artoria2e5.github.io/PRCoords/Globe%2C_distorted_China.svg" type="image/svg+xml" rel="icon">
   <title>People Rectify Coordinates</title>
 <style id="jsbin-css">
@@ -148,7 +148,7 @@ tbody td:nth-child(n+2) {
     <section id="notes">
       <h2>Notes</h2>
       <ol>
-        <li>caijun’s iterative method is included for precise decoding.
+        <li>Caijun’s iterative method is included for precise decoding.
             It's most useful for bored folks whose GPS data is pretty accurate
             and GCJ-02 obfuscation not tainted by the original LMPRNG.
         <li>BD is defined in terms of GCJ, hence the last three functions.
@@ -167,7 +167,7 @@ tbody td:nth-child(n+2) {
         <dt id="what">What is this all about?</dt>
         <dd>The PRC government requires all local map services to use an
             obfuscated, <a href="https://github.com/Artoria2e5/PRCoords/blob/1ea97f2/js/PRCoords.js#L102-L109">
-            deivation-orienated<a> coordinate system.
+            deviation-orienated<a> coordinate system.
             Click on the “restriction” link to read the full Wikipedia article.</dd>
         <dt id="why">Why should I care?</dt>
         <dd>With half a kilometer of deviation, GCJ-02 and friends fucks up your
