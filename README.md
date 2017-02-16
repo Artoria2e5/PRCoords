@@ -11,12 +11,14 @@ Languages
 ---------
 
 - [x] JavaScript
-  - Web demo on JS Bin: http://jsbin.com/zonafut ([Gist Export](https://gist.github.com/anonymous/c87ee43557781b59913cd3f8146f014a))
+  - Web demo: https://Artoria2e5.github.io/PRCoords/demo.html ([JS Bin canary](http://jsbin.com/zonafut))
 - [ ] Python
-- [ ] \(Obj-\)C/C++
+- [ ] \(Obj-\)C/C++ (C structs)
 - [ ] Ruby
 - [ ] Swift
 - [ ] C#/UWP
+- [ ] Haskell
+- [ ] Matlab/Octave
 
 For languages not yet supported, we recommend you to check for [eviltransform][] (MIT) or [geoChina][] (GPLv3, R) instead.
 
@@ -27,9 +29,20 @@ PRCoord's APIs operate on, and returns, dedicated structures for coordinates. In
 
 ### Notes on "in China" sanity check
 
-Typically PRCoords is only supposed to be ran on obfuscated input data, which are primarily Chinese coordinates. For this reason, initial implementations include this [very very rough](https://news.ycombinator.com/item?id=10965506) sanity check that spans a rectangle region on a mercator-projected map. This check can be overridden by passing a boolean value, or may be not at all implemented in certain implemnetations if I am not in the right mood for doing silly things.
+Typically PRCoords is only supposed to be ran on obfuscated input data, which
+are primarily Chinese coordinates. For this reason, initial implementations
+include this [very very rough](https://news.ycombinator.com/item?id=10965506)
+sanity check that spans a rectangle region on a mercator-projected map.
+This check can be overridden by passing a boolean value, or may be not at all
+implemented in certain implemnetations if I am not in the right mood for doing
+silly things.
 
-For a saner sanity check, try to find a few (twenty-ish) points on the map and do a ray-casting polygon check. I may come up with a separate function for that later. You, as the caller, should be responsible for telling whether a point is part of the gov-screwed Chinese data.
+There is an "insane" sanity check intended to approximate the range of Google
+and Baidu's distortion, intended for use by [IITC](https://iitc.me):
+[`js/insane_is_in_china.js`](https://github.com/Artoria2e5/PRCoords/blob/master/js/insane_is_in_china.js).
+It is basically a ray-casting polygon check with 70 vertices. You, as the
+caller, should still be responsible for telling whether a point is part of the
+gov-screwed Chinese data.
 
 Why another wheel?
 ------------------
