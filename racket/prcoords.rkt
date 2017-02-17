@@ -67,19 +67,16 @@
                latlon))
 (define (wgs-gcj wgs)
   ; For laziness
-  (let ([x (- (latlon-lon wgs) 105)]    ;; Deviation params
-        [y (- (latlon-lat wgs) 35)]
-        [rlat (degrees->radians (latlon-lat wgs))]
-        [gcj-ee 0.00669342162296594323] ;; Krasovsky 1940, Not What You Use With WGS-84(TM)
-        [gcj-a 6378245])
-  (let ([mm (- 1
-              (* gcj-ee
-                (expt (sin rlat)
-                      2)))]
-        [dlat] ;; Yay, huge expressions
-        [dlon]
-        [arclat]
-        [arclon])
+  (let* ([gcj-ee 0.00669342162296594323] ;; Krasovsky 1940, Not What You Use With WGS-84(TM)
+         [gcj-a 6378245]
+         [x (- (latlon-lon wgs) 105)]    ;; Deviation params
+         [y (- (latlon-lat wgs) 35)]
+         [dlat] ;; Yay, huge expressions
+         [dlon]
+         [rlat (degrees->radians (latlon-lat wgs))]
+         [mm (- 1 (* gcj-ee (sin rlat) (sin rlat)))]
+         [arclat]
+         [arclon])
         (latlon
           (+ (latlon-lat wgs) (/ dlat arclat))
           (+ (latlon-lon wgs) (/ dlot arclot))))) ;; Do you really think I am gonna finish this?
