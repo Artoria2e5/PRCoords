@@ -15,7 +15,7 @@
 #lang typed/racket
 
 ;; I could have added some more restrictions, but whatever.
-(struct latlon ([lat : Real] [lon : Real]))
+(struct latlon ([lat : Float] [lon : Float]))
 ;; I hear that those people in Haskell land use types to encode
 ;; more information. Should I do that?
 
@@ -29,7 +29,7 @@
 
 ;; For looking into errors
 (: dcoord-abs (-> latlon
-                  Real))
+                  Float))
 (define (dcoord-abs a b)
         (max
           (abs (latlon-lat (dcoord a b)))
@@ -37,7 +37,7 @@
 
 ;; For estimating deviations
 (: dist (-> latlon latlon
-            Real))
+            Float))
 (define (dist a b)
         42.0) ;; Some round-earth haversine stuff, not now
         
@@ -66,12 +66,12 @@
 (: wgs-gcj (-> latlon
                latlon))
 (define (wgs-gcj wgs)
-  ; For laziness
+  ; For (human) laziness
   (let* ([gcj-ee 0.00669342162296594323] ;; Krasovsky 1940, Not What You Use With WGS-84(TM)
          [gcj-a 6378245]
          [x (- (latlon-lon wgs) 105)]    ;; Deviation params
          [y (- (latlon-lat wgs) 35)]
-         [dlat] ;; Yay, huge expressions
+         [dlat] ;; Yay, huge expressions, not today
          [dlon]
          [rlat (degrees->radians (latlon-lat wgs))]
          [mm (- 1 (* gcj-ee (sin rlat) (sin rlat)))]
@@ -91,3 +91,21 @@
 
 ;; Cai's iteration.
 ;; Not now. Chill, it's just carrying four accumulators around and stuff.
+(define
+  (caijun-iterate [fwd: (-> latlon latlon)]
+                  [rough-rev: (-> latlon latlon)]
+            #:eps [eps: Float 1e-4]
+           #:maxn [maxn: Integer 10])
+  (lambda 
+    ([a : latlon])
+    (letrec
+      ([improve
+        (lambda
+          ([curr : latlon] [prev : latlon] [i : Integer])
+          (if (or (and (< i maxn) (< (dcoord-abs curr prev) eps)) (= i 0))
+              (improve
+                (d...) ; TODO
+                curr
+                (+ 1 i))
+              curr))])
+      (improve a (rough-rev a) 0))))
