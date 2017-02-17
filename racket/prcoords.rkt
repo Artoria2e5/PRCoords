@@ -97,11 +97,11 @@
             #:eps [eps: Float 1e-4]
            #:maxn [maxn: Integer 10])
   (lambda 
-    ([a : latlon])
+    ([a : latlon]) : latlon
     (letrec
       ([improve
         (lambda
-          ([curr : latlon] [prev : latlon] [i : Integer])
+          ([curr : latlon] [prev : latlon] [i : Integer]) : latlon
           (if (or (and (< i maxn) (< (dcoord-abs curr prev) eps)) (= i 0))
               (improve
                 (d...) ; TODO
