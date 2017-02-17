@@ -67,16 +67,16 @@
                latlon))
 (define (wgs-gcj wgs)
   ; For (human) laziness
-  (let* ([gcj-ee 0.00669342162296594323] ;; Krasovsky 1940, Not What You Use With WGS-84(TM)
+  (let* ([gcj-ee 0.00669342162296594323]  ;; Krasovsky 1940, Not What You Use With WGS-84(TM)
          [gcj-a 6378245]
-         [x (- (latlon-lon wgs) 105)]    ;; Deviation params
-         [y (- (latlon-lat wgs) 35)]
+         [x (- (latlon-lon wgs) 105.)]    ;; Deviation params
+         [y (- (latlon-lat wgs) 35.)]
          [dlat] ;; Yay, huge expressions, not today
          [dlon]
          [rlat (degrees->radians (latlon-lat wgs))]
          [mm (- 1 (* gcj-ee (sin rlat) (sin rlat)))]
-         [arclat (* pi (/ 1 180) gcj-a (- 1 gcj-ee) (expt mm 1.5))]
-         [arclon (* pi (/ 1 180) gcj-a (cos rlat) (sqrt mm))])
+         [arclat (* (/ pi 180.) gcj-a (- 1 gcj-ee) (expt mm 1.5))]
+         [arclon (* (/ pi 180.) gcj-a (cos rlat) (sqrt mm))])
         (latlon
           (+ (latlon-lat wgs) (/ dlat arclat))
           (+ (latlon-lon wgs) (/ dlot arclot))))) ;; Do you really think I am gonna finish this?
@@ -87,7 +87,7 @@
 (define (gcj-wgs-rough gcj)
         (dcoord gcj
           (dcoord (wgs-gcj gcj)
-                    gcj))
+                  gcj))
 
 ;; Cai's iteration.
 ;; Not now. Chill, it's just carrying four accumulators around and stuff.
