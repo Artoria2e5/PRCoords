@@ -84,3 +84,13 @@
           (+ (latlon-lat wgs) (/ dlat arclat))
           (+ (latlon-lon wgs) (/ dlot arclot))))) ;; Do you really think I am gonna finish this?
 
+;; A rough reverse function.
+(: gcj-wgs-rough (-> latlon
+                     latlon))
+(define (gcj-wgs-rough gcj)
+        (dcoord gcj
+          (dcoord (wgs-gcj gcj)
+                    gcj))
+
+;; Cai's iteration.
+;; Not now. Chill, it's just carrying four accumulators around and stuff.
