@@ -6,7 +6,7 @@
 
 ;;(module prcoords typed/racket
 ;;  (provide latlon latlon-lat latlon-lon latlon? ;; Do I have to say these all?
-  
+
 
 ;; I figured that before writing one for F#/Haskell/OCaml,
 ;; Writing one in parentheses first might be a good idea.
@@ -21,51 +21,76 @@
 
 ;; These creepy x/y people...
 (define (latlon-from-complex [c : Float-Complex]) : latlon
-        (latlon (imag-part c) (real-part c)))
+  (latlon (imag-part c) (real-part c)))
 (define (latlon-to-complex [a : latlon]) : Float-Complex
-        (make-rectangular (latlon-lon a) (latlon-lat a)))
+  (make-rectangular (latlon-lon a) (latlon-lat a)))
 
 ;; This one is a little sloppy...
 (: dcoord (-> latlon latlon
               latlon))
 (define (dcoord a b)
-        (latlon
-          (- (latlon-lat a) (latlon-lat b))
-          (- (latlon-lon a) (latlon-lon b))))
+  (latlon
+   (- (latlon-lat a) (latlon-lat b))
+   (- (latlon-lon a) (latlon-lon b))))
 
 ;; For looking into errors
 (: dcoord-abs (-> latlon latlon
                   Float))
 (define (dcoord-abs a b)
-        (max
-          (abs (latlon-lat (dcoord a b)))
-          (abs (latlon-lon (dcoord a b)))))
+  (max
+   (abs (latlon-lat (dcoord a b)))
+   (abs (latlon-lon (dcoord a b)))))
 
 ;; For estimating deviations
-(: dist (-> latlon latlon
-            Float))
-(define (dist a b)
-        42.0) ;; Some round-earth haversine stuff, not now
-        
+(define
+  (dist [a : latlon] [b : latlon]) : Float
+  (let
+      ([a-lat (degrees->radians (latlon-lat a))]
+       [a-lon (degrees->radians (latlon-lon a))]
+       [b-lat (degrees->radians (latlon-lat b))]
+       [b-lon (degrees->radians (latlon-lon b))]
+       [d-lat (degrees->radians (latlon-lat (dcoord a b)))]
+       [d-lon (degrees->radians (latlon-lon (dcoord a b)))]
+       [R 6371000.]
+       [hav : (-> Float Float)
+            (λ (theta)
+              (* (sin (/ 2 theta)) (sin (/ 2 theta))))])
+    (* 2. R (cast (asin (sqrt (+ (hav d-lat)
+                                 (*
+                                  (hav d-lon)
+                                  (cos a-lat)
+                                  (cos b-lat))))) Float))))
+
 ;; What, you want a polygon check? Not now.
 (: probably-bad (-> latlon
                     Boolean))
 (define (probably-bad a)
-          (and
-            #t ;; TODO
-            #t
-            #t
-            #t))
+  (and
+   #t ;; TODO
+   #t
+   #t
+   #t))
 
 ;; For your sanity, no functions will be defined with the
 ;; rough "sanity" check on by default.
 (: sanity-wrap (-> (-> latlon latlon) (-> latlon Boolean)
                    (-> latlon latlon)))
 (define (sanity-wrap conv check)
-        (lambda ([a : latlon])
-                (if (check a)
-                    (conv a)
-                    a)))
+  (λ ([a : latlon])
+    (if (check a)
+        (conv a)
+        a)))
+
+;; Sometimes people are like...
+(: sanity-wrap-backward (-> (-> latlon latlon) (-> latlon Boolean)
+                            (-> latlon latlon)))
+(define (sanity-wrap-backward conv check)
+  (λ ([a : latlon])
+    (let ([c (conv a)])
+      (if (check c)
+          c
+          a))))
+
 
 ;; Finally a conversion. I understand that you have been
 ;; cursing for all these poorly-written BS.
@@ -84,15 +109,15 @@
          [mm (cast (- 1 (* gcj-ee (sin rlat) (sin rlat))) Positive-Flonum)]
          [arclat (exact->inexact (* (/ pi 180.) gcj-a (- 1 gcj-ee) (expt mm 1.5)))]
          [arclon (exact->inexact (* (/ pi 180.) gcj-a (cos rlat) (sqrt mm)))])
-        (latlon
-          (+ (latlon-lat wgs) (/ dlat arclat))
-          (+ (latlon-lon wgs) (/ dlon arclon))))) ;; Do you really think I am gonna finish this?
+    (latlon
+     (+ (latlon-lat wgs) (/ dlat arclat))
+     (+ (latlon-lon wgs) (/ dlon arclon))))) ;; Do you really think I am gonna finish this?
 
 ;; A rough reverse function.
 (: gcj-wgs-rough (-> latlon
                      latlon))
 (define (gcj-wgs-rough gcj)
-        (dcoord gcj
+  (dcoord gcj
           (dcoord (wgs-gcj gcj)
                   gcj)))
 
@@ -101,65 +126,65 @@
 (define
   (caijun-iterate [fwd : (-> latlon latlon)]
                   [rough-rev : (-> latlon latlon)]
-            #:eps [eps : Float 1e-4]
-           #:maxn [maxn : Integer 10])
-  (lambda 
-    ([bad : latlon]) : latlon
+                  #:eps [eps : Float 1e-4]
+                  #:maxn [maxn : Integer 10])
+  (λ 
+      ([bad : latlon]) : latlon
     (letrec
-      ([improve : (-> latlon latlon Integer
-                      latlon)
-        (lambda
-          ([curr : latlon] [prev : latlon] [i : Integer]) : latlon
-          ;; Fixing a sloppy part in js, etc.:
-          ;; what happens if rough-rev is just an `id`?
-          (if (or (and (< i maxn) (< (dcoord-abs curr prev) eps)) (= i 0))
-              (improve
-                (dcoord curr
-                        (dcoord (fwd curr)
-                                bad))
-                curr
-                (+ 1 i))
-              curr))])
+        ([improve : (-> latlon latlon Integer
+                        latlon)
+                  (λ
+                    (curr prev i)
+                    ;; Fixing a sloppy part in js, etc.:
+                    ;; what happens if rough-rev is just an `id`?
+                    (if (or (and (< i maxn) (< (dcoord-abs curr prev) eps)) (= i 0))
+                        (improve
+                         (dcoord curr
+                                 (dcoord (fwd curr)
+                                         bad))
+                         curr
+                         (+ 1 i))
+                        curr))])
       (improve bad (rough-rev bad) 0))))
 
 (define gcj-wgs : (-> latlon latlon)
-        (caijun-iterate wgs-gcj gcj-wgs-rough))
-        
+  (caijun-iterate wgs-gcj gcj-wgs-rough))
+
 ;; Baudu's Obfuscation.
 (define
   (gcj-bd [a : latlon]) : latlon
   (let
-    ([bd-delta 0.0060+0.0065i]
-     [c1 (latlon-to-complex a)]
-     [lat (latlon-lat a)]
-     [lon (latlon-lon a)])
+      ([bd-delta 0.0060+0.0065i]
+       [c1 (latlon-to-complex a)]
+       [lat (latlon-lat a)]
+       [lon (latlon-lon a)])
     (latlon-from-complex
-      (+
-        (make-polar
-          (+ (magnitude c1) (* 0.00002 (sin (* 3000. (degrees->radians lat)))))
-          (+ (angle c1) (* 0.000003 (cos (* 3000. (degrees->radians lon))))))
-        bd-delta))))
+     (+
+      (make-polar
+       (+ (magnitude c1) (* 0.00002 (sin (* 3000. (degrees->radians lat)))))
+       (+ (angle c1) (* 0.000003 (cos (* 3000. (degrees->radians lon))))))
+      bd-delta))))
 
 (define
   (bd-gcj-rough [a : latlon]) : latlon
   (let*
-    ([bd-delta 0.0060+0.0065i]
-     [c1 (- (latlon-to-complex a) bd-delta)]
-     [lat (imag-part c1)]
-     [lon (real-part c1)])
+      ([bd-delta 0.0060+0.0065i]
+       [c1 (- (latlon-to-complex a) bd-delta)]
+       [lat (imag-part c1)]
+       [lon (real-part c1)])
     (latlon-from-complex
-      (make-polar
-        (- (magnitude c1) (* 0.00002 (sin (* 3000. (degrees->radians lat)))))
-        (- (angle c1) (* 0.000003 (cos (* 3000. (degrees->radians lon)))))))))
+     (make-polar
+      (- (magnitude c1) (* 0.00002 (sin (* 3000. (degrees->radians lat)))))
+      (- (angle c1) (* 0.000003 (cos (* 3000. (degrees->radians lon)))))))))
 
 (define bd-gcj : (-> latlon latlon)
-        (caijun-iterate gcj-bd bd-gcj-rough))
+  (caijun-iterate gcj-bd bd-gcj-rough))
 
 (define (wgs-bd [a : latlon]) : latlon
-        (gcj-bd (wgs-gcj a)))
+  (gcj-bd (wgs-gcj a)))
 (define (bd-wgs-rough [a : latlon]) : latlon
-        (gcj-wgs-rough (bd-gcj-rough a)))        
+  (gcj-wgs-rough (bd-gcj-rough a)))        
 (define bd-wgs : (-> latlon latlon)
-        (caijun-iterate wgs-bd bd-wgs-rough))
+  (caijun-iterate wgs-bd bd-wgs-rough))
 
 ;; Yay!
