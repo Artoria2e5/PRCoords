@@ -14,10 +14,17 @@
 ;; This sounds fun.
 #lang typed/racket
 
+
 ;; I could have added some more restrictions, but whatever.
 (struct latlon ([lat : Float] [lon : Float]))
 ;; I hear that those people in Haskell land use types to encode
 ;; more information. Should I do that?
+
+;; These creepy x/y people...
+(define (latlon-from-complex [c : Float-Complex]) : latlon
+        (latlon (imag-part c) (real-part c))
+(define (latlon-to-complex [a : latlon]) : Float-Complex
+        (make-rectangular latlon-lon latlon-lat))
 
 ;; This one is a little sloppy...
 (: dcoord (-> latlon latlon
@@ -116,3 +123,42 @@
 
 (define gcj-wgs : (-> latlon latlon)
         (caijun-iterate wgs-gcj gcj-wgs-rough))
+        
+;; Baudu's Obfuscation.
+(define
+  (gcj-bd [a : latlon]) : latlon
+  (let
+    ([bd-delta 0.0060+0.0065i]
+     [c1 (latlon-to-complex a)]
+     [lat (latlon-lat a)]
+     [lon (latlon-lon a)])
+    (latlon-from-complex
+      (+
+        (make-polar
+          (+ (magnitude c1) (* 0.00002 (sin (* 3000. (degrees->radians lat)))))
+          (+ (angle c1) (* 0.000003 (cos (* 3000. (degrees->radians lon))))))
+        bd-delta))))
+
+(define
+  (bd-gcj-rough [a : latlon]) : latlon
+  (let*
+    ([bd-delta 0.0060+0.0065i]
+     [c1 (- (latlon-to-complex a) bd-delta)]
+     [lat (latlon-lat c1)]
+     [lon (latlon-lon c1)])
+    (latlon-from-complex
+      (make-polar
+        (- (magnitude c1) (* 0.00002 (sin (* 3000. (degrees->radians lat)))))
+        (- (angle c1) (* 0.000003 (cos (* 3000. (degrees->radians lon))))))))))
+
+(define bd-gcj : (-> latlon latlon)
+        (caijun-iterate gcj-bd bd-gcj-rough))
+
+(define (wgs-bd [a : latlon]) : latlon
+        (gcj-bd (wgs-gcj a)))
+(define (bd-wgs-rough [a : latlon]) : latlon
+        (gcj-wgs-rough (bd-gcj-rough a)))        
+(define bd-wgs : (-> latlon latlon)
+        (caijun-iterate wgs-bd bd-wgs-rough))
+
+;; Yay!
