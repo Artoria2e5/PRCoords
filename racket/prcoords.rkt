@@ -43,7 +43,7 @@
         
 ;; What, you want a polygon check? Not now.
 (: probably-bad (-> latlon
-                      Boolean))
+                    Boolean))
 (define (probably-bad a)
           (and
             ()
@@ -75,8 +75,8 @@
          [dlon]
          [rlat (degrees->radians (latlon-lat wgs))]
          [mm (- 1 (* gcj-ee (sin rlat) (sin rlat)))]
-         [arclat]
-         [arclon])
+         [arclat (* pi (/ 1 180) gcj-a (- 1 gcj-ee) (expt mm 1.5))]
+         [arclon (* pi (/ 1 180) gcj-a (cos rlat) (sqrt mm))])
         (latlon
           (+ (latlon-lat wgs) (/ dlat arclat))
           (+ (latlon-lon wgs) (/ dlot arclot))))) ;; Do you really think I am gonna finish this?
@@ -97,15 +97,22 @@
             #:eps [eps: Float 1e-4]
            #:maxn [maxn: Integer 10])
   (lambda 
-    ([a : latlon]) : latlon
+    ([bad : latlon]) : latlon
     (letrec
       ([improve
         (lambda
           ([curr : latlon] [prev : latlon] [i : Integer]) : latlon
+          ;; Fixing a sloppy part in js, etc.:
+          ;; what happens if rough-rev is just an `id`?
           (if (or (and (< i maxn) (< (dcoord-abs curr prev) eps)) (= i 0))
               (improve
-                (d...) ; TODO
+                (dcoord curr
+                        (dcoord (fwd curr)
+                                bad))
                 curr
                 (+ 1 i))
               curr))])
-      (improve a (rough-rev a) 0))))
+      (improve bad (rough-rev bad) 0))))
+
+(define gcj-wgs : (-> latlon latlon)
+        (caijun-iterate wgs-gcj gcj-wgs-rough))
