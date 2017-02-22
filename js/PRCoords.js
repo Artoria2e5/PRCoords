@@ -189,10 +189,11 @@ function __bored__(fwd, rev) {
 		var old = bad
 		
 		// Wait till we hit fixed point or get bored
-		for (var i = 0; i < 10 && _coord_error(wgs, old) > PRC_EPS; i++) {
+		var i = 0
+		do {
 			old = wgs
 			wgs = _coord_diff(wgs, _coord_diff(fwd(wgs, false), bad))
-		}
+		} while (_coord_error(wgs, old) > PRC_EPS && i++ < 10)
 		
 		return wgs
 	}
