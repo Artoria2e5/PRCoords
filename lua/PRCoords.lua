@@ -32,7 +32,13 @@ function PRCoords.cdiff(a_lat, a_lon, b_lat, b_lon)
 	return a_lat - b_lat, a_lon - b_lon
 end
 
-function PRCoords.distance(a_lat, a_lon, b_lat, b_lon)
+function PRCoords.cerr(a_lat, a_lon, b_lat, b_lon)
+	local dlat = math.abs(a_lat - b_lat)
+	local dlon = math.abs(a_lon - b_lon)
+	return math.max(dlat, dlon)
+end
+
+function PRCoords.cdist(a_lat, a_lon, b_lat, b_lon)
 	local function hav(theta)
 		return math.sin(theta/2) ^ 2
 	end
@@ -47,3 +53,6 @@ function PRCoords.distance(a_lat, a_lon, b_lat, b_lon)
 		hav(delta_lon  * math.pi / 180)))
 end
 
+function PRCoords.wgs_gcj(wlat, wlon)
+	
+end
