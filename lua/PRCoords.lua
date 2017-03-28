@@ -34,7 +34,7 @@ end
 
 function PRCoords.distance(a_lat, a_lon, b_lat, b_lon)
 	local function hav(theta)
-		return Math.pow(Math.sin(theta/2), 2)
+		return math.sin(theta/2) ^ 2
 	end
 	
 	local delta_lat = a_lat - b_lat
@@ -42,8 +42,8 @@ function PRCoords.distance(a_lat, a_lon, b_lat, b_lon)
 	
 	return 2 * PRCoords.EARTH_R * math.asin(math.sqrt(
 		hav(delta_lat * math.pi / 180) +
-			math.cos(a.lat * math.pi / 180) *
-			math.cos(b.lat * math.pi / 180) *
-			hav(delta_lon  * math.pi / 180)))
+		math.cos(a.lat * math.pi / 180) *
+		math.cos(b.lat * math.pi / 180) *
+		hav(delta_lon  * math.pi / 180)))
 end
 
