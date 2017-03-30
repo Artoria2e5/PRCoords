@@ -12,6 +12,7 @@ Languages
 
 - [x] JavaScript
   * Web demo: https://artoria2e5.github.io/PRCoords/demo ([JS Bin canary](http://jsbin.com/zonafut))
+  * [ ] Publish to NPM
 - [ ] Python
 - [ ] \(Obj-\)C/C++ (C structs)
 - [ ] Ruby
