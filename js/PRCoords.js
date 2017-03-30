@@ -219,7 +219,7 @@ var exports = {
 	bd_wgs_bored: __bored__(wgs_bd, bd_wgs),
 }
 
-if (typeof module === "object" && exports) {
+if (typeof module === "object" && module.exports) {
 	module.exports = exports
 } else if (typeof window !== "undefined") {
 	window.PRCoords = exports
