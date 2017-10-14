@@ -1,7 +1,8 @@
 '''
-People's Republic of (distorted) [[T:Coord|Coordinates]]
+People's Rectified [[T:Coord|Coordinates]]
 @file Utils for inserting valid WGS-84 coords from GCJ-02/BD-09 input
 @author User:Artoria2e5
+@url https://github.com/Artoria2e5/PRCoords
 
 @see [[:en:GCJ-02]]
 @see https://github.com/caijun/geoChina (GPLv3)
@@ -76,12 +77,13 @@ class Coords(collections.namedtuple('Coords', 'lat lon')):
         Distance for haversine method; suitable over short distances like
         conversion deviation checking
         '''
-        hav = lambda theta: (1 - math.cos(theta)) / 2
+        hav = lambda theta: math.sin(theta / 2) ** 2
 
         delta = self - other
         return 2 * EARTH_R * math.asin(math.sqrt(
             hav(math.radians(delta.lat)) +
-            math.cos(math.radians(self.lon)) * math.cos(math.radians(other.lon)) *
+            math.cos(math.radians(self.lat)) *
+            math.cos(math.radians(other.lat)) *
             hav(math.radians(delta.lon))
         ))
 
@@ -92,7 +94,7 @@ def sanity_in_china_p(coords):
 def wgs_gcj(wgs, check_china=True):
     wgs = Coords(*wgs)
     if check_china and not sanity_in_china_p(wgs):
-        warnings.warn('Non-Chinese coords found, returning as-is: %r' % wgs)
+        warnings.warn('Non-Chinese coords found, returning as-is: %r' % (wgs,))
         return wgs
 
     x, y = wgs.lon - 105, wgs.lat - 35
