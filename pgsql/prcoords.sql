@@ -51,3 +51,27 @@ $$ LANGUAGE plpgsql IMMUTABLE COST 150;
 
 CREATE OR REPLACE FUNCTION public.gcj_wgs (gcj point) RETURNS point AS
 $$ SELECT $1 - (wgs_gcj($1) - $1) AS wgs $$ LANGUAGE SQL IMMUTABLE COST 150;
+
+CREATE OR REPLACE FUNCTION public.gcj_wgs_bored (gcj point) RETURNS point AS
+$$
+DECLARE
+  MAXITER CONSTANT double precision := 10;
+  PRC_EPS CONSTANT double precision := 1e-5;
+  wgs point;
+  old point;
+  diff point;
+  i smallint;
+BEGIN
+  wgs = gcj_wgs(gcj);
+  LOOP
+    diff := (wgs - old);
+    IF i < MAXITER AND (abs(diff[0]) > PRC_EPS OR abs(diff[1]) > PRC_EPS) THEN
+      old := wgs;
+      wgs := wgs - (wgs_gcj(wgs) - gcj);
+      i := i + 1;
+    ELSE
+      RETURN wgs;
+    END IF;
+  END LOOP;
+END;
+$$ LANGUAGE plpgsql IMMUTABLE COST 200;
