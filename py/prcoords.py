@@ -66,7 +66,7 @@ class Coords(collections.namedtuple('Coords', 'lat lon')):
     def __sub__(self, other):
         return Coords(self.lat - other.lat, self.lon - other.lon)
 
-    def __abs__(self, other):
+    def __abs__(self):
         return math.hypot(*self)
 
     def error(self, other):
