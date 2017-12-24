@@ -7,7 +7,7 @@ SELECT 2 * 6371000 * asin(
     sin(radians($4-$2)/2)^2 * cos(radians($1)) * cos(radians($3))
   )
 ) AS distance;
-$$ LANGUAGE SQL IMMUTABLE COST 100;
+$$ LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE COST 100;
 
 CREATE OR REPLACE FUNCTION public.wgs_gcj (wgs point) RETURNS point AS
 $$
@@ -47,7 +47,7 @@ BEGIN
   RETURN (wgs[0] + (dLat_m / lat_deg_arclen),
           wgs[1] + (dLon_m / lon_deg_arclen));
 END;
-$$ LANGUAGE plpgsql IMMUTABLE COST 150;
+$$ LANGUAGE plpgsql IMMUTABLE STRICT PARALLEL SAFE COST 150;
 
 CREATE OR REPLACE FUNCTION public.gcj_wgs (gcj point) RETURNS point AS
 $$ SELECT $1 - (wgs_gcj($1) - $1) AS wgs $$ LANGUAGE SQL IMMUTABLE COST 150;
@@ -74,4 +74,4 @@ BEGIN
     END IF;
   END LOOP;
 END;
-$$ LANGUAGE plpgsql IMMUTABLE COST 200;
+$$ LANGUAGE plpgsql IMMUTABLE STRICT PARALLEL SAFE COST 200;
