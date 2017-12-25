@@ -43,6 +43,7 @@ inline PRCoords operator- (PRCoords a, PRCoords b) {
     };
 }
 
+// for sorting
 inline bool operator< (PRCoords a, PRCoords b) {
     return a.lat < b.lat || a.lon < b.lon;
 }
@@ -75,11 +76,10 @@ prcoords_in_china(PRCoords a) {
     return a >= PRCoords{0.8293, 72.004} && a <= PRCoords{55.8271, 137.8347};
 }
 
-inline static double diff_sum(PRCoords a, PRCoords b) {
+inline static double sum_of_diff(PRCoords a, PRCoords b) {
     PRCoords d = a - b;
     return fabs(d.lat) + fabs(d.lon);
 }
-
 
 
 typedef PRCoords (*ptr_prcoords_conv)(PRCoords);
@@ -87,8 +87,13 @@ typedef PRCoords (*ptr_prcoords_conv)(PRCoords);
 // given pseudo-random noises added to GCJ.
 template<ptr_prcoords_conv fwd, ptr_prcoords_conv rev>
 PRCoords bored_reverse_conversion(PRCoords bad) {
-    PRCoords wgs = rev(bad, false);
-    // ...
+    PRCoords wgs = rev(bad);
+    PRCoords old = bad;
+    
+    int i = 0;
+    do {
+    
+    } while (sum_of_diff(old, wgs) > 1e-6 && i++ < 10)
     return wgs;
 }
 
