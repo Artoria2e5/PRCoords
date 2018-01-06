@@ -43,7 +43,7 @@ bool prcoords_in_china(PRCoords);
 }
 
 
-inline PRCoords operator- (PRCoords a, PRCoords b) {
+inline PRCoords operator- (const PRCoords& a, const PRCoords& b) {
     return PRCoords {
         a.lat - b.lat,
         a.lon - b.lon
@@ -51,17 +51,17 @@ inline PRCoords operator- (PRCoords a, PRCoords b) {
 }
 
 // for sorting
-inline bool operator< (PRCoords a, PRCoords b) {
+inline bool operator< (const PRCoords& a, const PRCoords& b) {
     return a.lat < b.lat || a.lon < b.lon;
 }
-inline bool operator> (PRCoords a, PRCoords b) { return b < a; }
-inline bool operator<=(PRCoords a, PRCoords b) { return !(a > b); }
-inline bool operator>=(PRCoords a, PRCoords b) { return !(a < b); }
+inline bool operator> (const PRCoords& a, const PRCoords& b) { return b < a; }
+inline bool operator<=(const PRCoords& a, const PRCoords& b) { return !(a > b); }
+inline bool operator>=(const PRCoords& a, const PRCoords& b) { return !(a < b); }
 
-inline bool operator==(PRCoords a, PRCoords b) {
+inline bool operator==(const PRCoords& a, const PRCoords& b) {
     return a.lat == b.lat && a.lon == b.lon;
 }
-inline bool operator!=(PRCoords a, PRCoords b) { return !(a == b); }
+inline bool operator!=(const PRCoords& a, const PRCoords& b) { return !(a == b); }
 #endif // __cplusplus
 #endif // header
 
@@ -85,13 +85,6 @@ bool prcoords_in_china(PRCoords a) {
     return a >= PRCoords{0.8293, 72.004} && a <= PRCoords{55.8271, 137.8347};
 }
 
-inline static PRCOORDS_NUM prcoords_diffsum(PRCoords a, PRCoords b);
-inline static PRCOORDS_NUM prcoords_diffsum(PRCoords a, PRCoords b) {
-    PRCoords d = a - b;
-    return fabs(d.lat) + fabs(d.lon);
-}
-
-
 typedef PRCoords (*ptr_prcoords_conv)(PRCoords);
 // These conversions are for bored people: too accurate to be useful
 // given pseudo-random noises added to GCJ.
@@ -99,15 +92,18 @@ template<ptr_prcoords_conv fwd, ptr_prcoords_conv rev>
 PRCoords bored_reverse_conversion(PRCoords bad) {
     PRCoords wgs = rev(bad);
     PRCoords old = bad;
+    PRCoords diff{INFINITY, INFINITY};
     
     int i = 0;
-    do {
+    while ((fabs(diff.lat) + fabs(diff.lon)) > PRCOORDS_EPS && i++ < 10) {
+    	diff = fwd(wgs) - bad;
         old = wgs;
-        wgs -= (fwd(wgs) - bad);
-    } while (prcoords_diffsum(old, wgs) > PRCOORDS_EPS && i++ < 10)
+        wgs = wgs - diff;
+    }
     return wgs;
 }
 
+extern "C" {
 PRCoords prcoords_wgs_gcj(PRCoords wgs) {
 	PRCOORDS_NUM x = wgs.lon - 105, y = wgs.lat - 35;
 	
@@ -121,25 +117,25 @@ PRCoords prcoords_wgs_gcj(PRCoords wgs) {
 	// default deviation of <300, -100> meters.
 	PRCOORDS_NUM dLat_m = -100 + 2 * x + 3 * y + 0.2 * y * y + 0.1 * x * y +
 		0.2 * sqrt(abs(x)) + (
-	        2 * sin(x * 6 * PI) + 2 * sin(x * 2 * PI) +
-	        2 * sin(y * PI) + 4 * sin(y / 3 * PI) +
-	        16 * sin(y / 12 * PI) + 32 * sin(y / 30 * PI)
+	        2 * sin(x * 6 * M_PI) + 2 * sin(x * 2 * M_PI) +
+	        2 * sin(y * M_PI) + 4 * sin(y / 3 * M_PI) +
+	        16 * sin(y / 12 * M_PI) + 32 * sin(y / 30 * M_PI)
         ) * 20 / 3;
 	PRCOORDS_NUM dLon_m = 300 + x + 2 * y + 0.1 * x * x + 0.1 * x * y +
 		0.1 * sqrt(abs(x)) + (
-        	2 * sin(x * 6 * PI) + 2 * sin(x * 2 * PI) +
-	        2 * sin(x * PI) + 4 * sin(x / 3 * PI) +
-	        15 * sin(x / 12 * PI) + 30 * sin(x / 30 * PI)
+        	2 * sin(x * 6 * M_PI) + 2 * sin(x * 2 * M_PI) +
+	        2 * sin(x * M_PI) + 4 * sin(x / 3 * M_PI) +
+	        15 * sin(x / 12 * M_PI) + 30 * sin(x / 30 * M_PI)
         ) * 20 / 3;
     
     
-    PRCOORDS_NUM radLat = wgs.lat / 180 * PI;
+    PRCOORDS_NUM radLat = wgs.lat / 180 * M_PI;
     PRCOORDS_NUM magic = 1 - GCJ_EE * pow(sin(radLat), 2); // just a common expr
     
     // [[:en:Latitude#Length_of_a_degree_of_latitude]]
-    PRCOORDS_NUM lat_deg_arclen = (PI / 180) * (GCJ_A * (1 - GCJ_EE)) * pow(magic, 1.5);
+    PRCOORDS_NUM lat_deg_arclen = (M_PI / 180) * (GCJ_A * (1 - GCJ_EE)) * pow(magic, 1.5);
     // [[:en:Longitude#Length_of_a_degree_of_longitude]]
-    PRCOORDS_NUM lon_deg_arclen = (PI / 180) * (GCJ_A * cos(radLat) / sqrt(magic));
+    PRCOORDS_NUM lon_deg_arclen = (M_PI / 180) * (GCJ_A * cos(radLat) / sqrt(magic));
     
     // The screwers pack their deviations into degrees and disappear.
     // Note how they are mixing WGS-84 and Krasovsky 1940 ellipsoids here...
@@ -149,7 +145,7 @@ PRCoords prcoords_wgs_gcj(PRCoords wgs) {
     };
 }
 
-PRCoords prcoords_wgs_gcj(PRCoords gcj) {
+PRCoords prcoords_gcj_wgs(PRCoords gcj) {
     return gcj - (prcoords_wgs_gcj(gcj) - gcj);
 }
 
@@ -158,13 +154,13 @@ PRCoords prcoords_gcj_bd(PRCoords gcj) {
 	PRCOORDS_NUM y = gcj.lat;
 	
 	// trivia: pycoordtrans actually describes how these values are calculated
-	PRCOORDS_NUM r = sqrt(x * x + y * y) + 0.00002 * sin(y * PI * 3000 / 180);
-	PRCOORDS_NUM θ = atan2(y, x) + 0.000003 * cos(x * PI * 3000 / 180);
+	PRCOORDS_NUM r = sqrt(x * x + y * y) + 0.00002 * sin(y * M_PI * 3000 / 180);
+	PRCOORDS_NUM t = atan2(y, x) + 0.000003 * cos(x * M_PI * 3000 / 180);
 	
 	// Hard-coded default deviations again!
 	return PRCoords{
-		lat: r * sin(θ) + BD_DLAT,
-		lon: r * cos(θ) + BD_DLON
+		lat: r * sin(t) + BD_DLAT,
+		lon: r * cos(t) + BD_DLON
 	};
 }
 
@@ -172,12 +168,12 @@ PRCoords prcoords_bd_gcj(PRCoords bd) {
 	PRCOORDS_NUM x = bd.lon - BD_DLON;
 	PRCOORDS_NUM y = bd.lat - BD_DLAT;
 	
-	PRCOORDS_NUM r = sqrt(x * x + y * y) - 0.00002 * sin(y * PI * 3000 / 180);
-	PRCOORDS_NUM θ = atan2(y, x) - 0.000003 * cos(x * PI * 3000 / 180);
+	PRCOORDS_NUM r = sqrt(x * x + y * y) - 0.00002 * sin(y * M_PI * 3000 / 180);
+	PRCOORDS_NUM t = atan2(y, x) - 0.000003 * cos(x * M_PI * 3000 / 180);
 	
 	return PRCoords{
-		lat: r * sin(θ),
-		lon: r * cos(θ)
+		lat: r * sin(t),
+		lon: r * cos(t)
 	};
 }
 
@@ -193,17 +189,26 @@ PRCoords prcoords_gcj_wgs_bored(PRCoords gcj) {
     return bored_reverse_conversion<prcoords_wgs_gcj, prcoords_gcj_wgs>(gcj);
 }
 PRCoords prcoords_bd_gcj_bored(PRCoords bd) {
-    return bored_reverse_conversion<prcoords_gcj_bd, prcoords_bd_gcj>)(bd);
+    return bored_reverse_conversion<prcoords_gcj_bd, prcoords_bd_gcj>(bd);
 }
 PRCoords prcoords_bd_wgs_bored(PRCoords bd) {
-    return bored_reverse_conversion<prcoords_wgs_bd, prcoords_bd_wgs>)(bd);
+    return bored_reverse_conversion<prcoords_wgs_bd, prcoords_bd_wgs>(bd);
+}
 }
 
 #if PRCOORDS_TEST
 #include <iostream>
 #include <type_traits>
+
+std::string show_coord(PRCoords v) {
+  return std::to_string(v.lat) + ", " + std::to_string(v.lon);
+}
 int main(void) {
-    std::cout << std::is_pod<PRCoords>::value << std::endl;
+    std::cout << std::is_pod<PRCoords>::value << std::endl
+              << show_coord(prcoords_wgs_gcj(PRCoords{35, 105})) << std::endl
+              << show_coord(prcoords_wgs_bd(PRCoords{35, 105})) << std::endl
+	      << show_coord(prcoords_wgs_gcj(PRCoords{34, 106})) << std::endl
+	      << show_coord(prcoords_wgs_bd(PRCoords{34, 106})) << std::endl;
 }
 #endif
 #endif
