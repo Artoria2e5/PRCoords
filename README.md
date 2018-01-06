@@ -54,6 +54,11 @@ Why another wheel?
 * Clean API based on pairs of coordinates
 * Need to find a place for this sarcastic name
 
+Physical PRCoords
+-----------------
+
+You can print out a minimal copy of PRCoords with [this PDF file](https://commons.wikimedia.org/wiki/File:PRcoords_Cheatsheet.pdf). I am working on some better options [in issue #2](https://github.com/Artoria2e5/PRCoords/issues/2).
+
 License
 -------
 
