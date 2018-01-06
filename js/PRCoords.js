@@ -86,11 +86,6 @@ function _coord_diff(a, b) {
 	}
 }
 
-function _coord_error(a, b) {
-	var diff = _coord_diff(a, b)
-	return Math.max(Math.abs(diff.lat), Math.abs(diff.lon))
-}
-
 function wgs_gcj(wgs, checkChina = true) {
 	if (checkChina && !sanity_in_china_p(wgs)) {
 		console.warn(`Non-Chinese coords found, returning as-is: ` +
@@ -185,18 +180,20 @@ function wgs_bd(bd, checkChina = true) {
 // generic "bored function" factory, Caijun 2014
 // gcj: 4 calls to wgs_gcj; ~0.1mm acc
 function __bored__(fwd, rev) {
-	return function rev_bored(bad, checkChina = true) {
-		var wgs = rev(bad, checkChina)
-		var old = bad
+	return function rev_bored(heck, checkChina = true) {
+		var curr = rev(heck, checkChina)
+		var prev = heck
+		var diff = {lat: Infinity, lon: Infinity}
 		
 		// Wait till we hit fixed point or get bored
 		var i = 0
-		do {
-			old = wgs
-			wgs = _coord_diff(wgs, _coord_diff(fwd(wgs, false), bad))
-		} while (_coord_error(wgs, old) > PRC_EPS && i++ < 10)
+		while (max(abs(diff.lat), abs(diff.lon)) > PRC_EPS && i++ < 10) {
+			diff = _coord_diff(fwd(curr, checkChina), heck)
+			prev = curr
+			curr = _coord_diff(curr, diff)
+		}
 		
-		return wgs
+		return curr
 	}
 }
 
