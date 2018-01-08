@@ -13,13 +13,15 @@ Languages
 - [x] JavaScript
   * Web demo: https://artoria2e5.github.io/PRCoords/demo ([JS Bin canary](http://jsbin.com/zonafut))
   * [ ] Publish to NPM
-- [ ] Python
-- [ ] \(Obj-\)C/C++ (C structs)
+- [x] Python
+- [x] \(Obj-\)C/C++ (C structs)
 - [ ] Ruby
 - [ ] Swift
-- [ ] C#/UWP
-- [ ] Haskell
+- [ ] C#
+- [x] Haskell (GCJ only)
+- [ ] Java
 - [ ] Matlab/Octave
+- [x] PGSQL (GCJ only)
 
 (should I split them into submodules?)
 
