@@ -15,6 +15,7 @@ Languages
   * [ ] Publish to NPM
 - [x] Python
 - [x] \(Obj-\)C/C++ (C structs)
+  * [ ] Makefile with `install`
 - [ ] Ruby
 - [ ] Swift
 - [ ] C#
