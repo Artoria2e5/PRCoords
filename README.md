@@ -18,7 +18,7 @@ Languages
 - [ ] Ruby
 - [ ] Swift
 - [ ] C#
-- [x] Haskell (GCJ only)
+- [x] Haskell (GCJ only; data structure incomplete)
 - [ ] Java
 - [ ] Matlab/Octave
 - [x] PGSQL (GCJ only)
