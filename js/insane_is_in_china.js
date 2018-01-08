@@ -131,10 +131,10 @@ var POINTS = [
   107.730505, 18.193406,
   110.669856, 17.754550,
 ]
-POINTS = null // no need
 
 var lats = POINTS.filter((ditch, i) => i % 2 == 1)
 var lons = POINTS.filter((ditch, i) => i % 2 == 0)
+POINTS = null // no need
 
 var bdlats = lats.slice(HK_LENGTH)
 var bdlons = lons.slice(HK_LENGTH)
