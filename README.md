@@ -19,9 +19,13 @@ Languages
 - [ ] Swift
 - [ ] C#
 - [x] Haskell (GCJ only; data structure incomplete)
+  * need to move googollee/eviltransform#54 here sometime.
 - [ ] Java
 - [ ] Matlab/Octave
+  * too lazy to split the files. also expand "caijun"
 - [x] PGSQL (GCJ only)
+- [ ] Typed Racket
+  * is it done?
 
 (should I split them into submodules?)
 
