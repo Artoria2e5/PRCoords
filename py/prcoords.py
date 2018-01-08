@@ -69,9 +69,6 @@ class Coords(collections.namedtuple('Coords', 'lat lon')):
     def __abs__(self):
         return math.hypot(*self)
 
-    def error(self, other):
-        return max(abs(self.lat - other.lat), abs(self.lon - other.lon))
-
     def distance(self, other):
         '''
         Distance for haversine method; suitable over short distances like
@@ -175,12 +172,14 @@ def _bored(fwd, rev):
     def rev_bored(bad, check_china=True):
         wgs = rev(bad)
         bad = old = Coords(*bad)
+        diff = Coords(99, 99) # canary
 
         # Wait till we hit fixed point or get bored
         i = 0
-        while i < 10 and wgs.error(old) > PRC_EPS:
+        while i < 10 and abs(diff) > PRC_EPS:
+            diff = fwd(wgs, False) - bad
             old = wgs
-            wgs = wgs - (fwd(wgs, False) - bad)
+            wgs = wgs - diff
             i += 1
 
         return wgs
