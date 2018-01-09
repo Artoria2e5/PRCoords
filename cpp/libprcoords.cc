@@ -23,8 +23,11 @@ bool prcoords_in_china(PRCoords a) {
 }
 
 typedef PRCoords (*ptr_prcoords_conv)(PRCoords);
-// These conversions are for bored people: too accurate to be useful
-// given pseudo-random noises added to GCJ.
+/// These conversions are for bored people: too accurate to be useful
+/// given pseudo-random noises added to GCJ.
+///
+/// Should we implement a 2-iter version?
+/// Just "wgs = wgs - (fwd(wgs) - bad);", repeated twice.
 template<ptr_prcoords_conv fwd, ptr_prcoords_conv rev>
 PRCoords bored_reverse_conversion(PRCoords bad) {
     PRCoords wgs = rev(bad);
