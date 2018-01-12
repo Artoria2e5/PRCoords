@@ -1,4 +1,4 @@
-CXXFLAGS += -O3 -fassociative-math
+CXXFLAGS += -O3 -funsafe-math-optimizations
 
 all: libprcoords.a libprcoords.so demo
 
