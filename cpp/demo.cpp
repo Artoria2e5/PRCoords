@@ -12,16 +12,19 @@
 #include <string>
 using namespace std;
 
+#ifndef PRCOORDS_STON
+#define PRCOORDS_STON stod
+#endif
 
 std::string show_coord(PRCoords v) {
     return std::to_string(v.lat) + ", " + std::to_string(v.lon);
 }
 
-PRCoords parse_coord(std::string s) {
+PRCoords parse_coord(const string& s) {
     int cut = s.find(", ");
     return PRCoords{
-        stod(s.substr(0, cut)),
-        stod(s.substr(cut + 1))
+        PRCOORDS_STON(s.substr(0, cut)),
+        PRCOORDS_STON(s.substr(cut + 1))
     };
 }
 
@@ -40,6 +43,7 @@ int main(void) {
             << "b2gQ\t" << show_coord(prcoords_bd_gcj(v)) << endl
             << "g2wP\t" << show_coord(prcoords_gcj_wgs_bored(v)) << endl
             << "b2wP\t" << show_coord(prcoords_bd_wgs_bored(v)) << endl
-            << "b2gP\t" << show_coord(prcoords_bd_gcj_bored(v)) << endl;
+            << "b2gP\t" << show_coord(prcoords_bd_gcj_bored(v)) << endl
+            << endl;
     }
 }
