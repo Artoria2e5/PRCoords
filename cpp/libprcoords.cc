@@ -6,6 +6,10 @@
 #include <cmath>
 #include <functional>
 
+#ifndef M_PI
+#define M_PI (3.14159265358979323846)
+#endif
+
 /// Krasovsky 1940 ellipsoid
 /// @const
 const PRCOORDS_NUM GCJ_A = 6378245;

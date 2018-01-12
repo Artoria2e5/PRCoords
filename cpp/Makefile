@@ -1,4 +1,4 @@
-CXXFLAGS += -O3 -funsafe-math-optimizations
+CXXFLAGS += -O3 -funsafe-math-optimizations -std=c++0x
 
 all: libprcoords.a libprcoords.so demo
 prec_sample: demo demof demold
@@ -8,10 +8,10 @@ libprcoords.a: libprcoords.o
 	ranlib libprcoords.a
 
 libprcoords.so: libprcoords.o
-	$(CXX) -shared -o libprcoords.so libprcoords.o
+	$(CC) -shared -o libprcoords.so libprcoords.o
 
 libprcoords.o: libprcoords.cc
-	$(CXX) $(CXXFLAGS) -fPIC -c libprcoords.cc
+	$(CC) $(CXXFLAGS) -fPIC -c libprcoords.cc
 
 demo: demo.cpp
 	$(CXX) $(CXXFLAGS) -DPRCOORDS_DEMO_FORCE_STANDALONE=1 -o demo demo.cpp
