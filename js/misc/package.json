@@ -1,0 +1,17 @@
+{
+    "name": "insane-in-china",
+    "version": "0.0.1",
+    "description": "Routine for deciding whether one coordiate might be affected by Chinese obfuscation.",
+    "main": "insane-is-in-china.js",
+    "//": "^Will this work with the repo?",
+    "//": "^https://github.com/npm/npm/issues/2974",
+    "repository": "github:Artoria2e5/PRCoords",
+    "keywords": [
+        "gcj", "wgs", "bd", "baidu", "coordinates", "pnpoly"
+    ],
+    "author": "Mingye Wang (Artoria2e5) <arthur200126@gmail.com>",
+    "license": "BSD-3-Clause",
+    "bugs": {
+        "url": "https://github.com/Artoria2e5/PRCoords/issues"
+    }
+}

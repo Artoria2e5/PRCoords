@@ -1,3 +1,5 @@
+(function(){
+"use strict"
 // Insane version of the "is in China" check (70 points. I tried.)
 //
 // Dedicated to the Public Domain under CC0, except for pnpoly by
@@ -154,3 +156,12 @@ function isInBaidu(lat, lon) {
     return false;
   return pnpoly(bdlats, bdlons, lat, lon)
 }
+
+exports = {isInBaidu: isInBaidu, isInGoogle: isInGoogle}
+
+if (typeof module === "object" && module.exports) {
+	module.exports = exports
+} else if (typeof window !== "undefined") {
+	window.PRCoords = exports
+}
+}()
