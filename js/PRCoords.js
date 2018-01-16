@@ -187,7 +187,7 @@ function __bored__(fwd, rev) {
 		
 		// Wait till we hit fixed point or get bored
 		var i = 0
-		while (max(abs(diff.lat), abs(diff.lon)) > PRC_EPS && i++ < 10) {
+		while (Math.max(Math.abs(diff.lat), Math.abs(diff.lon)) > PRC_EPS && i++ < 10) {
 			diff = _coord_diff(fwd(curr, checkChina), heck)
 			prev = curr
 			curr = _coord_diff(curr, diff)
