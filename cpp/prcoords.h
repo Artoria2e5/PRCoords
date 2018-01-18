@@ -48,8 +48,12 @@ inline PRCoords operator- (const PRCoords& a, const PRCoords& b) {
 }
 
 // for sorting
+//   lat
+//    |
+// -<-o---lon (quadrants III, IV and x < 0)
+//  < | <
 inline bool operator< (const PRCoords& a, const PRCoords& b) {
-    return a.lat < b.lat || a.lon < b.lon;
+    return a.lat < b.lat || (a.lat == b.lat && a.lon < b.lon);
 }
 inline bool operator> (const PRCoords& a, const PRCoords& b) { return b < a; }
 inline bool operator<=(const PRCoords& a, const PRCoords& b) { return !(a > b); }
