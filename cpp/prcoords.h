@@ -12,14 +12,25 @@
 #endif
 
 #ifdef __cplusplus
+#define PRCOORDS_CONSTEXPR constexpr
+
+#if __cplusplus >= 201300L
+#define PRCOORDS_CONSTEXPR14 constexpr
+#else
+#define PRCOORDS_CONSTEXPR14 inline
+#endif // c++14, including 1y
+
 extern "C" {
 #else
 #include <stdbool.h>
+#define PRCOORDS_CONSTEXPR inline
 #endif
 
 typedef struct PRCoords {
     PRCOORDS_NUM lat, lon;
 } PRCoords;
+
+// make them pure
 
 /// GCJ APIs should all probably turn on china-checks.
 /// But we should allow some override.... Damn C.
@@ -34,7 +45,10 @@ PRCoords prcoords_gcj_wgs_bored(PRCoords);
 PRCoords prcoords_bd_gcj_bored(PRCoords);
 PRCoords prcoords_bd_wgs_bored(PRCoords);
 
-bool prcoords_in_china(PRCoords);
+PRCOORDS_CONSTEXPR static bool prcoords_in_china(PRCoords a) {
+    // cut out some 
+    return a.lat >= 16.7414 && a.lon >= 72.004 && a.lat <= 55.8271 && a.lon <= 137.8347;
+}
 
 #ifdef __cplusplus
 }

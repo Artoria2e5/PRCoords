@@ -7,24 +7,28 @@
 #include <functional>
 
 #ifndef M_PI
-#define M_PI (3.14159265358979323846)
+#define M_PI ((PRCOORDS_NUM)(3.14159265358979323846L))
 #endif
+
+// enforces PRCOORDS_NUM
+using std::sin;
+using std::cos;
+using std::sqrt;
+using std::atan2;
+using std::pow;
+using std::fabs;
 
 /// Krasovsky 1940 ellipsoid
 /// @const
-const PRCOORDS_NUM GCJ_A = 6378245;
-const PRCOORDS_NUM GCJ_EE = 0.00669342162296594323;  // f = 1/298.3; e^2 = 2*f - f**2
-const PRCOORDS_NUM BD_DLAT = 0.0060;
-const PRCOORDS_NUM BD_DLON = 0.0065;
+const static PRCOORDS_NUM GCJ_A = 6378245;
+const static PRCOORDS_NUM GCJ_EE = 0.00669342162296594323;  // f = 1/298.3; e^2 = 2*f - f**2
+const static PRCOORDS_NUM BD_DLAT = 0.0060;
+const static PRCOORDS_NUM BD_DLON = 0.0065;
 
 /// Epsilon to use for "exact" iterations.
 /// Wanna troll? Use Number.EPSILON. 1e-13 in 15 calls for gcj.
 /// @const
-const PRCOORDS_NUM PRCOORDS_EPS = 1e-5;
-
-bool prcoords_in_china(PRCoords a) {
-    return a >= PRCoords{0.8293, 72.004} && a <= PRCoords{55.8271, 137.8347};
-}
+const static PRCOORDS_NUM PRCOORDS_EPS = 1e-5;
 
 typedef PRCoords (*ptr_prcoords_conv)(PRCoords);
 /// These conversions are for bored people: too accurate to be useful
@@ -33,7 +37,7 @@ typedef PRCoords (*ptr_prcoords_conv)(PRCoords);
 /// Should we implement a 2-iter version?
 /// Just "wgs = wgs - (fwd(wgs) - bad);", repeated twice.
 template<ptr_prcoords_conv fwd, ptr_prcoords_conv rev>
-PRCoords bored_reverse_conversion(PRCoords bad) {
+static PRCoords bored_reverse_conversion(PRCoords bad) {
     PRCoords wgs = rev(bad);
     PRCoords old = bad;
     PRCoords diff{INFINITY, INFINITY};
