@@ -45,7 +45,7 @@ PRCoords prcoords_gcj_wgs_bored(PRCoords);
 PRCoords prcoords_bd_gcj_bored(PRCoords);
 PRCoords prcoords_bd_wgs_bored(PRCoords);
 
-PRCOORDS_CONSTEXPR static bool prcoords_in_china(PRCoords a) {
+PRCOORDS_CONSTEXPR static bool prcoords_in_china(const PRCoords& a) {
     // cut out some 
     return a.lat >= 16.7414 && a.lon >= 72.004 && a.lat <= 55.8271 && a.lon <= 137.8347;
 }
