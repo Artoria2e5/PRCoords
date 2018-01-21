@@ -75,3 +75,15 @@ BEGIN
   END LOOP;
 END;
 $$ LANGUAGE plpgsql IMMUTABLE STRICT PARALLEL SAFE COST 450;
+
+CREATE OR REPLACE PUBLIC FUNCTION public.gcj_bd (gcj point) AS
+$$
+DECLARE
+  r double precision;
+  t double precision;
+BEGIN
+  r := sqrt(gcj[0] * gcj[0] + gcj[1] * gcj[1]) + 2e-5 * sin(3000 * radians(gcj[0]));
+  t := atan2(gcj[0], gcj[1]) + 3e-6 * cos(3000 * radians(gcj[1]));
+  RETURN (r * sin(t) + 0.0060
+          r * cos(t) + 0.0065);
+$$ LANGUAGE plpgsql IMMUTABLE STRICT PARALLEL SAFE COST 100;
