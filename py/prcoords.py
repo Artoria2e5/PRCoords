@@ -171,14 +171,13 @@ def _bored(fwd, rev):
     '''
     def rev_bored(bad, check_china=True):
         wgs = rev(bad)
-        bad = old = Coords(*bad)
+        bad = Coords(*bad)
         diff = Coords(99, 99) # canary
 
         # Wait till we hit fixed point or get bored
         i = 0
         while i < 10 and abs(diff) > PRC_EPS:
             diff = fwd(wgs, False) - bad
-            old = wgs
             wgs = wgs - diff
             i += 1
 
