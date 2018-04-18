@@ -182,14 +182,12 @@ function wgs_bd(bd, checkChina = true) {
 function __bored__(fwd, rev) {
 	return function rev_bored(heck, checkChina = true) {
 		var curr = rev(heck, checkChina)
-		var prev = heck
 		var diff = {lat: Infinity, lon: Infinity}
 		
 		// Wait till we hit fixed point or get bored
 		var i = 0
 		while (Math.max(Math.abs(diff.lat), Math.abs(diff.lon)) > PRC_EPS && i++ < 10) {
 			diff = _coord_diff(fwd(curr, checkChina), heck)
-			prev = curr
 			curr = _coord_diff(curr, diff)
 		}
 		
