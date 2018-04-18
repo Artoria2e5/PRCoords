@@ -39,13 +39,11 @@ typedef PRCoords (*ptr_prcoords_conv)(PRCoords);
 template<ptr_prcoords_conv fwd, ptr_prcoords_conv rev>
 static PRCoords bored_reverse_conversion(PRCoords bad) {
     PRCoords wgs = rev(bad);
-    PRCoords old = bad;
     PRCoords diff{INFINITY, INFINITY};
     
     int i = 0;
     while ((fabs(diff.lat) + fabs(diff.lon)) > PRCOORDS_EPS && i++ < 10) {
     	diff = fwd(wgs) - bad;
-        old = wgs;
         wgs = wgs - diff;
     }
     return wgs;
