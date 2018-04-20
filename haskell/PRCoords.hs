@@ -5,8 +5,14 @@
 module PRCoords where -- (wgsGcj, gcjBd, wgsBd, gcjWgs, bdGcj, bdWgsC, gcjWgsC, bdGcjC, bdWgsC, caijun)
     -- import Data.Angle
     
-    wgsGcj :: Double -> Double -> (Double, Double)
-    wgsGcj !lat !lon = (lat + dLat / arclenLat, lon + dLon / arclenLon) where
+    data PCoords = PCoords { !lat :: Double
+                           , !lon :: Double } deriving (Eq, Ord, Show)
+    
+    subtractPCoords :: PCoords -> PCoords -> PCoords
+    subtractPCoords a b = PCoords (lat a - lat b) (lon a - lon b)
+    
+    wgsGcj :: PCoords -> PCoords
+    wgsGcj (PCoords lat lon) = PCoords (lat + dLat / arclenLat) (lon + dLon / arclenLon) where
         gcj_a  = 6378245.0              -- <_ Krasovsky 1940
         gcj_ee = 0.00669342162296594323 -- f = 1/2983; e^2 = 2*f - f**2
         magic  = 1 - gcj_ee * ((sin (pi * lat / 180)) ** 2) -- common expr
@@ -23,8 +29,14 @@ module PRCoords where -- (wgsGcj, gcjBd, wgsBd, gcjWgs, bdGcj, bdWgsC, gcjWgsC, 
               gcjTerm x 6 2 + gcjTerm x 2 2 + gcjTerm x 1 2 + gcjTerm x (1/3) 4 +
               gcjTerm x (1/12) 15 + gcjTerm y (1/30) 30)
     
-    gcjWgs :: Double -> Double -> (Double, Double)
-    gcjWgs !lat !lon = (lat - (glat - lat), lon - (glon - lon)) where
-        (glat, glon) = wgsGcj lat lon
+    gcjWgs :: PCoords -> PCoords
+    gcjWgs a = subtractPCoords a (subtractPCoords ga a) where
+        ga = wgsGcj a
+    
+    caiFix :: (PCoords -> PCoords) -> PCoords -> PCoords -> Int -> PCoords
+    caiFix fwd guess fwd_result = 
+    
+    caijun :: (PCoords -> PCoords) -> (PCoords -> PCoords) -> (PCoords -> PCoords -> PCoords)
+    caijun fwd rev = (\x -> caiFix fwd (rev x) x 0)
     
     -- next: caijun
