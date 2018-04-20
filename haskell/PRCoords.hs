@@ -34,9 +34,18 @@ module PRCoords where -- (wgsGcj, gcjBd, wgsBd, gcjWgs, bdGcj, bdWgsC, gcjWgsC, 
         ga = wgsGcj a
     
     caiFix :: (PCoords -> PCoords) -> PCoords -> PCoords -> Int -> PCoords
-    caiFix fwd guess fwd_result = 
+    caiFix fwd guess fwd_result iter
+        | iter > 5 = better
+        | (abs $ lon diff) + (abs $ lat diff) < 1E-5 = better
+        | otherwise = caiFix fwd better fwd_result (iter+1)
+        where fwd_guess = fwd guess
+              diff = subtractPCoords fwd_guess fwd_result
+              better = subtractPCoords guess diff
     
-    caijun :: (PCoords -> PCoords) -> (PCoords -> PCoords) -> (PCoords -> PCoords -> PCoords)
+    caijun :: (PCoords -> PCoords) -> (PCoords -> PCoords) -> (PCoords -> PCoords)
     caijun fwd rev = (\x -> caiFix fwd (rev x) x 0)
     
-    -- next: caijun
+    gcjWgsC :: PCoords -> PCoords
+    gcjWgsC = caijun wgsGcj gcjWgs
+    
+    -- next: baidu
