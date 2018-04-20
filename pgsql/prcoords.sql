@@ -76,7 +76,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE STRICT PARALLEL SAFE COST 450;
 
-CREATE OR REPLACE PUBLIC FUNCTION public.gcj_bd (gcj point) AS
+CREATE OR REPLACE PUBLIC FUNCTION public.gcj_bd (gcj point) RETURNS point AS
 $$
 DECLARE
   r double precision;
