@@ -24,7 +24,7 @@ homepage:            https://github.com/Artoria2e5/PRCoords
 license:             PublicDomain
 
 -- The file containing the license text.
-license-file:        LICENSE
+-- license-file:        LICENSE
 
 -- The package author(s).
 author:              Mingye Wang
@@ -50,18 +50,18 @@ cabal-version:       >=1.10
 
 library
   -- Modules exported by the library.
-  -- exposed-modules:     
+  exposed-modules: PRCoords 
   
   -- Modules included in this library but not exported.
   -- other-modules:       
   
   -- LANGUAGE extensions used by modules in this package.
-  -- other-extensions:    
+  other-extensions: BangPatterns
   
   -- Other library packages from which modules are imported.
   build-depends:
-    base -- >=4.8 && <4.9,
-    AC-Angle
+    base -- >=4.8 && <4.9
+    -- AC-Angle
   
   -- Directories containing source files.
   -- hs-source-dirs:      
