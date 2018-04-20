@@ -1,9 +1,12 @@
 {-# LANGUAGE BangPatterns #-}
+{-# OPTIONS_GHC -fexcess-precision #-}
+{-# OPTIONS_GHC -optc-ffast-math -optllc--enable-unsafe-fp-math -optllc--enable-no-nans-fp-math -optllc--enable-no-infs-fp-math #-}
 
 --- | This module contains functions for generating People's Rectified Coordinates.
 --- Jeez, my naming is awful.
 module PRCoords where -- (wgsGcj, gcjBd, wgsBd, gcjWgs, bdGcj, bdWgsC, gcjWgsC, bdGcjC, bdWgsC, caijun)
     -- import Data.Angle
+    -- import Numeric.FastMath
     
     data PCoords = PCoords { !lat :: Double
                            , !lon :: Double } deriving (Eq, Ord, Show)
