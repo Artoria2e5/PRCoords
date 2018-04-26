@@ -32,10 +32,8 @@ function PRCoords.cdiff(a_lat, a_lon, b_lat, b_lon)
 	return a_lat - b_lat, a_lon - b_lon
 end
 
-function PRCoords.cerr(a_lat, a_lon, b_lat, b_lon)
-	local dlat = math.abs(a_lat - b_lat)
-	local dlon = math.abs(a_lon - b_lon)
-	return math.max(dlat, dlon)
+local function cerr(lat, lon)
+	return abs(lat) + abs(lon)
 end
 
 function PRCoords.cdist(a_lat, a_lon, b_lat, b_lon)
@@ -53,6 +51,22 @@ function PRCoords.cdist(a_lat, a_lon, b_lat, b_lon)
 		hav(delta_lon  * math.pi / 180)))
 end
 
+function PRCoords.caijun(forward, reverse)
+	return function(bad_lat, bad_lon)
+		local guess_lat, guess_lon = reverse(bad_lat, bad_lon)
+		local iter = 0
+		local diff_lat, diff_lon, tlat, tlon
+		
+		repeat
+			tlat, tlon = forward(guess_lat, guess_lon)
+			diff_lat, diff_lon = PRCoords.cdiff(tlat, tlon, bad_lat, bad_lon)
+			guess_lat -= diff_lat
+			guess_lon -= diff_lon
+			iter += 1
+		until cerr(diff_lat, diff_lon) <= 1e-5 or iter >= 10
+	end
+end
+	
 function PRCoords.wgs_gcj(wlat, wlon)
 	
 end
