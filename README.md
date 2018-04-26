@@ -24,7 +24,7 @@ Languages
 - [ ] Java
 - [ ] Matlab/Octave
   * too lazy to split the files. also expand "caijun"
-- [x] PGSQL (GCJ only)
+- [x] PGSQL
 - [ ] Typed Racket
   * is it done?
 
@@ -42,9 +42,9 @@ PRCoord's APIs operate on, and returns, dedicated structures for coordinates. In
 Typically PRCoords is only supposed to be ran on obfuscated input data, which
 are primarily Chinese coordinates. For this reason, initial implementations
 include this [very very rough](https://news.ycombinator.com/item?id=10965506)
-sanity check that spans a rectangle region on a mercator-projected map.
+sanity check that spans a rectangular region on a mercator-projected map.
 This check can be overridden by passing a boolean value, or may be not at all
-implemented in certain implemnetations if I am not in the right mood for doing
+implemented in certain languages if I am not in the right mood for doing
 silly things.
 
 There is an "insane" sanity check intended to approximate the range of Google
@@ -64,7 +64,9 @@ Why another wheel?
 Physical PRCoords
 -----------------
 
-You can print out a minimal copy of PRCoords with [this PDF file](https://commons.wikimedia.org/wiki/File:PRcoords_Cheatsheet.pdf). I am working on some better options [in issue #2](https://github.com/Artoria2e5/PRCoords/issues/2).
+You can print out a minimal copy of PRCoords with [this PDF file](https://commons.wikimedia.org/wiki/File:PRcoords_Cheatsheet.pdf). I am working on some better options [in issue #2](https://github.com/Artoria2e5/PRCoords/issues/2). A fairly simple tote bag with an older version of the PDF is [available from Teespring](https://teespring.com/miniprcoords-tote-v1).
+
+Feel free to print and sell t-shirts with the PDF file! It is put in the Public Domain, so you don't have to pay me for that. You can always fund my subversive activities on [Patreon](https://www.patreon.com/artoria2e5) though.
 
 License
 -------
@@ -79,10 +81,12 @@ GPL is only included for fun here.
 See also
 --------
 
-* [Restrictions on geographic data in China](https://en.wikipedia.org/wiki/Restrictions_on_geographic_data_in_China#Coordinate_systems): This Wikipedia article outlines impacts and the "common secret" deobfuscation approach.
+* [Restrictions on geographic data in China](https://en.wikipedia.org/wiki/Restrictions_on_geographic_data_in_China#Coordinate_systems): this Wikipedia article outlines impacts and the "common secret" deobfuscation approach.
+  * Chinese readers: see [中华人民共和国测绘限制](https://zh.wikipedia.org/wiki/中华人民共和国测绘限制).
 * [pycoordtrans][] is a raw-flesh-level implementation that reveals certain trivial details of Baidu's transformation.
 * [eviltransform][] is among the most popular cross-language soltions to the problem. It borrows its name directly from [EvilTransform.cs](https://github.com/Leask/EvilTransform/blob/master/EvilTransform.cs), an early refactored version of a raw-flesh Java implementation.
-* [geoChina][] by caijun is a clear, concise implementation written in R. It features a much faster iterative method for precise conversion reproduced here
+  * Since June 2016, eviltransform contains numerous parameter errors that compromise its output, especially for BD-09. See googollee/eviltransform[#43](https://github.com/googollee/eviltransform/issues/43), [#53](https://github.com/googollee/eviltransform/pull/53) and [#44](https://github.com/googollee/eviltransform/issues/44) for corrections. As of April 2018 these problems are not fixed.
+* [geoChina][] by caijun is a clear, concise implementation written in R. It features a much faster iterative method for precise conversion reproduced here.
 * I am planning on moving some of the comments on the algorithm found in [my initial JavaScript implementation](https://zh.wikipedia.org/wiki/User:Artoria2e5/PRCoords.js) to the [GitHub Wiki](https://github.com/Artoria2e5/PRCoords/wiki). I don't think anyone is going to be interested in copying comments on these idiocy when translating my implementation to other languages.
 
 Oh, and finally, here is an official [news report](https://archive.fo/20110804185923/http://cxzy.people.com.cn/GB/196034/14908095.html) on that particular *\[bleep\]* who came up with GCJ-02.
