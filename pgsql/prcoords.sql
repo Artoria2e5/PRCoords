@@ -9,6 +9,16 @@ SELECT 2 * 6371000 * asin(
 ) AS distance;
 $$ LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE COST 100;
 
+CREATE OR REPLACE FUNCTION public.geodistance (a point, b point)
+RETURNS double precision AS $$
+SELECT 2 * 6371000 * asin(
+  sqrt(
+    sin(radians($2[0]-$1[0])/2)^2 +
+    sin(radians($2[1]-$1[1])/2)^2 * cos(radians($1[0])) * cos(radians($2[0]))
+  )
+) AS distance;
+$$ LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE COST 100;
+
 CREATE OR REPLACE FUNCTION public.wgs_gcj (wgs point) RETURNS point AS
 $$
 DECLARE
@@ -49,8 +59,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE STRICT PARALLEL SAFE COST 150;
 
-CREATE OR REPLACE FUNCTION public.gcj_wgs (gcj point) RETURNS point AS
-$$ SELECT $1 - (wgs_gcj($1) - $1) AS wgs $$ LANGUAGE SQL IMMUTABLE COST 150;
+CREATE OR REPLACE FUNCTION public.gcj_wgs (gcj point) RETURNS point AS $$
+SELECT $1 - (wgs_gcj($1) - $1) AS wgs
+$$ LANGUAGE SQL IMMUTABLE STRICT PARALLEL SAFE COST 150;
 
 CREATE OR REPLACE FUNCTION public.gcj_wgs_bored (gcj point) RETURNS point AS
 $$
@@ -76,7 +87,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql IMMUTABLE STRICT PARALLEL SAFE COST 450;
 
-CREATE OR REPLACE PUBLIC FUNCTION public.gcj_bd (gcj point) RETURNS point AS
+CREATE OR REPLACE FUNCTION public.gcj_bd (gcj point) RETURNS point AS
 $$
 DECLARE
   r double precision;
@@ -84,6 +95,6 @@ DECLARE
 BEGIN
   r := sqrt(gcj[0] * gcj[0] + gcj[1] * gcj[1]) + 2e-5 * sin(3000 * radians(gcj[0]));
   t := atan2(gcj[0], gcj[1]) + 3e-6 * cos(3000 * radians(gcj[1]));
-  RETURN (r * sin(t) + 0.0060
-          r * cos(t) + 0.0065);
+  RETURN point(r * sin(t) + 0.0060, r * cos(t) + 0.0065);
+END;
 $$ LANGUAGE plpgsql IMMUTABLE STRICT PARALLEL SAFE COST 100;
