@@ -50,7 +50,7 @@ In general two approaches of inverting the "forward" obfuscations, or working fr
 
 * _Run it backwards_: `obfs(coord)` is never too far from `coord`, so just use
   `obfs(obfs(coord)) - obfs(coord)` to estimate `obfs(coord) - coord`.
-* _Iterate a lot_: Get a rough `guess` somehow, and just use property 2 to estimate
+* _Iterate a bit_: Get a rough `guess` somehow, and just use property 2 to estimate
   the remaining error as `obfs(guess) - obfs(coord)` and correct the `guess`.
 
 You can read on the demo page about how well these methods work from the `ΔRoundtrip`
