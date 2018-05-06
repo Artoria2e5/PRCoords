@@ -1,9 +1,9 @@
 PRCoords
 ========
 
-People's Rectified Coordinates (PRCoords) is a cross-language implementation of "public secret" Chinese coordinate obfuscation methods including GCJ-02 and BD-09, along with general deobfuscation methods previously established in [pycoordtrans][], [eviltransform][], and [geoChina][]. (Referring to the process of replacing straight lines with wavy ones as a "transform" is euphemism overdone.)
+People's Rectified Coordinates (PRCoords) is a cross-language implementation of "public secret" Chinese coordinate obfuscation methods including GCJ-02 and BD-09, along with general deobfuscation methods previously established in [ChinaMapShift][], [eviltransform][], and [geoChina][]. (Referring to the process of replacing straight lines with wavy ones as a "transform" is euphemism overdone.)
 
-[pycoordtrans]: https://github.com/zxteloiv/pycoordtrans
+[ChinaMapShift]: https://gist.github.com/anonymous/e7c6f67555099180ce1ae8da4ba2c513
 [geoChina]: https://github.com/caijun/geoChina/blob/master/R/cst.R
 [eviltransform]: https://github.com/googollee/eviltransform
 
@@ -98,15 +98,23 @@ are dual-licensed under:
 
 GPL is only included for fun here.
 
+Sources
+-------
+
+* [Algorithm.Coords.Converter](https://archive.is/20130815104734/emq.googlecode.com/svn/emq/src/Algorithm/Coords/Converter.java) from [EMQ](https://code.google.com/archive/p/emq/) ([GitHub mirror](https://github.com/richardyu-au/emq)) is probably *the* GCJ leak. It is a JSP project "for demonstrating GIS systems", probably done by some government contractor.
+  * There is some randomness in the GCJ deltas on both axes: one `sin` invocation and one LCG. Each add a maximum of 1 meter of error.
+* [on4wp7](https://archive.is/20150702191259/https://on4wp7.codeplex.com/SourceControl/changeset/view/21483%23353936) (2013) is the earliest rationalized GCJ (forward) implementation. No randomness is attempted.
+* [ChinaMapShift][] (2014) figured out the quick iterative inverse for GCJ. I learned about it via geoChina first and generalized it here.
+* BD-09 is not very well sourced, but [pycoordtrans](https://github.com/zxteloiv/pycoordtrans) (2014) seems to have it.
+
 See also
 --------
 
 * [Restrictions on geographic data in China](https://en.wikipedia.org/wiki/Restrictions_on_geographic_data_in_China#Coordinate_systems): this Wikipedia article outlines impacts and the "common secret" deobfuscation approach.
   * Chinese readers: see [中华人民共和国测绘限制](https://zh.wikipedia.org/wiki/中华人民共和国测绘限制).
-* [pycoordtrans][] is a raw-flesh-level implementation that reveals certain trivial details of Baidu's transformation.
 * [eviltransform][] is among the most popular cross-language soltions to the problem. It borrows its name directly from [EvilTransform.cs](https://github.com/Leask/EvilTransform/blob/master/EvilTransform.cs), an early refactored version of a raw-flesh Java implementation.
   * Since June 2016, eviltransform contains numerous parameter errors that compromise its output, especially for BD-09. See googollee/eviltransform[#43](https://github.com/googollee/eviltransform/issues/43), [#53](https://github.com/googollee/eviltransform/pull/53) and [#44](https://github.com/googollee/eviltransform/issues/44) for corrections. As of April 2018 these problems are not fixed.
-* [geoChina][] by caijun is a clear, concise implementation written in R. It features a much faster iterative method for precise conversion reproduced here.
+* [geoChina][] by caijun is a clear, concise implementation written in R. It features the iterative method from ChinaMapShift.
 * I am planning on moving some of the comments on the algorithm found in [my initial JavaScript implementation](https://zh.wikipedia.org/wiki/User:Artoria2e5/PRCoords.js) to the [GitHub Wiki](https://github.com/Artoria2e5/PRCoords/wiki). I don't think anyone is going to be interested in copying comments on these idiocy when translating my implementation to other languages.
 
 Oh, and finally, here is an official [news report](https://archive.fo/20110804185923/http://cxzy.people.com.cn/GB/196034/14908095.html) on that particular *\[bleep\]* who came up with GCJ-02.
