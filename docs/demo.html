@@ -247,6 +247,29 @@ function decToDms(dec, type) {
 	return [d, m, s, hemi]
 }
 
+// TODO refactor
+// link back to the referrer if we can recognize it
+var relink = function(lat, lon, ref) {
+  try {
+    var uref = new URL(ref)
+  } catch (e) {
+    return
+  }
+
+  if (uref.hostname == "tools.wmflabs.org" &&
+      uref.pathname.startsWith("/geohack")) {
+    var uparams = new URLSearchParams(uref.search.slice(1))
+    var uparam = uparams.get("params").split('_')
+    uparam[0] = Math.abs(lat)
+    uparam[1] = coordBack[(+lat < 0 ? '-' : '+') + 'lat']
+    uparam[2] = Math.abs(lon)
+    uparam[3] = coordBack[(+lon < 0 ? '-' : '+') + 'lon']
+    uparams.set("params", uparam.join('_'))
+    uref.search = uparams.toString()
+    return uref
+  }
+}
+
 // hooks
 var inputs = document.getElementById('inputc')
 function updFromDeg (ev) {
@@ -320,10 +343,19 @@ function fill_output() {
     lon: +inputs.lon.value,
   }
   console.log(incoords)
+
   var coordToHtml = function(c) {
     var lat = c.lat.toFixed(8)
     var lon = c.lon.toFixed(8)
-    var ret = '(' + lat + ', ' + lon + ')<br/>'
+    var ret = '(' + lat + ', ' + lon + ')'
+    var relinked = relink(lat, lon, document.referrer)
+    if (relinked) {
+      var a_boi = document.createElement("a")
+      a.innerText = ret
+      a.href = relinked
+      ret = a_boi.outerHTML
+    }
+    ret += '<br/>'
     
     var dms = decToDms(lat, 'lat')
     ret += dms[0] + '°' + dms[1] + '′' + dms[2] + '″&nbsp;' + dms[3] + ', '
