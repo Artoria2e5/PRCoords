@@ -351,8 +351,8 @@ function fill_output() {
     var relinked = relink(lat, lon, document.referrer)
     if (relinked) {
       var a_boi = document.createElement("a")
-      a.innerText = ret
-      a.href = relinked
+      a_boi.innerText = ret
+      a_boi.href = relinked
       ret = a_boi.outerHTML
     }
     ret += '<br/>'
