@@ -10,9 +10,8 @@ People's Rectified Coordinates (PRCoords) is a cross-language implementation of 
 Languages
 ---------
 
-- [x] JavaScript
+- [x] JavaScript ([npm](https://www.npmjs.com/package/prcoords))
   * Web demo: https://artoria2e5.github.io/PRCoords/demo ([JS Bin canary](http://jsbin.com/zonafut))
-  * [ ] Publish to NPM
 - [x] Python
 - [x] \(Obj-\)C/C++ (C structs)
   * [ ] Makefile with `install`

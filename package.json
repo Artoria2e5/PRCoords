@@ -1,8 +1,8 @@
 {
-    "name": "PRCoords",
+    "name": "prcoords",
     "version": "1.0.0",
     "description": "Chinese coordinate obfuscation methods (GCJ-02, BD-09) and inverses.",
-    "main": "PRcoords.js",
+    "main": "js/PRcoords.js",
     "//": "^Will this work with the repo?",
     "//": "^https://github.com/npm/npm/issues/2974",
     "repository": "github:Artoria2e5/PRCoords",
