@@ -68,5 +68,6 @@ function PRCoords.caijun(forward, reverse)
 end
 	
 function PRCoords.wgs_gcj(wlat, wlon)
+	local y, x = wlon - 105, wlat - 35
 	
 end
