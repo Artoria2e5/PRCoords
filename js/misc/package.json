@@ -2,7 +2,7 @@
     "name": "insane-in-china",
     "version": "0.0.1",
     "description": "Routine for deciding whether one coordiate might be affected by Chinese obfuscation.",
-    "main": "insane-is-in-china.js",
+    "main": "insane_is_in_china.js",
     "//": "^Will this work with the repo?",
     "//": "^https://github.com/npm/npm/issues/2974",
     "repository": "github:Artoria2e5/PRCoords",
