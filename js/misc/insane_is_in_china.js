@@ -164,4 +164,4 @@ if (typeof module === "object" && module.exports) {
 } else if (typeof window !== "undefined") {
 	window.PRCoords = exports
 }
-}()
+})()
