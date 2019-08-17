@@ -79,7 +79,7 @@ PRCoords prcoords_wgs_gcj(PRCoords wgs) {
     PRCOORDS_NUM magic = 1 - GCJ_EE * pow(sin(radLat), 2); // just a common expr
     
     // [[:en:Latitude#Length_of_a_degree_of_latitude]]
-    PRCOORDS_NUM lat_deg_arclen = (M_PI / 180) * (GCJ_A * (1 - GCJ_EE)) * pow(magic, 1.5);
+    PRCOORDS_NUM lat_deg_arclen = (M_PI / 180) * (GCJ_A * (1 - GCJ_EE)) / pow(magic, 1.5);
     // [[:en:Longitude#Length_of_a_degree_of_longitude]]
     PRCOORDS_NUM lon_deg_arclen = (M_PI / 180) * (GCJ_A * cos(radLat) / sqrt(magic));
     

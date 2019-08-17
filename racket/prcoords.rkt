@@ -107,7 +107,7 @@
          [rlat (degrees->radians (latlon-lat wgs))]
          ;; This type checker is unhappy with...
          [mm (cast (- 1 (* gcj-ee (sin rlat) (sin rlat))) Positive-Flonum)]
-         [arclat (exact->inexact (* (/ pi 180.) gcj-a (- 1 gcj-ee) (expt mm 1.5)))]
+         [arclat (exact->inexact (* (/ pi 180.) gcj-a (- 1 gcj-ee) (expt mm -1.5)))]
          [arclon (exact->inexact (* (/ pi 180.) gcj-a (cos rlat) (sqrt mm)))])
     (latlon
      (+ (latlon-lat wgs) (/ dlat arclat))

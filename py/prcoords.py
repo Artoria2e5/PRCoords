@@ -121,7 +121,7 @@ def wgs_gcj(wgs, check_china=True):
     magic = 1 - GCJ_EE * math.pow(math.sin(radLat), 2) # just a common expr
 
     # [[:en:Latitude#Length_of_a_degree_of_latitude]]
-    lat_deg_arclen = math.radians((GCJ_A * (1 - GCJ_EE)) * math.pow(magic, 1.5))
+    lat_deg_arclen = math.radians((GCJ_A * (1 - GCJ_EE)) / math.pow(magic, 1.5))
     # [[:en:Longitude#Length_of_a_degree_of_longitude]]
     lon_deg_arclen = math.radians(GCJ_A * math.cos(radLat) / math.sqrt(magic))
 

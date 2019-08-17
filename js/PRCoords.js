@@ -121,7 +121,7 @@ function wgs_gcj(wgs, checkChina = true) {
     var magic = 1 - GCJ_EE * Math.pow(Math.sin(radLat), 2) // just a common expr
     
     // [[:en:Latitude#Length_of_a_degree_of_latitude]]
-    var lat_deg_arclen = (Math.PI / 180) * (GCJ_A * (1 - GCJ_EE)) * Math.pow(magic, 1.5)
+    var lat_deg_arclen = (Math.PI / 180) * (GCJ_A * (1 - GCJ_EE)) / Math.pow(magic, 1.5)
     // [[:en:Longitude#Length_of_a_degree_of_longitude]]
     var lon_deg_arclen = (Math.PI / 180) * (GCJ_A * Math.cos(radLat) / Math.sqrt(magic))
     

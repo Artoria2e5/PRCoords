@@ -30,7 +30,7 @@ function [glat, glon] = wgs_gcj (wlat, wlon)
 
   % Arc lengths for one degree on the wrong ellipsoid
   magic = 1 - GCJ_EE .* (sind(wlat) .^ 2); % A common expression
-  arclen_1lat = pi / 180 .* (GCJ_A .* (1 - GCJ_EE)) .* magic .^ 1.5;
+  arclen_1lat = pi / 180 .* (GCJ_A .* (1 - GCJ_EE)) ./ magic .^ 1.5;
   arclen_1lon = pi / 180 .*  GCJ_A .* cosd(wlat) ./ magic .^ 0.5;
 
   % Pack deviations into degrees

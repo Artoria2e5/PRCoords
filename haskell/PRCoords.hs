@@ -19,7 +19,7 @@ module PRCoords where -- (wgsGcj, gcjBd, wgsBd, gcjWgs, bdGcj, bdWgsC, gcjWgsC, 
         gcj_a  = 6378245.0              -- <_ Krasovsky 1940
         gcj_ee = 0.00669342162296594323 -- f = 1/2983; e^2 = 2*f - f**2
         magic  = 1 - gcj_ee * ((sin (pi * lat / 180)) ** 2) -- common expr
-        arclenLat = (pi / 180) * (gcj_a * (1 - gcj_ee)) * (magic ** 1.5)
+        arclenLat = (pi / 180) * (gcj_a * (1 - gcj_ee)) / (magic ** 1.5)
         arclenLon = (pi / 180) * (gcj_a * (cos (pi * lat / 180)) / (sqrt magic))
         x = lon - 105 -- Here goes the deviation
         y = lat - 35

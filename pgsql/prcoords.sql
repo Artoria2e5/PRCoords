@@ -51,7 +51,7 @@ BEGIN
   radLat := radians(wgs[0]);
   magic := 1 - GCJ_EE * power(sin(radLat), 2);
 
-  lat_deg_arclen := radians((GCJ_A * (1 - GCJ_EE)) * power(magic, 1.5));
+  lat_deg_arclen := radians((GCJ_A * (1 - GCJ_EE)) / power(magic, 1.5));
   lon_deg_arclen = radians(GCJ_A * cos(radLat) / sqrt(magic));
 
   RETURN (wgs[0] + (dLat_m / lat_deg_arclen),
