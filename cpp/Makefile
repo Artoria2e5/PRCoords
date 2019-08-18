@@ -1,4 +1,4 @@
-CXXFLAGS += -O3 -funsafe-math-optimizations -std=c++0x -Wall -Wextra
+CXXFLAGS += -O3 -funsafe-math-optimizations -std=c++0x -Wall -Wextra -fvisibility=hidden -fvisibility-inlines-hidden
 
 # for clang's llvm bitcode: llvm-ar/llvm-ranlib
 CCAR ?= gcc-ar
