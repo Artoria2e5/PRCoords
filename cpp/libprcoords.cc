@@ -37,7 +37,7 @@ typedef PRCoords (*ptr_prcoords_conv)(PRCoords);
 /// Should we implement a 2-iter version?
 /// Just "wgs = wgs - (fwd(wgs) - bad);", repeated twice.
 template<ptr_prcoords_conv fwd, ptr_prcoords_conv rev>
-static PRCoords bored_reverse_conversion(PRCoords bad) {
+PRCOORDS_LOCAL static PRCoords bored_reverse_conversion(PRCoords bad) {
     PRCoords wgs = rev(bad);
     PRCoords diff{INFINITY, INFINITY};
     
