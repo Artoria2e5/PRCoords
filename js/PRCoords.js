@@ -1,13 +1,27 @@
-;(function(){
+;(function (factory, module, scope) {
+	"use strict"
+	var res = factory()
+	if (typeof module === 'object') {
+		module.exports = res
+	} else {
+		if (typeof define === 'function' && define.amd)
+			define('prcoords', function() { return res })
+		try {
+			// Global can be undefined
+			scope.PRCoords = res
+		} catch(e) {}
+    }
+})((function (){
 "use strict"
 // <nowiki>
 /**
- * People's Rectified [[T:Coord|Coordinates]]
+ * People's Rectified Coordinates
  * @file Utils for inserting valid WGS-84 coords from GCJ-02/BD-09 input
  * @author User:Artoria2e5
  * @url https://github.com/Artoria2e5/PRCoords
  * 
  * @see [[:en:GCJ-02]]
+ * @see https://en.wikipedia.org/wiki/User:Artoria2e5/coord-notice
  * @see https://github.com/caijun/geoChina (GPLv3)
  * @see https://github.com/googollee/eviltransform (MIT)
  * @see https://on4wp7.codeplex.com/SourceControl/changeset/view/21483#353936 (Anonymous)
@@ -86,10 +100,14 @@ function _coord_diff(a, b) {
 	}
 }
 
+function _stringify(c) {
+	return "(" + c.lat + ", " + c.lon + ")"
+}
+
 function wgs_gcj(wgs, checkChina = true) {
 	if (checkChina && !sanity_in_china_p(wgs)) {
-		console.warn(`Non-Chinese coords found, returning as-is: ` +
-					 `(${wgs.lat}, ${wgs.lon})`)
+		console.warn("Non-Chinese coords found, returning as-is: " +
+					 _stringify(wgs))
 		return wgs
 	}
 	
@@ -100,7 +118,7 @@ function wgs_gcj(wgs, checkChina = true) {
 	//
 	// In other words, you can pretty much figure out how much you will be off
 	// from WGS-84 just through evaulating them...
-	// 
+	//
 	// For example, at the (mapped) center of China (105E, 35N), you get a
 	// default deviation of <300, -100> meters.
 	var dLat_m = -100 + 2 * x + 3 * y + 0.2 * y * y + 0.1 * x * y +
@@ -214,10 +232,7 @@ var exports = {
 	bd_gcj_bored: __bored__(gcj_bd, bd_gcj),
 	bd_wgs_bored: __bored__(wgs_bd, bd_wgs),
 }
+Object.defineProperty(exports, '__esModule', { value: true })
 
-if (typeof module === "object" && module.exports) {
-	module.exports = exports
-} else if (typeof window !== "undefined") {
-	window.PRCoords = exports
-}
-})();
+return exports
+}) , module, typeof self !== 'undefined' ? self : this)

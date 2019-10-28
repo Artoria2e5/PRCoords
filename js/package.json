@@ -1,0 +1,25 @@
+{
+    "name": "prcoords",
+    "version": "1.0.3-rc1",
+    "description": "Chinese coordinate obfuscation methods (GCJ-02, BD-09) and inverses.",
+    "main": "PRCoords.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Artoria2e5/PRCoords.git",
+        "//directory": "js",
+        "//note": "I still want the docs packaged lmao.",
+    },
+    "keywords": [
+        "gcj",
+        "wgs",
+        "bd",
+        "baidu",
+        "coordinates"
+    ],
+    "author": "Mingye Wang (Artoria2e5) <arthur200126@gmail.com>",
+    "license": "CC0-1.0",
+    "bugs": {
+        "url": "https://github.com/Artoria2e5/PRCoords/issues"
+    },
+    "dependencies": {}
+}

@@ -3,9 +3,11 @@
     "version": "0.0.1",
     "description": "Routine for deciding whether one coordiate might be affected by Chinese obfuscation.",
     "main": "insane_is_in_china.js",
-    "//": "^Will this work with the repo?",
-    "//": "^https://github.com/npm/npm/issues/2974",
-    "repository": "github:Artoria2e5/PRCoords",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Artoria2e5/PRCoords.git",
+        "directory": "js/misc"
+    },
     "keywords": [
         "gcj", "wgs", "bd", "baidu", "coordinates", "pnpoly"
     ],
