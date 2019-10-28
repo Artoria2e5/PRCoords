@@ -235,4 +235,4 @@ var exports = {
 Object.defineProperty(exports, '__esModule', { value: true })
 
 return exports
-}) , module, typeof self !== 'undefined' ? self : this)
+}) , typeof module === undefined || module, typeof self !== 'undefined' ? self : this)
