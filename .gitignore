@@ -4,3 +4,4 @@ cpp/*.a
 cpp/*.dll
 cpp/*.so
 cpp/*.o
+node_modules

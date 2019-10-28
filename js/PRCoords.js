@@ -1,4 +1,4 @@
-;(function (factory, module, scope) {
+;(function (factory, scope) {
 	"use strict"
 	var res = factory()
 	if (typeof module === 'object') {
@@ -104,8 +104,8 @@ function _stringify(c) {
 	return "(" + c.lat + ", " + c.lon + ")"
 }
 
-function wgs_gcj(wgs, checkChina = true) {
-	if (checkChina && !sanity_in_china_p(wgs)) {
+function wgs_gcj(wgs, checkChina) {
+	if ((checkChina === undefined || checkChina) && !sanity_in_china_p(wgs)) {
 		console.warn("Non-Chinese coords found, returning as-is: " +
 					 _stringify(wgs))
 		return wgs
@@ -152,14 +152,14 @@ function wgs_gcj(wgs, checkChina = true) {
 }
 
 // rev_transform_rough; accuracy ~2e-6 deg (meter-level)
-function gcj_wgs(gcj, checkChina = true) {
+function gcj_wgs(gcj, checkChina) {
 	return _coord_diff(gcj, _coord_diff(wgs_gcj(gcj, checkChina), gcj))
 }
 
-function gcj_bd(gcj, __dummy__ = false) {
+function gcj_bd(gcj, __dummy__) {
 	var x = gcj.lon
 	var y = gcj.lat
-	
+
 	// trivia: pycoordtrans actually describes how these values are calculated
 	var r = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * Math.PI * 3000 / 180)
 	var θ = Math.atan2(y, x) + 0.000003 * Math.cos(x * Math.PI * 3000 / 180)
@@ -173,7 +173,7 @@ function gcj_bd(gcj, __dummy__ = false) {
 
 // Yes, we can implement a "precise" one too.
 // accuracy ~1e-7 deg (decimeter-level; exceeds usual data accuracy)
-function bd_gcj(bd, __dummy__ = false) {
+function bd_gcj(bd, __dummy__) {
 	var x = bd.lon - BD_DLON
 	var y = bd.lat - BD_DLAT
 	
@@ -187,21 +187,22 @@ function bd_gcj(bd, __dummy__ = false) {
 	}
 }
 
-function bd_wgs(bd, checkChina = true) {
+function bd_wgs(bd, checkChina) {
 	return gcj_wgs(bd_gcj(bd), checkChina)
 }
 
-function wgs_bd(bd, checkChina = true) {
+function wgs_bd(bd, checkChina) {
 	return gcj_bd(wgs_gcj(bd, checkChina))
 }
 
 // generic "bored function" factory, Caijun 2014
 // gcj: 4 calls to wgs_gcj; ~0.1mm acc
 function __bored__(fwd, rev) {
-	return function rev_bored(heck, checkChina = true) {
+	return function rev_bored(heck, checkChina) {
+		if (checkChina === undefined) checkChina = true
 		var curr = rev(heck, checkChina)
 		var diff = {lat: Infinity, lon: Infinity}
-		
+
 		// Wait till we hit fixed point or get bored
 		var i = 0
 		while (Math.max(Math.abs(diff.lat), Math.abs(diff.lon)) > PRC_EPS && i++ < 10) {
@@ -232,7 +233,9 @@ var exports = {
 	bd_gcj_bored: __bored__(gcj_bd, bd_gcj),
 	bd_wgs_bored: __bored__(wgs_bd, bd_wgs),
 }
+// We can stub this out too if we are aiming for ES3, but then there are no
+// trailing commas
 Object.defineProperty(exports, '__esModule', { value: true })
 
 return exports
-}) , typeof module === undefined || module, typeof self !== 'undefined' ? self : this)
+}), typeof self !== 'undefined' ? self : typeof this !== undefined ? this : globalThis)

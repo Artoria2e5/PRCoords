@@ -12,8 +12,9 @@ Languages
 
 - [x] JavaScript ([`npm install prcoords`](https://www.npmjs.com/package/prcoords)) [![](https://data.jsdelivr.com/v1/package/npm/prcoords/badge)](https://www.jsdelivr.com/package/npm/prcoords)
   * Web demo: https://artoria2e5.github.io/PRCoords/demo
+  * Now with AMD support and faux `__esModule` interop for Babel and TypeScript!
 - [x] Python ([`pip install prcoords`](https://pypi.org/project/prcoords/))
-- [x] \(Obj-\)C/C++ (C structs)
+- [x] \(Obj-\)C/C++ (C ABI)
   * [ ] Makefile with `install`
 - [ ] Ruby
 - [ ] Swift
