@@ -6,8 +6,8 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/Artoria2e5/PRCoords.git",
-        "//directory": "js",
-        "//note": "I still want the docs packaged lmao.",
+        "directory": "js",
+        "//note": "Unused before I figure out what to do with docs and readme."
     },
     "keywords": [
         "gcj",
