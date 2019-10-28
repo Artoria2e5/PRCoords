@@ -1,1 +1,6 @@
 py/*/
+cpp/*.exe
+cpp/*.a
+cpp/*.dll
+cpp/*.so
+cpp/*.o
