@@ -1,13 +1,17 @@
 CXXFLAGS += -O3 -funsafe-math-optimizations -std=c++0x -Wall -Wextra -fvisibility=hidden -fvisibility-inlines-hidden
 
-AR ?= ar
-DLLTOOL ?= dlltool
+# "Cross compile" shite. In other words MinGW.
+# TARGET is Triplet PLUS THE HYPHEN!
+CC = $(TARGET)gcc
+CXX = $(TARGET)g++
+AR ?= $(TARGET)ar
+DLLTOOL ?= $(TARGET)dlltool
 
 # for clang's llvm bitcode: CCAR=llvm-ar
 CCAR ?= gcc-ar
 
 # Override when using CYGWIN: make [target] LIB=cyg SO=dll
-# Override when using MinGW: make [target] LIB='' SO=dll
+# Override when using MinGW: make [target] LIB='' SO=dll TARGET=x86_64-w64-mingw32-
 LIB ?= lib
 SO ?= so
 
@@ -30,6 +34,7 @@ LIBFLAGS ?= /machine:x64
 
 all: libprcoords.a $(LIB)prcoords.$(SO) demo
 prec_sample: demo demof demold
+windows: all $(LIB)prcoords.lib
 
 # We assume that your copy of "ar" supports the "s" option,
 # which does some ranlib work itself.
@@ -72,4 +77,4 @@ demoso: demo.cpp $(LIB)prcoords.$(SO)
 .PHONY: clean help
 
 clean:
-	rm -f demo demof demold demo.exe demof.exe demold.exe libprcoords.o libprcoords.a $(LIB)prcoords.$(SO) libprcoords-lto.o libprcoords-lto.a
+	$(RM) demo demof demold *.exe *.a *.o *.def *.dll *.obj *.lib *.exp *.obj
