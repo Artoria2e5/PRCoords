@@ -7,6 +7,7 @@ DLLTOOL ?= dlltool
 CCAR ?= gcc-ar
 
 # Override when using CYGWIN: make [target] LIB=cyg SO=dll
+# Override when using MinGW: make [target] LIB='' SO=dll
 LIB ?= lib
 SO ?= so
 
@@ -18,6 +19,11 @@ SO ?= so
 # Mingw-W64 has a genlib.exe for those who dare to try. It generates MSVC-style
 # __IMPORT_DESCRIPTOR_%s. Or maybe the ld -Wl,--out-implib will work with MSVC
 # too with __imp symbols only, who knows.
+#
+# Note that this is only meaningful for MinGW output: Cygwin/MSYS builds have
+# dependency for cygwin1.dll, which triggers address-clashes with MSVC's libs.
+#
+# cl /Fe:demo-cl.exe demo.cpp prcoords.lib
 LIBEXE ?= LIB.exe
 # Or /machine:x86.
 LIBFLAGS ?= /machine:x64

@@ -4,6 +4,7 @@ cpp/*.a
 cpp/*.dll
 cpp/*.so
 cpp/*.o
+cpp/*.obj
 cpp/*.def
 cpp/*.lib
 cpp/*.exp
