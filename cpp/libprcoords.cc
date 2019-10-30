@@ -30,13 +30,13 @@ const static PRCOORDS_NUM BD_DLON = 0.0065;
 /// @const
 const static PRCOORDS_NUM PRCOORDS_EPS = 1e-5;
 
-typedef PRCoords (*ptr_prcoords_conv)(PRCoords);
+typedef PRCoords (*PRCOp)(PRCoords);
 /// These conversions are for bored people: too accurate to be useful
 /// given pseudo-random noises added to GCJ.
 ///
 /// Should we implement a 2-iter version?
 /// Just "wgs = wgs - (fwd(wgs) - bad);", repeated twice.
-template<ptr_prcoords_conv fwd, ptr_prcoords_conv rev>
+template<PRCOp fwd, PRCOp rev>
 PRCOORDS_LOCAL static PRCoords bored_reverse_conversion(PRCoords bad) {
     PRCoords wgs = rev(bad);
     PRCoords diff{INFINITY, INFINITY};
@@ -62,13 +62,13 @@ PRCoords prcoords_wgs_gcj(PRCoords wgs) {
 	// For example, at the (mapped) center of China (105E, 35N), you get a
 	// default deviation of <300, -100> meters.
 	PRCOORDS_NUM dLat_m = -100 + 2 * x + 3 * y + 0.2 * y * y + 0.1 * x * y +
-		0.2 * sqrt(abs(x)) + (
+		0.2 * sqrt(fabs(x)) + (
 	        2 * sin(x * 6 * M_PI) + 2 * sin(x * 2 * M_PI) +
 	        2 * sin(y * M_PI) + 4 * sin(y / 3 * M_PI) +
 	        16 * sin(y / 12 * M_PI) + 32 * sin(y / 30 * M_PI)
         ) * 20 / 3;
 	PRCOORDS_NUM dLon_m = 300 + x + 2 * y + 0.1 * x * x + 0.1 * x * y +
-		0.1 * sqrt(abs(x)) + (
+		0.1 * sqrt(fabs(x)) + (
         	2 * sin(x * 6 * M_PI) + 2 * sin(x * 2 * M_PI) +
 	        2 * sin(x * M_PI) + 4 * sin(x / 3 * M_PI) +
 	        15 * sin(x / 12 * M_PI) + 30 * sin(x / 30 * M_PI)
@@ -86,8 +86,8 @@ PRCoords prcoords_wgs_gcj(PRCoords wgs) {
     // The screwers pack their deviations into degrees and disappear.
     // Note how they are mixing WGS-84 and Krasovsky 1940 ellipsoids here...
     return PRCoords{
-    	wgs.lat + (dLat_m / lat_deg_arclen),
-    	wgs.lon + (dLon_m / lon_deg_arclen)
+    	.lat = wgs.lat + (dLat_m / lat_deg_arclen),
+    	.lon = wgs.lon + (dLon_m / lon_deg_arclen),
     };
 }
 
@@ -105,8 +105,8 @@ PRCoords prcoords_gcj_bd(PRCoords gcj) {
 	
 	// Hard-coded default deviations again!
 	return PRCoords{
-		lat: r * sin(t) + BD_DLAT,
-		lon: r * cos(t) + BD_DLON
+		.lat = r * sin(t) + BD_DLAT,
+		.lon = r * cos(t) + BD_DLON,
 	};
 }
 
@@ -118,8 +118,8 @@ PRCoords prcoords_bd_gcj(PRCoords bd) {
 	PRCOORDS_NUM t = atan2(y, x) - 0.000003 * cos(x * M_PI * 3000 / 180);
 	
 	return PRCoords{
-		lat: r * sin(t),
-		lon: r * cos(t)
+		.lat = r * sin(t),
+		.lon = r * cos(t),
 	};
 }
 
