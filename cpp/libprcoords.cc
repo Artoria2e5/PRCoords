@@ -86,8 +86,8 @@ PRCoords prcoords_wgs_gcj(PRCoords wgs) {
     // The screwers pack their deviations into degrees and disappear.
     // Note how they are mixing WGS-84 and Krasovsky 1940 ellipsoids here...
     return PRCoords{
-    	.lat = wgs.lat + (dLat_m / lat_deg_arclen),
-    	.lon = wgs.lon + (dLon_m / lon_deg_arclen),
+    	wgs.lat + (dLat_m / lat_deg_arclen),
+    	wgs.lon + (dLon_m / lon_deg_arclen),
     };
 }
 
@@ -105,8 +105,8 @@ PRCoords prcoords_gcj_bd(PRCoords gcj) {
 	
 	// Hard-coded default deviations again!
 	return PRCoords{
-		.lat = r * sin(t) + BD_DLAT,
-		.lon = r * cos(t) + BD_DLON,
+		r * sin(t) + BD_DLAT,
+		r * cos(t) + BD_DLON,
 	};
 }
 
@@ -118,8 +118,8 @@ PRCoords prcoords_bd_gcj(PRCoords bd) {
 	PRCOORDS_NUM t = atan2(y, x) - 0.000003 * cos(x * M_PI * 3000 / 180);
 	
 	return PRCoords{
-		.lat = r * sin(t),
-		.lon = r * cos(t),
+		r * sin(t),
+		r * cos(t),
 	};
 }
 
