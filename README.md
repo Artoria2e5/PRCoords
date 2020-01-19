@@ -116,7 +116,7 @@ See also
   * Since June 2016, eviltransform contains numerous parameter errors that compromise its output, especially for BD-09. See googollee/eviltransform[#43](https://github.com/googollee/eviltransform/issues/43), [#53](https://github.com/googollee/eviltransform/pull/53) and [#44](https://github.com/googollee/eviltransform/issues/44) for corrections. As of June 2019 these problems are not fixed.
 * [geoChina][] by caijun is a clear, concise implementation written in R. It features the iterative method from ChinaMapShift.
 * I am planning on moving some of the comments on the algorithm found in [my initial JavaScript implementation](https://zh.wikipedia.org/wiki/User:Artoria2e5/PRCoords.js) to the [GitHub Wiki](https://github.com/Artoria2e5/PRCoords/wiki). I don't think anyone is going to be interested in copying comments on these idiocy when translating my implementation to other languages.
-** If you are doing a translation, consider only using the comments from the PDF.
+  * If you are doing a translation, consider only using the comments from the PDF.
 
 Oh, and finally, here is an official [news report](https://archive.fo/20110804185923/http://cxzy.people.com.cn/GB/196034/14908095.html) on that particular *\[bleep\]* who came up with GCJ-02.
 
