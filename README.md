@@ -92,6 +92,41 @@ a `PROJCS`. Since a `PROJCS` cannot be nested in another, the BD
 transformation must be described using WGS84 and a fuzed GCJ-BD projection.
 The situation is similar with Baidu "Meractor".
 
+<details>
+<summary>Speculative WKT/PROJ4</summary>
+
+```js
+PROJCS["Baidu 2009, Pseudo-Mercator",
+    GEOGCS["WGS 84",
+        DATUM["WGS_1984",
+            SPHEROID["WGS 84",6378137,298.257223563,
+                AUTHORITY["EPSG","7030"]],
+            AUTHORITY["EPSG","6326"]],
+        PRIMEM["Greenwich",0,
+            AUTHORITY["EPSG","8901"]],
+        UNIT["degree",0.0174532925199433,
+            AUTHORITY["EPSG","9122"]],
+        AUTHORITY["EPSG","4326"]],
+    PROJECTION["CN_Obfs_Baidu_2009_Mercator"],
+    AXIS["x",east],
+    AXIS["y",north],
+    UNIT["metre",1,
+      AUTHORITY["EPSG","9001"]],
+    EXTENSION["PROJ4","+proj=baidumerc +units=m +nadgrids=@null +wktext +no_defs"],
+    AUTHORITY["EPSG","888002"]]
+
+PROJCS["Chinese BSM 2002, Pseudo-Ellipsoidal",
+    GEOGCS["WGS 84", AUTHORITY["EPSG","4326"]],
+    PROJECTION["CN_Obfs_GCJ_2002_Ellipsoidal"],
+    AXIS["longitude",east],
+    AXIS["latitude",north],
+    UNIT["degree",0.0174532925199433,
+      AUTHORITY["EPSG","9122"]],
+    EXTENSION["PROJ4","+proj=gcjlonglat +units=deg +nadgrids=@null +wktext +no_defs"],
+    AUTHORITY["EPSG","888000"]]
+```
+</details>
+
 Physical PRCoords
 -----------------
 
