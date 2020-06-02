@@ -73,12 +73,23 @@ It is basically a ray-casting polygon check with 70 vertices. You, as the
 caller, should still be responsible for telling whether a point is part of the
 gov-screwed Chinese data.
 
-Why another wheel?
-------------------
+FAQ
+---
+
+### Why another wheel?
 
 * Public Domain
 * Clean API based on pairs of coordinates
 * Need to find a place for this sarcastic name
+
+### Can the systems be described as WKT or proj-strings?
+
+Not directly as a datum, because in both representations a datum is either
+"sane" (no non-linearity in 3D, Helmert possible) or a big table of grids.
+
+It should be possible to describe the two CS with a `PROJECTION` entry as
+a `PROJCS`. Since a `PROJCS` cannot be nested in another, the BD
+transformation must be described using WGS84 and a fuzed GCJ-BD projection.
 
 Physical PRCoords
 -----------------
