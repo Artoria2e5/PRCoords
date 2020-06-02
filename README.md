@@ -90,6 +90,7 @@ Not directly as a datum, because in both representations a datum is either
 It should be possible to describe the two CS with a `PROJECTION` entry as
 a `PROJCS`. Since a `PROJCS` cannot be nested in another, the BD
 transformation must be described using WGS84 and a fuzed GCJ-BD projection.
+The situation is similar with Baidu "Meractor".
 
 Physical PRCoords
 -----------------
