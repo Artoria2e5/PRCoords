@@ -5,6 +5,7 @@
 #define PRCOORDS_H
 
 /** May be changed to "long double" for bored folks
+  * (need an "L" suffix on literals for the seriously bored)
   * "float" is not recommended
   */
 #ifndef PRCOORDS_NUM
