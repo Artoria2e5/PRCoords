@@ -131,6 +131,8 @@ PROJCS["Chinese BSM 2002, Pseudo-Ellipsoidal",
 
 Yes. Nobody knows what the original looks like anyways, so what's wrong with letting the compiler recombine a bit more?
 
+Or tinker with 32-bit floats and fixed-point numbers. Or try approximation tools like [Sollya](http://sollya.gforge.inria.fr/) or [MC++](https://omega-icl.github.io/mcpp/). Really, just search on the Internet for "<language> Taylor Chebyshev Model". You only need less than 1e-6 error on a [not-very-large slice](https://github.com/Artoria2e5/PRCoords/blob/a3a8bb8/js/PRCoords.js#L91) of the Earth anyways.
+
 Physical PRCoords
 -----------------
 
