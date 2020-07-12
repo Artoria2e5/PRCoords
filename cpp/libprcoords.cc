@@ -5,10 +5,34 @@
 #include "prcoords.h"
 #include <cmath>
 #include <functional>
+#include <cassert>
 
 #ifndef M_PI
-#define M_PI ((PRCOORDS_NUM)(3.14159265358979323846L))
+#define M_PI ((PRCOORDS_NUM) (3.14159265358979323846L))
 #endif
+
+// Assume
+#ifndef __has_builtin
+# define __has_builtin(x) 0
+#endif
+
+#ifndef NDEBUG
+#define assume(R) assert(R)
+#elif __has_builtin(__builtin_assume)
+#define assume(R) __builtin_assume(R)
+#elif __has_builtin(__builtin_unreachable)
+#define assume(R) ((R) ? (void) 0 : __builtin_unreachable ())
+#elif 1200 <= _MSC_VER
+#define assume(R) __assume(R)
+#else
+#define assume(R) ((void) 0)
+#endif
+
+#define assume_angle(x, a) assume(x >= -a && x <= a)
+#define assume_coord(c) do { \
+	assume_angle(c.lat, 90); \
+	assume_angle(c.lon, 180);\
+} while(0)
 
 // enforces PRCOORDS_NUM
 using std::sin;
@@ -38,6 +62,7 @@ typedef PRCoords (*PRCOp)(PRCoords);
 /// Just "wgs = wgs - (fwd(wgs) - bad);", repeated twice.
 template<PRCOp fwd, PRCOp rev>
 PRCOORDS_LOCAL static PRCoords bored_reverse_conversion(PRCoords bad) {
+	assume_coord(bad);
     PRCoords wgs = rev(bad);
     PRCoords diff{INFINITY, INFINITY};
     
@@ -51,8 +76,9 @@ PRCOORDS_LOCAL static PRCoords bored_reverse_conversion(PRCoords bad) {
 
 extern "C" {
 PRCoords prcoords_wgs_gcj(PRCoords wgs) {
+	assume_coord(wgs);
 	PRCOORDS_NUM x = wgs.lon - 105, y = wgs.lat - 35;
-	
+
 	// These distortion functions accept (x = lon - 105, y = lat - 35).
 	// They return distortions in terms of arc lengths, in meters.
 	//
@@ -92,10 +118,12 @@ PRCoords prcoords_wgs_gcj(PRCoords wgs) {
 }
 
 PRCoords prcoords_gcj_wgs(PRCoords gcj) {
+	assume_coord(gcj);
     return gcj - (prcoords_wgs_gcj(gcj) - gcj);
 }
 
 PRCoords prcoords_gcj_bd(PRCoords gcj) {
+	assume_coord(gcj);
 	PRCOORDS_NUM x = gcj.lon;
 	PRCOORDS_NUM y = gcj.lat;
 	
@@ -111,6 +139,7 @@ PRCoords prcoords_gcj_bd(PRCoords gcj) {
 }
 
 PRCoords prcoords_bd_gcj(PRCoords bd) {
+	assume_coord(bd);
 	PRCOORDS_NUM x = bd.lon - BD_DLON;
 	PRCOORDS_NUM y = bd.lat - BD_DLAT;
 	
