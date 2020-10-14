@@ -172,6 +172,7 @@ See also
 * [geoChina][] by caijun is a clear, concise implementation written in R. It features the iterative method from ChinaMapShift.
 * I am planning on moving some of the comments on the algorithm found in [my initial JavaScript implementation](https://zh.wikipedia.org/wiki/User:Artoria2e5/PRCoords.js) to the [GitHub Wiki](https://github.com/Artoria2e5/PRCoords/wiki). I don't think anyone is going to be interested in copying comments on these idiocy when translating my implementation to other languages.
   * If you are doing a translation, consider only using the comments from the PDF.
+* [Ishisashi's writeup](https://chaoli.club/index.php/4777/0) on this subject. They wrote a super enhanced version of the demo too.
 
 Oh, and finally, here is an official [news report](https://archive.fo/20110804185923/http://cxzy.people.com.cn/GB/196034/14908095.html) on that particular *\[bleep\]* who came up with GCJ-02.
 
