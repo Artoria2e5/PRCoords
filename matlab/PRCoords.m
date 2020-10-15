@@ -90,7 +90,7 @@ function fun = caijun_precise (fwd, rev, eps, maxn)
     % Hmm. If something falls behind, we all go for another iter.
     % Can't we just execute these failing outliers and use an average for eps?
     for i = 1:maxn
-      if (max(max(abs(clat - olat)), max(abs(clon - olon))) < eps)
+      if (max(max(abs(clat - olat)), max(abs(clon - olon))) <= eps)
         break;
       end
       % prev = curr
