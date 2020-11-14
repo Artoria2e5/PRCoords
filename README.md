@@ -127,7 +127,7 @@ PROJCS["Chinese BSM 2002, Pseudo-Ellipsoidal",
 ```
 </details>
 
-The good people at proj4js has made their stuff very easy to extend. Here is [an example](https://runkit.com/artoria2e5/proj4-plugin-prcoords).
+The good people at proj4js has made their stuff [very easy to extend](https://github.com/proj4js/proj4js/issues/358). Here is [an example](https://runkit.com/artoria2e5/proj4-plugin-prcoords).
 
 ### Should I use fast fp math?
 
