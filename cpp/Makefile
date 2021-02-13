@@ -81,8 +81,10 @@ demoso: demo.cpp $(LIB)prcoords.$(SO)
 .PHONY: clean help install uninstall
 
 install: all
-	install -D -s demoso -- $(DESTDIR)$(PREFIX)/bin/prcoords-demo
-	install -D -m 644 -- libprcoords.a $(LIB)prcoords.$(SO) $(DESTDIR)$(PREFIX)/lib
+	mkdir -p $(DESTDIR)$(PREFIX)/bin/prcoords-demo
+	install -s demoso -- $(DESTDIR)$(PREFIX)/bin/prcoords-demo
+	mkdir -p $(DESTDIR)$(PREFIX)/lib
+	install -m 644 -- libprcoords.a $(LIB)prcoords.$(SO) $(DESTDIR)$(PREFIX)/lib
 
 uninstall:
 	rm -f -- $(DESTDIR)$(PREFIX)/bin/prcoords-demo $(DESTDIR)$(PREFIX)/lib/libprcoords.a $(DESTDIR)$(PREFIX)/lib/$(LIB)prcoords.$(SO)
