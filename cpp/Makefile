@@ -15,6 +15,10 @@ CCAR ?= gcc-ar
 LIB ?= lib
 SO ?= so
 
+# Installation
+DESTDIR ?= 
+PREFIX ?= /usr/local
+
 # Path to the Microsoft Library Manager (LIB.exe)
 # Available from https://aka.ms/buildtools
 # Tends to be buried deep, e.g. C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64
@@ -32,7 +36,7 @@ LIBEXE ?= LIB.exe
 # Or /machine:x86.
 LIBFLAGS ?= /machine:x64
 
-all: libprcoords.a $(LIB)prcoords.$(SO) demo
+all: libprcoords.a $(LIB)prcoords.$(SO) demoso
 prec_sample: demo demof demold
 windows: all $(LIB)prcoords.lib
 
@@ -74,7 +78,11 @@ demold: demo.cpp
 demoso: demo.cpp $(LIB)prcoords.$(SO)
 	$(CXX) $(CXXFLAGS) -L. -l:$(LIB)prcoords.$(SO) -o demoso demo.cpp
 
-.PHONY: clean help
+.PHONY: clean help install
+
+install: all
+	install -D -s demoso -- $(DESTDIR)$(PREFIX)/bin/prcoords-demo
+	install -D -T $(DESTDIR)$(PREFIX)/lib -m 644 -- libprcoords.a $(LIB)prcoords.$(SO) 
 
 clean:
 	$(RM) demo demof demold *.exe *.a *.o *.def *.dll *.obj *.lib *.exp *.obj
