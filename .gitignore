@@ -9,3 +9,4 @@ cpp/*.def
 cpp/*.lib
 cpp/*.exp
 node_modules
+julia/.vscode/settings.json
