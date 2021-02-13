@@ -78,11 +78,14 @@ demold: demo.cpp
 demoso: demo.cpp $(LIB)prcoords.$(SO)
 	$(CXX) $(CXXFLAGS) -L. -l:$(LIB)prcoords.$(SO) -o demoso demo.cpp
 
-.PHONY: clean help install
+.PHONY: clean help install uninstall
 
 install: all
 	install -D -s demoso -- $(DESTDIR)$(PREFIX)/bin/prcoords-demo
-	install -D -T $(DESTDIR)$(PREFIX)/lib -m 644 -- libprcoords.a $(LIB)prcoords.$(SO) 
+	install -D -m 644 -- libprcoords.a $(LIB)prcoords.$(SO) $(DESTDIR)$(PREFIX)/lib
+
+uninstall:
+	rm -f -- $(DESTDIR)$(PREFIX)/bin/prcoords-demo $(DESTDIR)$(PREFIX)/lib/libprcoords.a $(DESTDIR)$(PREFIX)/lib/$(LIB)prcoords.$(SO)
 
 clean:
 	$(RM) demo demof demold *.exe *.a *.o *.def *.dll *.obj *.lib *.exp *.obj

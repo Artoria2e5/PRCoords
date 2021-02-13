@@ -15,7 +15,7 @@ Languages
   * Now with AMD support and faux `__esModule` interop for Babel and TypeScript!
 - [x] Python ([`pip install prcoords`](https://pypi.org/project/prcoords/))
 - [x] \(Obj-\)C/C++ (C ABI)
-  * [ ] Makefile with `install`
+  * [x] Makefile with `install`
 - [ ] Ruby
 - [ ] Swift
 - [ ] C#
