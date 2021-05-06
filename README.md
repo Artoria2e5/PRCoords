@@ -3,6 +3,8 @@ PRCoords
 
 People's Rectified Coordinates (PRCoords) is a cross-language implementation of "public secret" Chinese coordinate obfuscation methods including GCJ-02 and BD-09, along with general deobfuscation methods previously established in [ChinaMapShift][], [eviltransform][], and [geoChina][]. (Referring to the process of replacing straight lines with wavy ones as a "transform" is euphemism overdone.)
 
+For a background on China's geographic obfuscation, see [Restrictions on geographic data in China](https://en.wikipedia.org/wiki/Restrictions_on_geographic_data_in_China#Coordinate_systems) and [中华人民共和国测绘限制](https://zh.wikipedia.org/wiki/中华人民共和国测绘限制) on Wikipedia.
+
 [ChinaMapShift]: https://gist.github.com/anonymous/e7c6f67555099180ce1ae8da4ba2c513
 [geoChina]: https://github.com/caijun/geoChina/blob/master/R/cst.R
 [eviltransform]: https://github.com/googollee/eviltransform
@@ -167,8 +169,6 @@ Sources
 See also
 --------
 
-* [Restrictions on geographic data in China](https://en.wikipedia.org/wiki/Restrictions_on_geographic_data_in_China#Coordinate_systems): this Wikipedia article outlines impacts and the "common secret" deobfuscation approach.
-  * Chinese readers: see [中华人民共和国测绘限制](https://zh.wikipedia.org/wiki/中华人民共和国测绘限制).
 * [eviltransform][] is among the most popular cross-language soltions to the problem. It borrows its name directly from [EvilTransform.cs](https://github.com/Leask/EvilTransform/blob/master/EvilTransform.cs), an early refactored version of a raw-flesh Java implementation found in "[emq](https://code.google.com/archive/p/emq/)", some sort of government contractor GIS demo project.
   * Since June 2016, eviltransform contains numerous parameter errors that compromise its output, especially for BD-09. See googollee/eviltransform[#43](https://github.com/googollee/eviltransform/issues/43), [#53](https://github.com/googollee/eviltransform/pull/53) and [#44](https://github.com/googollee/eviltransform/issues/44) for corrections. As of June 2019 these problems are not fixed.
 * [geoChina][] by caijun is a clear, concise implementation written in R. It features the iterative method from ChinaMapShift.
