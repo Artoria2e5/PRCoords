@@ -9,6 +9,7 @@ Snapshot from http://jsbin.com/zonafut/37/edit
   <meta name="author" content="Mingye Wang">
   <meta name="description" content="A Public Domain GCJ-02/BD-09 to WGS-84 Deobfscator (not eviltransform, but PRCoords)">
   <link href="https://Artoria2e5.github.io/PRCoords/Globe%2C_distorted_China.svg" type="image/svg+xml" rel="icon">
+  <link rel="schema.DCTERMS" href="http://purl.org/dc/terms/">
   <title>People Rectify Coordinates</title>
 <style id="jsbin-css">
 body {
@@ -104,7 +105,7 @@ tbody td:nth-child(n+2) {
   <a href="https://commons.wikimedia.org/wiki/File:Globe,_distorted_China.svg">
   <img class="logo" src="https://Artoria2e5.github.io/PRCoords/Globe%2C_distorted_China.svg" width="100" height="100" alt="logo: China? Where?"></a>
   <article>
-    <article><section>
+    <section>
       <h2>Input</h2>
       <form id="inputc" onsubmit="return false"><!-- also make edge happy -->
         <ul>
@@ -125,7 +126,7 @@ tbody td:nth-child(n+2) {
         <button onclick="return fill_output() && false">Screw that!</button>
       </form>
       <script src="https://cdn.jsdelivr.net/npm/prcoords@1//js/PRCoords.min.js" onerror="this.src='../js/PRCoords.js'"></script>
-      
+
       <h2>Results</h2>
       <table id="output">
         <tr>
@@ -144,7 +145,7 @@ tbody td:nth-child(n+2) {
         <tr id="bcgcj"><td>BD →<sup>cai</sup> GCJ<td><td><td>
       </table>
       <p><a id="permalink" href="https://artoria2e5.github.io/PRCoords/demo">Permalink to this result</a>. Toggle sections: <a href="javascript:toggle('notes')">Notes</a>, <a href="javascript:toggle('faq')">FAQ</a>, <a href="javascript:toggle('footer')">footer</a>.
-    </section></article>
+    </section>
     <section id="notes">
       <h2>Notes</h2>
       <ol>
@@ -161,6 +162,7 @@ tbody td:nth-child(n+2) {
                 BD-09&nbsp;∘&nbsp;GCJ-02 chained distortions.
             <li>Coordinates in Russia, outside of the sanity check rectangle, uses WGS-84 or and/or friends.
             <li>TODO: check along the boundary.
+            </ul>
       </ol>
     </section>
     <section id="faq">
@@ -186,26 +188,27 @@ tbody td:nth-child(n+2) {
         <dt id="caijun">How does Caijun’s iterative method work?</dt>
         <dd>Cai has explained the method in full in his
             <a href="https://github.com/caijun/geoChina/blob/5c6284b/R/cst.R#L101-L107"> R implementation</a>. Go read it, or read Wikipedia.
+      </dl>
     </section>
   </article>
   <footer id="footer">
     <hr>
     Powered by <a href="https://github.com/Artoria2e5/PRCoords">PRCoords</a>. Try playing with <code>window.PRCoords</code> in your console!
 
-    <p xmlns:dct="http://purl.org/dc/terms/" xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#">
+    <p>
       <a rel="license"
         href="http://creativecommons.org/publicdomain/zero/1.0/">
         <img src="https://licensebuttons.net/p/zero/1.0/88x31.png" style="border-style: none;" alt="CC0"></a>
         <br>
         To the extent possible under law,
-      <a rel="dct:publisher"
+      <a rel="DCTERMS.publisher"
         href="https://zh.wikipedia.org/wiki/User:Artoria2e5">
-        <span property="dct:title">Mingye Wang</span></a>
+        <span property="DCTERMS.title">Mingye Wang</span></a>
       has waived all copyright and related or neighboring rights to
-      <span property="dct:title">People Rectify Coordinates</span>.
+      <span property="DCTERMS.title">People Rectify Coordinates</span>.
       This work is published from:
-      <span property="vcard:Country" datatype="dct:ISO3166"
-          content="US" about="http://jsbin.com/zonafut">
+      <span property="geo.country"
+          content="US" about="https://artoria2e5.github.io/PRCoords/demo">
       United States</span>.</p>
     </footer>
 <script>
@@ -238,12 +241,12 @@ function dmsToDec(d, m, s, hemisphere = 'N', type = '') {
 function decToDms(dec, type) {
 	var sign = (+dec) >= 0 ? 1 : -1
 	var hemi = coordBack[(sign == -1 ? '-' : '+') + type]
-	
+
 	dec *= sign
 	var d = Math.floor(dec)
 	var m = Math.floor((dec-d)*60)
 	var s = Math.round((dec-d-m/60)*3600*1e4)/1e4
-	
+
 	return [d, m, s, hemi]
 }
 
@@ -356,19 +359,19 @@ function fill_output() {
       ret = a_boi.outerHTML
     }
     ret += '<br/>'
-    
+
     var dms = decToDms(lat, 'lat')
     ret += dms[0] + '°' + dms[1] + '′' + dms[2] + '″&nbsp;' + dms[3] + ', '
     dms = decToDms(lon, 'lon')
     return ret + dms[0] + '°' + dms[1] + '′' + dms[2] + '″ ' + dms[3]
   }
-  
+
   for (var i in fnames) {
     var row = document.getElementById(i)
     var fun = PRCoords[fnames[i]]
     var inv = PRCoords[get_inverse(fnames[i])]
     var out = Array.from(row.childNodes).slice(1)
-    
+
     var res = fun(incoords, false)
     var dObfs = PRCoords.distance(res, incoords)
     var dRoundtrip = PRCoords.distance(inv(res, false), incoords)
