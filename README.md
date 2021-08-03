@@ -92,7 +92,7 @@ Not directly as a datum, because in both representations a datum is either
 It should be possible to describe the two CS with a `PROJECTION` entry as
 a `PROJCS`. Since a `PROJCS` cannot be nested in another, the BD
 transformation must be described using WGS84 and a fuzed GCJ-BD projection.
-The situation is similar with Baidu "Meractor".
+The situation is similar with [Baidu "Meractor"](https://github.com/gumblex/cntms/commit/bbde4006adeb92f48da1ff7d1f88da393d382f8a).
 
 <details>
 <summary>Speculative WKT/PROJ4</summary>
@@ -133,7 +133,8 @@ The good people at proj4js has made their stuff [very easy to extend](https://gi
 
 ### Should I use fast fp math?
 
-Yes. Nobody knows what the original looks like anyways, so what's wrong with letting the compiler recombine a bit more?
+Yes. Nobody knows what the original looks like anyways, so what's wrong with letting the compiler recombine a bit more? You can't be more off
+than the one-meter random error (in "EMQ") anyways.
 
 Or tinker with 32-bit floats and fixed-point numbers. Or try approximation tools like [Sollya](http://sollya.gforge.inria.fr/) or [MC++](https://omega-icl.github.io/mcpp/). Really, just search on the Internet for "\<language\> Taylor Chebyshev Model". You only need less than 1e-6 error on a [not-very-large slice](https://github.com/Artoria2e5/PRCoords/blob/a3a8bb8/js/PRCoords.js#L91) of the Earth anyways.
 
