@@ -80,6 +80,7 @@ FAQ
 
 ### Why another wheel?
 
+* Correctness
 * Public Domain
 * Clean API based on pairs of coordinates
 * Need to find a place for this sarcastic name
