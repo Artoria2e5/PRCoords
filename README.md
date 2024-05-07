@@ -139,7 +139,7 @@ than the one-meter random error (in "EMQ") anyways.
 
 Or tinker with 32-bit floats and fixed-point numbers. Or try approximation tools like [Sollya](http://sollya.gforge.inria.fr/) or [MC++](https://omega-icl.github.io/mcpp/). Really, just search on the Internet for "\<language\> Taylor Chebyshev Model". You only need less than 1e-6 error on a [not-very-large slice](https://github.com/Artoria2e5/PRCoords/blob/a3a8bb8/js/PRCoords.js#L91) of the Earth anyways.
 
-I threw TaylorModels.jl at GCJ-02, and got decent results out of it. Still too lazy to put it in code though. Check out [approx/approx.ipynb](https://github.com/Artoria2e5/PRCoords/blob/master/approx/approx.ipynb).
+I threw TaylorModels.jl at GCJ-02, and got ~~decent~~ results out of it. Still too lazy to put it in code though. Check out [approx/approx.ipynb](https://github.com/Artoria2e5/PRCoords/blob/master/approx/approx.ipynb). (Nope, not decent. Gotta do it properly some day, just don't use the notebook and expect it to work!)
 
 Physical PRCoords
 -----------------
