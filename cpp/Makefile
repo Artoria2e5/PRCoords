@@ -1,4 +1,4 @@
-CXXFLAGS += -O3 -funsafe-math-optimizations -std=c++0x -Wall -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -DNDEBUG
+CXXFLAGS += -O3 -funsafe-math-optimizations -fno-math-errno -std=c++0x -Wall -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -DNDEBUG
 
 # "Cross compile" shite. In other words MinGW.
 # TARGET is Triplet PLUS THE HYPHEN!
@@ -51,7 +51,7 @@ libprcoords-lto.a: libprcoords-lto.o
 $(LIB)prcoords.$(SO): libprcoords.o
 	$(CC) -shared -o $(LIB)prcoords.$(SO) libprcoords.o
 
-libprcoords.o: libprcoords.cc
+libprcoords.o: libprcoords.cc badmath.hh
 	$(CC) $(CXXFLAGS) -fPIC -c libprcoords.cc
 
 libprcoords-lto.o: libprcoords.cc
@@ -65,18 +65,25 @@ $(LIB)prcoords.def: libprcoords.o
 $(LIB)prcoords.lib: $(LIB)prcoords.def
 	$(LIBEXE) $(LIBFLAGS) /nologo /def:$(LIB)prcoords.def /out:$(LIB)prcoords.lib
 
-demo: demo.cpp
+demo: demo.cpp libprcoords.cc
 	$(CXX) $(CXXFLAGS) -DPRCOORDS_DEMO_FORCE_STANDALONE=1 -o demo demo.cpp
 
-demof: demo.cpp
+demof: demo.cpp libprcoords.cc
 	$(CXX) $(CXXFLAGS) -DPRCOORDS_DEMO_FORCE_STANDALONE=1 -DPRCOORDS_NUM=float -DPRCOORDS_STON=stof -o demof demo.cpp
 
-demold: demo.cpp
+demold: demo.cpp libprcoords.cc
 	$(CXX) $(CXXFLAGS) -DPRCOORDS_DEMO_FORCE_STANDALONE=1 -DPRCOORDS_NUM='long double' -DPRCOORDS_STON=stold -o demold demo.cpp
 
 # Horray! We do not need import libraries.
+# FIXME: COMMAND NOT BUILDING ON MY NIXOS
 demoso: demo.cpp $(LIB)prcoords.$(SO)
 	$(CXX) $(CXXFLAGS) -L. -l:$(LIB)prcoords.$(SO) -o demoso demo.cpp
+
+nanobench.h:
+	wget -O nanobench.h https://github.com/martinus/nanobench/raw/master/src/include/nanobench.h
+
+bench: libprcoords.o prcoords.h nanobench.h
+	$(CXX) $(CXXFLAGS) -DPRCOORDS_BENCH $(DEFS) -o bench libprcoords.o bench.cc
 
 .PHONY: clean help install uninstall
 
@@ -90,4 +97,4 @@ uninstall:
 	rm -f -- $(DESTDIR)$(PREFIX)/bin/prcoords-demo $(DESTDIR)$(PREFIX)/lib/libprcoords.a $(DESTDIR)$(PREFIX)/lib/$(LIB)prcoords.$(SO)
 
 clean:
-	$(RM) demo demof demold *.exe *.a *.o *.def *.dll *.obj *.lib *.exp *.obj
+	$(RM) demo demof demold *.exe *.a *.o *.def *.dll *.obj *.lib *.exp *.obj bench

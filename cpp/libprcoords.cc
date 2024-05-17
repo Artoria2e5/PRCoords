@@ -6,6 +6,7 @@
 #include <cmath>
 #include <functional>
 #include <cassert>
+#include "badmath.hh"
 
 #ifndef M_PI
 #define M_PI ((PRCOORDS_NUM) (3.14159265358979323846L))
@@ -41,6 +42,8 @@ using std::sqrt;
 using std::atan2;
 using std::pow;
 using std::fabs;
+
+using badmath::sinpi;
 
 /// Krasovsky 1940 ellipsoid
 /// @const
@@ -90,15 +93,15 @@ PRCoords prcoords_wgs_gcj(PRCoords wgs) {
 #ifndef APPROX
 	PRCOORDS_NUM dLat_m = -100 + 2 * x + 3 * y + 0.2 * y * y + 0.1 * x * y
 		+ 0.2 * sqrt(fabs(x)) + (
-			2 * sin(x * 6 * M_PI) + 2 * sin(x * 2 * M_PI)
-			+ 2 * sin(y * M_PI) + 4 * sin(y / 3 * M_PI)
-			+ 16 * sin(y / 12 * M_PI) + 32 * sin(y / 30 * M_PI)
+			2 * sinpi(x * 6) + 2 * sinpi(x * 2)
+			+ 2 * sinpi(y) + 4 * sinpi(y / 3)
+			+ 16 * sinpi(y / 12) + 32 * sinpi(y / 30)
 		) * 20 / 3;
 	PRCOORDS_NUM dLon_m = 300 + x + 2 * y + 0.1 * x * x + 0.1 * x * y
 		+ 0.1 * sqrt(fabs(x)) + (
-			2 * sin(x * 6 * M_PI) + 2 * sin(x * 2 * M_PI)
-			+ 2 * sin(x * M_PI) + 4 * sin(x / 3 * M_PI)
-			+ 15 * sin(x / 12 * M_PI) + 30 * sin(x / 30 * M_PI)
+			2 * sinpi(x * 6) + 2 * sinpi(x * 2)
+			+ 2 * sinpi(x) + 4 * sinpi(x / 3)
+			+ 15 * sinpi(x / 12) + 30 * sinpi(x / 30)
 		) * 20 / 3;
 #else
 	// Approximation code from julia side. I should probably
