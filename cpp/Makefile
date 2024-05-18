@@ -1,4 +1,4 @@
-CXXFLAGS += -O3 -funsafe-math-optimizations -fno-math-errno -std=c++0x -Wall -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -DNDEBUG
+CXXFLAGS = -O3 -funsafe-math-optimizations -fno-math-errno -std=c++0x -Wall -Wextra -fvisibility=hidden -fvisibility-inlines-hidden -DNDEBUG $(XCXXFLAGS)
 
 # "Cross compile" shite. In other words MinGW.
 # TARGET is Triplet PLUS THE HYPHEN!
