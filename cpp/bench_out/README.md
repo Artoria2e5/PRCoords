@@ -16,14 +16,22 @@ There seems to be no real damage to the output.  I mean, nick is at most 1e-3
 off.  That's appropriate when we are working in how many meters to shift a
 point.
 
+* Compiler: GCC 13.2.0
+* CPU: Ryzen 5 3600
+* OS: NixOS 24.05pre, Linux 6.6.28
+
 ## Update: more agressive nicking
 
 I also applied Nick's approximation to the `arclen` calculation in GCJ.  As
 expected of a more important divisor, some visible damage to the output is
-seen, but the magnitude remians in the 1e-6 range.  I consider that acceptable,
-and it's now the default.
+seen, but the magnitude remians in the 1e-6 range. I consider that acceptable
+given the performance gain (see the files!); it's now the default.
 
-`bd` calculation also now uses nick.
+\[That does make the `bored` conversion a bit pointless. Hmm, idk.\]
+
+`bd` calculation also now uses nick. It also gets benched.
+Going native seems to cause a 15% regression on `bd`, std or nick.
+Might be a good idea to look into that, or at least see what clang does.
 
 Anyone wishing to turn off nick can use the `-DPRCOORDS_NO_BADMATH` define.
 There *might* be a point in turning off nick for specific parts of the
