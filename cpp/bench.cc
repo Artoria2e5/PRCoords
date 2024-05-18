@@ -30,9 +30,23 @@ int main(){
         }
     );
     ankerl::nanobench::Bench().minEpochIterations(10000).run(
-        "prcoords_gcj_wgs_bored", [&]() {
+        "gcj_wgs_bored", [&]() {
             auto coord = rand_coord(rng);
             auto res = prcoords_gcj_wgs_bored(coord);
+            ankerl::nanobench::doNotOptimizeAway(res);
+        }
+    );
+    ankerl::nanobench::Bench().minEpochIterations(10000).run(
+        "bd_wgs_bored", [&]() {
+            auto coord = rand_coord(rng);
+            auto res = prcoords_gcj_wgs_bored(coord);
+            ankerl::nanobench::doNotOptimizeAway(res);
+        }
+    );
+    ankerl::nanobench::Bench().minEpochIterations(10000).run(
+        "gcj_bd", [&]() {
+            auto coord = rand_coord(rng);
+            auto res = prcoords_gcj_bd(coord);
             ankerl::nanobench::doNotOptimizeAway(res);
         }
     );

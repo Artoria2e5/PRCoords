@@ -9,6 +9,8 @@
 #endif
 
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 #include <string>
 using namespace std;
 
@@ -17,7 +19,9 @@ using namespace std;
 #endif
 
 std::string show_coord(PRCoords v) {
-    return std::to_string(v.lat) + ", " + std::to_string(v.lon);
+    std::stringstream stream;
+    stream << std::fixed << std::setprecision(8) << v.lat << ", " << v.lon;
+    return stream.str();
 }
 
 PRCoords parse_coord(const string& s) {

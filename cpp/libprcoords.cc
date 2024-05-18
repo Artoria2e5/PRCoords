@@ -44,6 +44,7 @@ using std::pow;
 using std::fabs;
 
 using badmath::sinpi;
+using badmath::cospi;
 
 /// Krasovsky 1940 ellipsoid
 /// @const
@@ -112,13 +113,16 @@ PRCoords prcoords_wgs_gcj(PRCoords wgs) {
 	PRCOORDS_NUM dLon_m = 0;
 #endif
 
-	PRCOORDS_NUM radLat = wgs.lat / 180 * M_PI;
-	PRCOORDS_NUM magic = 1 - GCJ_EE * pow(sin(radLat), 2); // just a common expr
+	// NOTE: Using sinpi_nick causes the results to be off by 1e-6.
+	// That's acceptable casualty.
+	// Don't like it? Use PRCOORDS_NO_BADMATH.
+	PRCOORDS_NUM radLat = wgs.lat / 180;
+	PRCOORDS_NUM magic = 1 - GCJ_EE * pow(sinpi(radLat), 2); // just a common expr
 
 	// [[:en:Latitude#Length_of_a_degree_of_latitude]]
 	PRCOORDS_NUM lat_deg_arclen = (M_PI / 180) * (GCJ_A * (1 - GCJ_EE)) / pow(magic, 1.5);
 	// [[:en:Longitude#Length_of_a_degree_of_longitude]]
-	PRCOORDS_NUM lon_deg_arclen = (M_PI / 180) * (GCJ_A * cos(radLat) / sqrt(magic));
+	PRCOORDS_NUM lon_deg_arclen = (M_PI / 180) * (GCJ_A * cospi(radLat) / sqrt(magic));
 	
 	// The screwers pack their deviations into degrees and disappear.
 	// Note how they are mixing WGS-84 and Krasovsky 1940 ellipsoids here...
@@ -139,8 +143,8 @@ PRCoords prcoords_gcj_bd(PRCoords gcj) {
 	PRCOORDS_NUM y = gcj.lat;
 	
 	// trivia: pycoordtrans actually describes how these values are calculated
-	PRCOORDS_NUM r = sqrt(x * x + y * y) + 0.00002 * sin(y * M_PI * 3000 / 180);
-	PRCOORDS_NUM t = atan2(y, x) + 0.000003 * cos(x * M_PI * 3000 / 180);
+	PRCOORDS_NUM r = sqrt(x * x + y * y) + 0.00002 * sinpi(y * 3000 / 180);
+	PRCOORDS_NUM t = atan2(y, x) + 0.000003 * cospi(x * 3000 / 180);
 	
 	// Hard-coded default deviations again!
 	return PRCoords{
@@ -154,8 +158,8 @@ PRCoords prcoords_bd_gcj(PRCoords bd) {
 	PRCOORDS_NUM x = bd.lon - BD_DLON;
 	PRCOORDS_NUM y = bd.lat - BD_DLAT;
 	
-	PRCOORDS_NUM r = sqrt(x * x + y * y) - 0.00002 * sin(y * M_PI * 3000 / 180);
-	PRCOORDS_NUM t = atan2(y, x) - 0.000003 * cos(x * M_PI * 3000 / 180);
+	PRCOORDS_NUM r = sqrt(x * x + y * y) - 0.00002 * sinpi(y * 3000 / 180);
+	PRCOORDS_NUM t = atan2(y, x) - 0.000003 * cospi(x * 3000 / 180);
 	
 	return PRCoords{
 		r * sin(t),

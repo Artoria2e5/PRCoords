@@ -21,6 +21,14 @@ namespace badmath {
     }
     template<typename T>
     inline T sinpi(T x) {
+#ifndef PRCOORDS_NO_BADMATH
         return sinpi_nick(x);
+#else
+        return sinpi_std(x);
+#endif
+    }
+    template<typename T>
+    inline T cospi(T x) {
+        return sinpi(x + 0.5);
     }
 }

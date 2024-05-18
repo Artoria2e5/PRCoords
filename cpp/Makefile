@@ -52,7 +52,7 @@ $(LIB)prcoords.$(SO): libprcoords.o
 	$(CC) -shared -o $(LIB)prcoords.$(SO) libprcoords.o
 
 libprcoords.o: libprcoords.cc badmath.hh
-	$(CC) $(CXXFLAGS) -fPIC -c libprcoords.cc
+	$(CC) $(CXXFLAGS) -fPIC -c -DPRCOORDS_DLL -DPRCOORDS_DLL_EXPORTS libprcoords.cc
 
 libprcoords-lto.o: libprcoords.cc
 	$(CC) $(CXXFLAGS) -flto -ffat-lto-objects -c libprcoords.cc -o libprcoords-lto.o
@@ -77,12 +77,12 @@ demold: demo.cpp libprcoords.cc
 # Horray! We do not need import libraries.
 # FIXME: COMMAND NOT BUILDING ON MY NIXOS
 demoso: demo.cpp $(LIB)prcoords.$(SO)
-	$(CXX) $(CXXFLAGS) -L. -l:$(LIB)prcoords.$(SO) -o demoso demo.cpp
+	$(CXX) $(CXXFLAGS) -L. -l:$(LIB)prcoords.$(SO) -o demoso -DPRCOORDS_DLL demo.cpp
 
 nanobench.h:
 	wget -O nanobench.h https://github.com/martinus/nanobench/raw/master/src/include/nanobench.h
 
-bench: libprcoords.o prcoords.h nanobench.h
+bench: libprcoords.o prcoords.h nanobench.h bench.cc
 	$(CXX) $(CXXFLAGS) -DPRCOORDS_BENCH $(DEFS) -o bench libprcoords.o bench.cc
 
 .PHONY: clean help install uninstall
