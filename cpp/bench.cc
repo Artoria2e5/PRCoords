@@ -16,6 +16,12 @@ int main(){
     using namespace badmath;
     auto rng = ankerl::nanobench::Rng();
     ankerl::nanobench::Bench().minEpochIterations(10000).run(
+        "nop", [&]() {
+            auto coord = rand_coord(rng);
+            ankerl::nanobench::doNotOptimizeAway(coord);
+        }
+    );
+    ankerl::nanobench::Bench().minEpochIterations(10000).run(
         "wgs_gcj", [&]() {
             auto coord = rand_coord(rng);
             auto res = prcoords_wgs_gcj(coord);
