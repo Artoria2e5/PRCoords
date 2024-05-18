@@ -31,7 +31,7 @@ PREFIX ?= /usr/local
 # Note that this is only meaningful for MinGW output: Cygwin/MSYS builds have
 # dependency for cygwin1.dll, which triggers address-clashes with MSVC's libs.
 #
-# cl /Fe:demo-cl.exe demo.cpp prcoords.lib
+# cl /Fe:demo-cl.exe demo.cc prcoords.lib
 LIBEXE ?= LIB.exe
 # Or /machine:x86.
 LIBFLAGS ?= /machine:x64
@@ -65,19 +65,19 @@ $(LIB)prcoords.def: libprcoords.o
 $(LIB)prcoords.lib: $(LIB)prcoords.def
 	$(LIBEXE) $(LIBFLAGS) /nologo /def:$(LIB)prcoords.def /out:$(LIB)prcoords.lib
 
-demo: demo.cpp libprcoords.cc
-	$(CXX) $(CXXFLAGS) -DPRCOORDS_DEMO_FORCE_STANDALONE=1 -o demo demo.cpp
+demo: demo.cc libprcoords.cc
+	$(CXX) $(CXXFLAGS) -DPRCOORDS_DEMO_FORCE_STANDALONE=1 -o demo demo.cc
 
-demof: demo.cpp libprcoords.cc
-	$(CXX) $(CXXFLAGS) -DPRCOORDS_DEMO_FORCE_STANDALONE=1 -DPRCOORDS_NUM=float -DPRCOORDS_STON=stof -o demof demo.cpp
+demof: demo.cc libprcoords.cc
+	$(CXX) $(CXXFLAGS) -DPRCOORDS_DEMO_FORCE_STANDALONE=1 -DPRCOORDS_NUM=float -DPRCOORDS_STON=stof -o demof demo.cc
 
-demold: demo.cpp libprcoords.cc
-	$(CXX) $(CXXFLAGS) -DPRCOORDS_DEMO_FORCE_STANDALONE=1 -DPRCOORDS_NUM='long double' -DPRCOORDS_STON=stold -o demold demo.cpp
+demold: demo.cc libprcoords.cc
+	$(CXX) $(CXXFLAGS) -DPRCOORDS_DEMO_FORCE_STANDALONE=1 -DPRCOORDS_NUM='long double' -DPRCOORDS_STON=stold -o demold demo.cc
 
 # Horray! We do not need import libraries.
 # FIXME: COMMAND NOT BUILDING ON MY NIXOS
-demoso: demo.cpp $(LIB)prcoords.$(SO)
-	$(CXX) $(CXXFLAGS) -L. -l:$(LIB)prcoords.$(SO) -o demoso -DPRCOORDS_DLL demo.cpp
+demoso: demo.cc $(LIB)prcoords.$(SO)
+	$(CXX) $(CXXFLAGS) -L. -l:$(LIB)prcoords.$(SO) -o demoso -DPRCOORDS_DLL demo.cc
 
 nanobench.h:
 	wget -O nanobench.h https://github.com/martinus/nanobench/raw/master/src/include/nanobench.h
