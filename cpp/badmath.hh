@@ -5,6 +5,8 @@
 
 namespace badmath {
     // what are you gonna do about it? x can't be too big!
+    // this is supposed to turn into FMA where fast, and not invoke the fma() libc function otherwise.
+    // like how Julia's muladd() works, but at the mercy of the compiler.
     template<typename T>
     inline T red4(T x) {
         return -4 * std::nearbyint(x * 0.25) + x;
