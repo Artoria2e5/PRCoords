@@ -9,6 +9,8 @@ namespace badmath {
     inline T red4(T x) {
         return -4 * std::nearbyint(x * 0.25) + x;
     }
+    // devmaster user "Nick"'s approximation formula
+    // https://web.archive.org/web/20171228230531/http://forum.devmaster.net/t/fast-and-accurate-sine-cosine/9648
     template<typename T>
     inline T sinpi_nick(T x) {
         x = red4(x * 2); // = 0 to 2pi; nick-magic works on units of 0.5pi
