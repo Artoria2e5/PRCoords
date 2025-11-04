@@ -24,8 +24,7 @@ Languages
 - [x] Haskell (GCJ only; data structure incomplete)
   * need to move googollee/eviltransform#54 here sometime.
 - [ ] Java
-- [ ] Matlab/Octave
-  * too lazy to split the files. also expand "caijun"
+- [x] Matlab/Octave
 - [x] PGSQL
 - [ ] Typed Racket
   * is it done?
