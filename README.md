@@ -79,8 +79,8 @@ FAQ
 
 ### Why another wheel?
 
-* Correctness
-* Public Domain
+* Correctness: everyone else is either wrong or deleted
+* Public Domain: does not make sense to even try to copyright a public secret
 * Clean API based on pairs of coordinates
 * Need to find a place for this sarcastic name
 
@@ -89,34 +89,12 @@ FAQ
 Not directly as a datum, because in both representations a datum is either
 "sane" (no non-linearity in 3D, Helmert possible) or a big table of grids.
 
-It should be possible to describe the two CS with a `PROJECTION` entry as
-a `PROJCS`. Since a `PROJCS` cannot be nested in another, the BD
-transformation must be described using WGS84 and a fuzed GCJ-BD projection.
-The situation is similar with [Baidu "Meractor"](https://github.com/gumblex/cntms/commit/bbde4006adeb92f48da1ff7d1f88da393d382f8a).
-
-<details>
-<summary>Speculative WKT/PROJ4</summary>
+However, the `PROJECTION` entry of a `PROJCS` can be used to describe the
+obfuscation as a black box. Since a `PROJCS` cannot be nested in another,
+we would not be able to describe the sequential nature of BD but only
+specify it as an apparantly unrelated projection.
 
 ```js
-PROJCS["Baidu 2009, Pseudo-Mercator",
-    GEOGCS["WGS 84",
-        DATUM["WGS_1984",
-            SPHEROID["WGS 84",6378137,298.257223563,
-                AUTHORITY["EPSG","7030"]],
-            AUTHORITY["EPSG","6326"]],
-        PRIMEM["Greenwich",0,
-            AUTHORITY["EPSG","8901"]],
-        UNIT["degree",0.0174532925199433,
-            AUTHORITY["EPSG","9122"]],
-        AUTHORITY["EPSG","4326"]],
-    PROJECTION["CN_Obfs_Baidu_2009_Mercator"],
-    AXIS["x",east],
-    AXIS["y",north],
-    UNIT["metre",1,
-      AUTHORITY["EPSG","9001"]],
-    EXTENSION["PROJ4","+proj=baidumerc +units=m +nadgrids=@null +wktext +no_defs"],
-    AUTHORITY["EPSG","888002"]]
-
 PROJCS["Chinese BSM 2002, Pseudo-Ellipsoidal",
     GEOGCS["WGS 84", AUTHORITY["EPSG","4326"]],
     PROJECTION["CN_Obfs_GCJ_2002_Ellipsoidal"],
@@ -126,21 +104,46 @@ PROJCS["Chinese BSM 2002, Pseudo-Ellipsoidal",
       AUTHORITY["EPSG","9122"]],
     EXTENSION["PROJ4","+proj=gcjlonglat +units=deg +nadgrids=@null +wktext +no_defs"],
     AUTHORITY["EPSG","888000"]]
-```
-</details>
 
-The good people at proj4js has made their stuff [very easy to extend](https://github.com/proj4js/proj4js/issues/358). Here is [an example](https://runkit.com/artoria2e5/proj4-plugin-prcoords) (backed up in [`docs/proj4_plugin.js`](https://github.com/Artoria2e5/PRCoords/blob/master/docs/proj4_plugin.js) in case RunKit goes down) of how to add PRCoords support to proj4js.
+PROJCS["Baidu 2009, Pseudo-Ellipsoidal",
+    GEOGCS["WGS 84", AUTHORITY["EPSG","4326"]],
+    PROJECTION["CN_Obfs_Baidu_2009_Ellipsoidal"],
+    AXIS["longitude",east],
+    AXIS["latitude",north],
+    UNIT["degree",0.0174532925199433,
+      AUTHORITY["EPSG","9122"]],
+    EXTENSION["PROJ4","+proj=bd09 +units=deg +nadgrids=@null +wktext +no_defs"],
+    AUTHORITY["EPSG","888001"]]
+```
+
+Also encountered on the web is a "[Baidu Meractor][BM]", fortunately only used in proximity
+to their tile server. It works by pretending the BD-09 lat-lon are on a Clark 1866 ellipsoid.
+
+  [BM]: https://github.com/gumblex/cntms/commit/bbde4006adeb92f48da1ff7d1f88da393d382f8a
+
+```js
+PROJCS["Baidu 2009, Pseudo-Mercator",
+    GEOGCS["WGS 84", AUTHORITY["EPSG","4326"]],
+    PROJECTION["CN_Obfs_Baidu_2009_Mercator"],
+    AXIS["x",east],
+    AXIS["y",north],
+    UNIT["metre",1,
+      AUTHORITY["EPSG","9001"]],
+    EXTENSION["PROJ4","+proj=baidumerc +units=m +nadgrids=@null +wktext +no_defs"],
+    AUTHORITY["EPSG","888002"]]
+```
+
+In all cases we use `GEOGCS["WGS 84", AUTHORITY["EPSG","4326"]]` and `+natgrids=@null` to prevent any datum transformation. The EPSG:88800x codes are private-use extensions chosen for the positive connotations of 888 in Chinese culture; think of it like the EPSG:900913 code of old.
+
+`proj4` itself of course won't understand these projections, but the good people at proj4js has made their stuff [very easy to extend](https://github.com/proj4js/proj4js/issues/358). Here is [an example](https://runkit.com/artoria2e5/proj4-plugin-prcoords) (backed up in [`docs/proj4_plugin.js`](https://github.com/Artoria2e5/PRCoords/blob/master/docs/proj4_plugin.js) in case RunKit goes down) of how to add PRCoords support to proj4js.
 
 ### Should I use fast fp math?
 
-Yes. Nobody knows what the original looks like anyways, so what's wrong with letting the compiler recombine a bit more? You can't be more off
-than the one-meter random error (in "EMQ") anyways.
+Yes. The original GCJ-02 (in "EMQ") has a pseudo-random component that adds up to 1 meter of error. You just can't do worse than that.
 
-Or tinker with 32-bit floats and fixed-point numbers. Or try approximation tools like [Sollya](http://sollya.gforge.inria.fr/) or [MC++](https://omega-icl.github.io/mcpp/). Really, just search on the Internet for "\<language\> Taylor Chebyshev Model". You only need less than 1e-6 error on a [not-very-large slice](https://github.com/Artoria2e5/PRCoords/blob/a3a8bb8/js/PRCoords.js#L91) of the Earth anyways.
-
-I threw TaylorModels.jl at GCJ-02, and got ~~decent~~ results out of it. Still too lazy to put it in code though. Check out [approx/approx.ipynb](https://github.com/Artoria2e5/PRCoords/blob/master/approx/approx.ipynb). (Nope, not decent. Gotta do it properly some day, just don't use the notebook and expect it to work!)
-
-I tried another route with the C++ version using a devmaster user Nick's `sinpi()` approximation. It seems to be good enough for 1e-6: check out [cpp/bench_out](https://github.com/Artoria2e5/PRCoords/tree/master/cpp/bench_out) and [cpp/badmath.hh](https://github.com/Artoria2e5/PRCoords/blob/master/cpp/badmath.hh).
+A few corner-cutting options may be enabled in the C++ implementation. These include:
+* `PRCOORDS_NUM` may be redefined from `double` to `float` for a 32-bit float implementation.
+* `PRCOORDS_APPROX` may be defined to enable a fast approximation of the `sin(x*pi)` function due to devmaster user Nick. See [cpp/badmath.hh](https://github.com/Artoria2e5/PRCoords/blob/master/cpp/badmath.hh) and [cpp/bench_out](https://github.com/Artoria2e5/PRCoords/tree/master/cpp/bench_out).
 
 Physical PRCoords
 -----------------
@@ -158,14 +161,14 @@ are dual-licensed under:
 * [CC0 1.0 Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/)
 * [GNU General Public License (version 3 or up)](https://gnu.org/licenses/gpl.html)
 
-GPL is only included for fun here.
+GPL is only included for fun here. Dual-licensing works under an "or" condition, so don't worry.
 
 Sources
 -------
 
-* [Algorithm.Coords.Converter](https://archive.is/20130815104734/emq.googlecode.com/svn/emq/src/Algorithm/Coords/Converter.java) from [EMQ](https://code.google.com/archive/p/emq/) ([GitHub mirror](https://github.com/richardyu-au/emq)) is probably *the* GCJ leak. It is a JSP project "for demonstrating GIS systems", probably done by some government contractor.
+* [Algorithm.Coords.Converter](https://archive.is/20130815104734/emq.googlecode.com/svn/emq/src/Algorithm/Coords/Converter.java) from [EMQ](https://code.google.com/archive/p/emq/) ([GitHub mirror](https://github.com/Artoria2e5/emq/blob/master/emq/src/Algorithm/Coords/Converter.java)) is probably *the* GCJ leak. It is a JSP project "for demonstrating GIS systems", probably done by some government contractor.
   * There is some randomness in the GCJ deltas on both axes: one `sin` invocation and one LCG. Each add a maximum of 1 meter of error.
-* [on4wp7](https://archive.is/20150702191259/https://on4wp7.codeplex.com/SourceControl/changeset/view/21483%23353936) (2013) is the earliest rationalized GCJ (forward) implementation. No randomness is attempted.
+* [on4wp7](https://archive.is/20150702191259/https://on4wp7.codeplex.com/SourceControl/changeset/view/21483%23353936) (2013) is the earliest rationalized GCJ (forward) implementation.
 * [ChinaMapShift][] (2014) figured out the quick iterative inverse for GCJ. I learned about it via geoChina first and generalized it here.
 * BD-09 is not very well sourced, but [pycoordtrans](https://github.com/zxteloiv/pycoordtrans) (2014) seems to have it.
 

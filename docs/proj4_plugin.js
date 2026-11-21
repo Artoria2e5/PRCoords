@@ -21,7 +21,7 @@ function wrap(f, ...args) {
   return (p) => ll_to_xy(f(xy_to_ll(p), ...args))
 }
 
-// We lie our way to Baidu "Mercator".
+// "Baidu Mercator" results from feeding BD-09 coords to a Mercator projection for the Clark 1866 ellipsoid.
 proj4.defs([
   [
     "_CLARK_MC",
