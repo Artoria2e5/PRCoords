@@ -3,14 +3,11 @@
  * Should yield a C-compatible ABI.
  */
 #include "prcoords.h"
+
 #include <cmath>
 #include <functional>
 #include <cassert>
 #include "badmath.hh"
-
-#ifndef M_PI
-#define M_PI ((PRCOORDS_NUM) (3.14159265358979323846L))
-#endif
 
 // Assume
 #ifndef __has_builtin
@@ -113,9 +110,9 @@ PRCoords prcoords_wgs_gcj(PRCoords wgs) {
 	PRCOORDS_NUM dLon_m = 0;
 #endif
 
-	// NOTE: Using sinpi_nick causes the results to be off by 1e-6.
-	// That's acceptable casualty.
-	// Don't like it? Use PRCOORDS_NO_BADMATH.
+	// NOTE: badmath's sinpi is a minimax fit good to ~5e-8, which is
+	// about 1e-9 deg (0.1 mm) on the result. For IEEE sin, use
+	// PRCOORDS_NO_BADMATH.
 	PRCOORDS_NUM radLat = wgs.lat / 180;
 	PRCOORDS_NUM magic = 1 - GCJ_EE * pow(sinpi(radLat), 2); // just a common expr
 

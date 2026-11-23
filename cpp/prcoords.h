@@ -12,6 +12,11 @@
 #define PRCOORDS_NUM double
 #endif
 
+// MinGW hides M_PI unless you ask for it, and everything here wants it.
+#ifndef M_PI
+#define M_PI ((PRCOORDS_NUM) (3.14159265358979323846L))
+#endif
+
 // Generic helper definitions for shared library support
 #if defined _WIN32 || defined __CYGWIN__
   #define PRCOORDS_HELPER_DLL_IMPORT __declspec(dllimport)

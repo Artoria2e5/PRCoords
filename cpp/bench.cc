@@ -1,6 +1,6 @@
 #include <iostream>
-#include "badmath.hh"
 #include "prcoords.h"
+#include "badmath.hh"
 #define ANKERL_NANOBENCH_IMPLEMENT
 #include "nanobench.h"
 
