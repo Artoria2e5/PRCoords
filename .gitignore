@@ -13,3 +13,4 @@ julia/.vscode/settings.json
 cpp/nanobench.h
 cpp/bench
 cpp/demo
+cpp/vecs

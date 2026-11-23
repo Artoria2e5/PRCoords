@@ -85,7 +85,11 @@ nanobench.h:
 bench: libprcoords.o prcoords.h nanobench.h bench.cc
 	$(CXX) $(CXXFLAGS) -DPRCOORDS_BENCH $(DEFS) -o bench libprcoords.o bench.cc
 
-.PHONY: clean help install uninstall
+# Vector dumper for the cross-implementation check in py/checkvecs.py.
+vecs: vecs.cc libprcoords.cc prcoords.h badmath.hh
+	$(CXX) $(CXXFLAGS) -o vecs vecs.cc
+
+.PHONY: clean help install uninstall vecs
 
 install: all
 	mkdir -p $(DESTDIR)$(PREFIX)/bin/prcoords-demo
@@ -97,4 +101,4 @@ uninstall:
 	rm -f -- $(DESTDIR)$(PREFIX)/bin/prcoords-demo $(DESTDIR)$(PREFIX)/lib/libprcoords.a $(DESTDIR)$(PREFIX)/lib/$(LIB)prcoords.$(SO)
 
 clean:
-	$(RM) demo demof demold *.exe *.a *.o *.def *.dll *.obj *.lib *.exp *.obj bench
+	$(RM) demo demof demold vecs *.exe *.a *.o *.def *.dll *.obj *.lib *.exp *.obj bench
