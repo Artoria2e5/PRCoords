@@ -15,3 +15,5 @@ cpp/bench
 cpp/demo
 cpp/vecs
 .dsh-meow
+java/build/
+java/target/
