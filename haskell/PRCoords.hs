@@ -31,6 +31,13 @@ prcEps = 1e-5                      -- stop refining below this many degrees
 degToRad :: Double -> Double
 degToRad d = d * (pi / 180)
 
+--- | Sine and cosine of pi times the argument, named after the C23 functions.
+sinpi :: Double -> Double
+sinpi x = sin (pi * x)
+
+cospi :: Double -> Double
+cospi x = cos (pi * x)
+
 --- | GCJ-02 and BD-09 are only defined in China.
 inChina :: PCoords -> Bool
 inChina (PCoords lat lon) =
@@ -57,14 +64,14 @@ wgsGcjNC (PCoords lat lon) =
     -- Distortions in meters of arc length, as functions of (x, y).
     dLat = -100 + 2 * x + 3 * y + 0.2 * y * y + 0.1 * x * y
          + 0.2 * sqrt (abs x)
-         + (20 / 3) * ( 2 * sin (x * 6 * pi) + 2 * sin (x * 2 * pi)
-                      + 2 * sin (y * pi) + 4 * sin (y / 3 * pi)
-                      + 16 * sin (y / 12 * pi) + 32 * sin (y / 30 * pi))
+         + (20 / 3) * ( 2 * sinpi (x * 6) + 2 * sinpi (x * 2)
+                      + 2 * sinpi y + 4 * sinpi (y / 3)
+                      + 16 * sinpi (y / 12) + 32 * sinpi (y / 30))
     dLon = 300 + x + 2 * y + 0.1 * x * x + 0.1 * x * y
          + 0.1 * sqrt (abs x)
-         + (20 / 3) * ( 2 * sin (x * 6 * pi) + 2 * sin (x * 2 * pi)
-                      + 2 * sin (x * pi) + 4 * sin (x / 3 * pi)
-                      + 15 * sin (x / 12 * pi) + 30 * sin (x / 30 * pi))
+         + (20 / 3) * ( 2 * sinpi (x * 6) + 2 * sinpi (x * 2)
+                      + 2 * sinpi x + 4 * sinpi (x / 3)
+                      + 15 * sinpi (x / 12) + 30 * sinpi (x / 30))
 
 --- | GCJ-02 to WGS-84, one step.
 gcjWgs :: PCoords -> PCoords
@@ -81,8 +88,8 @@ gcjBd (PCoords lat lon) =
   where
     x = lon
     y = lat
-    r = sqrt (x * x + y * y) + 0.00002 * sin (degToRad y * 3000)
-    theta = atan2 y x + 0.000003 * cos (degToRad x * 3000)
+    r = sqrt (x * x + y * y) + 0.00002 * sinpi (y * 3000 / 180)
+    theta = atan2 y x + 0.000003 * cospi (x * 3000 / 180)
 
 --- | BD-09 to GCJ-02.
 bdGcj :: PCoords -> PCoords
@@ -90,8 +97,8 @@ bdGcj (PCoords lat lon) = PCoords (r * sin theta) (r * cos theta)
   where
     x = lon - bdDLon
     y = lat - bdDLat
-    r = sqrt (x * x + y * y) - 0.00002 * sin (degToRad y * 3000)
-    theta = atan2 y x - 0.000003 * cos (degToRad x * 3000)
+    r = sqrt (x * x + y * y) - 0.00002 * sinpi (y * 3000 / 180)
+    theta = atan2 y x - 0.000003 * cospi (x * 3000 / 180)
 
 --- | WGS-84 to BD-09.
 wgsBd :: PCoords -> PCoords
