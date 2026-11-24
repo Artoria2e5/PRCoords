@@ -71,6 +71,7 @@ library
 
 executable vecs
   main-is:             Vecs.hs
+  ghc-options:         -rtsopts=all
   hs-source-dirs:       .
   build-depends:
     base >=4.9 && <5, PRCoords
