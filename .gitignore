@@ -17,3 +17,6 @@ cpp/vecs
 .dsh-meow
 java/build/
 java/target/
+py/dist/
+py/build/
+py/*.egg-info/
