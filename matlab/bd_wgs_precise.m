@@ -8,4 +8,4 @@ function w = bd_wgs_precise (b, tol, maxn)
   end
   fun = caijun_precise (@wgs_bd, @bd_wgs);
   w = fun (b, tol, maxn);
-endfunction
+end

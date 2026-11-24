@@ -9,4 +9,4 @@ function g = bd_gcj (b)
   gcj_lon = r .* cos (theta);
   gcj_lat = r .* sin (theta);
   g = [gcj_lat, gcj_lon];
-endfunction
+end

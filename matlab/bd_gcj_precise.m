@@ -8,4 +8,4 @@ function g = bd_gcj_precise (b, tol, maxn)
   end
   fun = caijun_precise (@gcj_bd, @bd_gcj);
   g = fun (b, tol, maxn);
-endfunction
+end

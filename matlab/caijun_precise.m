@@ -4,12 +4,9 @@ function fun = caijun_precise (fwd, rev, o, tol, maxn)
   % With a precise forward obfuscation and a rough deobfuscation
   % function, construct a precise iterative deobfuscation function.
   %
-  % A custom tolilon for "fixed point" detection can be specified
-  % with the "tol" operand. The default value is 1e-4 degrees.
-  % 
-  % A custon max iteration limit can be specified with the "maxn"
-  % operand. The default value is 10 iterations.
-  %
+  % The "tol" operand is the fixed-point threshold in degrees and the
+  % "maxn" operand caps the number of iterations. The wrappers default
+  % to 1e-13 degrees and 10.
   % (caijun/geoChina; 2014)
 
   function c = rectify (o, tol, maxn)
@@ -23,8 +20,8 @@ function fun = caijun_precise (fwd, rev, o, tol, maxn)
         break;
       end
       d = fwd(c) - o;
-      c -= d;
+      c = c - d;
     end
-  endfunction
+  end
   fun = @rectify;
-endfunction
+end

@@ -7,4 +7,4 @@ function w = gcj_wgs_precise (g, tol, maxn)
   end
   fun = caijun_precise (@wgs_gcj, @gcj_wgs);
   w = fun (g, tol, maxn);
-endfunction
+end

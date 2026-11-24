@@ -4,12 +4,12 @@ function r = wgs_gcj (w)
 
   % Krasovsky 1940 ellipsoid
   GCJ_A = 6378245;
-  GCJ_EE = 0.00669342162296594323; % f = 1./298.3; e^2 = 2.*f - f.*.*2
+  GCJ_EE = 0.00669342162296594323; % f = 1./298.3; e^2 = 2*f - f^2
 
   % Deviation computation in meters, inlined.
   % [x, y] are relative coords from a common mapped "center" of China.
-  x = wlat - 35;
-  y = wlon - 105;
+  x = wlon - 105;
+  y = wlat - 35;
   dlat = -100 + 2 .* x + 3 .* y + 0.2 .* y .* y + 0.1 .* x .* y + ...
       0.2 .* sqrt(abs(x)) + (2 .* sin(x .* 6 .* pi) + ...
       2 .* sin(x .* 2 .* pi) + 2 .* sin(y .* pi) + 4 .* sin(y ./ 3 .* pi) + ...
@@ -28,4 +28,4 @@ function r = wgs_gcj (w)
   glat = wlat + dlat ./ arclen_1lat;
   glon = wlon + dlon ./ arclen_1lon;
   r = [glat, glon];
-endfunction
+end
