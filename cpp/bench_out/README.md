@@ -1,10 +1,10 @@
 # bench_out
 
-All four files are made by nanobench; just do `./bench4.sh`.
+All files are made by nanobench; just do `./bench4.sh`.
 
-* `nick` is the version with Nick's fast sinpi.
-* `std` is the version with sinpi implemented by `std::sin(M_PI * x)`.
-* The ones with `native_` in front are built with `-march=native`.
+Name pattern is `{native,generic}_{std,nick,d2,d3,d4}.md`.
+`native` is `-march=native`, `generic` is none;
+the suffix is the `-DPRCOORDS_SINPI` value.
 
 All the other flags are per Makefile: unsafe math optimizations, no math errno,
 you know the drill.
@@ -16,9 +16,9 @@ There seems to be no real damage to the output.  I mean, nick is at most 1e-3
 off.  That's appropriate when we are working in how many meters to shift a
 point.
 
-* Compiler: GCC 13.2.0
+* Compiler: GCC 16.2.0
 * CPU: Ryzen 5 3600
-* OS: NixOS 24.05pre, Linux 6.6.28
+* OS: MINGW64_NT-10.0-26340 (UCRT64)
 
 ## Update: more agressive nicking
 

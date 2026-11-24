@@ -1,6 +1,8 @@
 /**
  * Internal header for implementing "fast" sin(x*pi).
- * Include prcoords.h first: sinpi_std wants its M_PI.
+ * Include prcoords.h first: sinpi_std wants its PRC_PI.
+ * 
+ * Why: reduces call overhead by inlining, could unblock SIMD.
  */
 #include <cmath>
 
@@ -68,7 +70,7 @@ namespace badmath {
     template<typename T>
     inline T sinpi_std(T x) {
         // TODO: when C++ eventually gets C23 sinpi(), add an ifdef here
-        return std::sin(x * M_PI);
+        return std::sin(x * PRC_PI);
     }
     // Choose the variant with -DPRCOORDS_SINPI=d3 (or nick, d2, std).
     // -DPRCOORDS_NO_BADMATH still forces std.

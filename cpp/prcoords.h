@@ -13,8 +13,9 @@
 #endif
 
 // MinGW hides M_PI unless you ask for it, and everything here wants it.
-#ifndef M_PI
-#define M_PI ((PRCOORDS_NUM) (3.14159265358979323846L))
+// Well, might as well defined our own to take advantage of the long double literal.
+#ifndef PRC_PI
+#define PRC_PI ((PRCOORDS_NUM) (3.141592653589793238462643383279502884L))
 #endif
 
 // Generic helper definitions for shared library support
