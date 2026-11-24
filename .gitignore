@@ -21,3 +21,5 @@ py/dist/
 py/build/
 py/*.egg-info/
 racket/compiled/
+haskell/*.hi
+haskell/*.o

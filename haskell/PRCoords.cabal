@@ -60,12 +60,19 @@ library
   
   -- Other library packages from which modules are imported.
   build-depends:
-    base -- >=4.8 && <4.9
+    base >=4.9 && <5
     -- AC-Angle
   
   -- Directories containing source files.
   -- hs-source-dirs:      
   
   -- Base language which the package is written in.
+  default-language:    Haskell2010
+
+executable vecs
+  main-is:             Vecs.hs
+  hs-source-dirs:       .
+  build-depends:
+    base >=4.9 && <5, PRCoords
   default-language:    Haskell2010
   

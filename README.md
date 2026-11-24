@@ -21,13 +21,12 @@ Languages
 - [ ] Ruby
 - [ ] Swift
 - [ ] C#
-- [x] Haskell (GCJ only; data structure incomplete)
+- [x] Haskell (`haskell/PRCoords.hs`, GCJ-02 and BD-09)
   * need to move googollee/eviltransform#54 here sometime.
 - [x] Java 8+ (`io.github.artoria2e5.prcoords`, with an optional JNI bridge to the C++ core)
 - [x] Matlab/Octave
 - [x] PGSQL
 - [x] Typed Racket (`racket/prcoords.rkt`, Flonum types)
-  * is it done?
 
 (should I split them into submodules?)
 
