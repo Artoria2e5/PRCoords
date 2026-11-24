@@ -3,8 +3,8 @@ function g = bd_gcj (b)
   x = b (2) - 0.0065;
   y = b (1) - 0.006;
 
-  r = sqrt (x .* x + y .* y) - 0.00002 * sin (y * pi * 3000 / 180);
-  theta = atan2 (y, x) - 0.000003 * cos (x * pi * 3000 / 180);
+  r = sqrt (x .* x + y .* y) - 0.00002 * sinpi (y * 3000 / 180);
+  theta = atan2 (y, x) - 0.000003 * cospi (x * 3000 / 180);
 
   gcj_lon = r .* cos (theta);
   gcj_lat = r .* sin (theta);
