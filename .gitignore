@@ -20,3 +20,4 @@ java/target/
 py/dist/
 py/build/
 py/*.egg-info/
+racket/compiled/
