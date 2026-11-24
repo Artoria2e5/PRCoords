@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: If you use PRCoords in published work, cite it as below.
+title: PRCoords
+type: software
+authors:
+  - family-names: Wang
+    given-names: Mingye
+    alias: Artoria2e5
+    email: arthur200126@gmail.com
+    website: https://github.com/Artoria2e5
+  - family-names: Wang
+    given-names: Dingyuan
+    alias: gumblex
+    email: abcdoyle888@gmail.com
+    website: https://github.com/gumblex
+repository-code: https://github.com/Artoria2e5/PRCoords
+url: https://github.com/Artoria2e5/PRCoords
+license:
+  - CC0-1.0
+  - GPL-3.0-or-later
+keywords:
+  - GCJ-02
+  - BD-09
+  - WGS-84
+  - coordinate obfuscation
+  - China
+  - GIS
+  - geodesy
+  - eviltransform
+abstract: >-
+  PRCoords implements the Chinese coordinate obfuscation methods GCJ-02 and
+  BD-09: forward transform WGS-84 -> GCJ-02 and GCJ02 -> BD-09, plus one-step
+  and iterative inverses.
+  There are versions in Python, JavaScript, C/C++ (C ABI), PostgreSQL, and more.
+
+# No tag exists yet. Bump both of these when one is cut.
+version: 1.0.3-rc1
+date-released: "2026-11-24"
