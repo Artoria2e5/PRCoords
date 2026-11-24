@@ -48,6 +48,10 @@
 (: flcospi (-> Flonum Flonum))
 (define (flcospi x) (flcos (* pi x)))
 
+;; Racket only ships the 1-argument flatan, so atan2 needs the coercion.
+(: flatan2 (-> Flonum Flonum Flonum))
+(define (flatan2 y x) (real->double-flonum (atan y x)))
+
 (: d2r (-> Flonum Flonum))
 (define (d2r d) (* d (/ pi 180.0)))
 
@@ -143,7 +147,7 @@
          [x (latlon-lon gcj)]
          [r (+ (flsqrt (+ (* x x) (* y y)))
                (* 0.00002 (flsinpi (/ (* y 3000.0) 180.0))))]
-         [theta (+ (real->double-flonum (atan y x))
+         [theta (+ (flatan2 y x)
                    (* 0.000003 (flcospi (/ (* x 3000.0) 180.0))))])
     (latlon (+ (* r (flsin theta)) bd-dlat)
             (+ (* r (flcos theta)) bd-dlon))))
@@ -154,7 +158,7 @@
          [y (- (latlon-lat bd) bd-dlat)]
          [r (- (flsqrt (+ (* x x) (* y y)))
                (* 0.00002 (flsinpi (/ (* y 3000.0) 180.0))))]
-         [theta (- (real->double-flonum (atan y x))
+         [theta (- (flatan2 y x)
                    (* 0.000003 (flcospi (/ (* x 3000.0) 180.0))))])
     (latlon (* r (flsin theta))
             (* r (flcos theta)))))
