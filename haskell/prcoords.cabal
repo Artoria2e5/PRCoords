@@ -1,5 +1,5 @@
 cabal-version:       3.0
-name:                PRCoords
+name:                prcoords
 version:             1.0.3
 
 synopsis:            GCJ-02 and BD-09 coordinate obfuscation from and to WGS-84.
@@ -35,5 +35,5 @@ executable vecs
   ghc-options:         -rtsopts=all
   hs-source-dirs:      .
   build-depends:       base >=4.9 && <5,
-                       PRCoords
+                       prcoords
   default-language:    Haskell2010
