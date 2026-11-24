@@ -36,7 +36,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import math
+from math import asin, sin, cos, sqrt, atan2, radians, hypot, pi, pow
 import warnings
 import collections
 
@@ -60,6 +60,7 @@ BD_DLON = 0.0065
 EARTH_R = 6371000
 
 class Coords(collections.namedtuple('Coords', 'lat lon')):
+    '''Tuple of (latitude, longitude) in degrees, with some helper methods.'''
     def __add__(self, other):
         return Coords(self.lat + other.lat, self.lon + other.lon)
 
@@ -67,28 +68,30 @@ class Coords(collections.namedtuple('Coords', 'lat lon')):
         return Coords(self.lat - other.lat, self.lon - other.lon)
 
     def __abs__(self):
-        return math.hypot(*self)
+        return hypot(*self)
 
     def distance(self, other):
         '''
         Distance for haversine method; suitable over short distances like
         conversion deviation checking
         '''
-        hav = lambda theta: math.sin(theta / 2) ** 2
+        hav = lambda theta: sin(theta / 2) ** 2
 
         delta = self - other
-        return 2 * EARTH_R * math.asin(math.sqrt(
-            hav(math.radians(delta.lat)) +
-            math.cos(math.radians(self.lat)) *
-            math.cos(math.radians(other.lat)) *
-            hav(math.radians(delta.lon))
+        return 2 * EARTH_R * asin(sqrt(
+            hav(radians(delta.lat)) +
+            cos(radians(self.lat)) *
+            cos(radians(other.lat)) *
+            hav(radians(delta.lon))
         ))
 
 def sanity_in_china_p(coords):
+    '''Roughly check if the coordinates are in China. GCJ-02 and BD-09 are only defined in China.'''
     return (0.8293 <= coords.lat <= 55.8271 and
             72.004 <= coords.lon <= 137.8347)
 
 def wgs_gcj(wgs, check_china=True):
+    '''Transform WGS-84 to GCJ-02.'''
     wgs = Coords(*wgs)
     if check_china and not sanity_in_china_p(wgs):
         warnings.warn('Non-Chinese coords found, returning as-is: %r' % (wgs,))
@@ -105,25 +108,25 @@ def wgs_gcj(wgs, check_china=True):
     # For example, at the (mapped) center of China (105E, 35N), you get a
     # default deviation of <300, -100> meters.
     dLat_m = (-100 + 2 * x + 3 * y + 0.2 * y * y + 0.1 * x * y +
-        0.2 * math.sqrt(abs(x)) + (
-            2 * math.sin(x * 6 * math.pi) + 2 * math.sin(x * 2 * math.pi) +
-            2 * math.sin(y * math.pi) + 4 * math.sin(y / 3 * math.pi) +
-            16 * math.sin(y / 12 * math.pi) + 32 * math.sin(y / 30 * math.pi)
+        0.2 * sqrt(abs(x)) + (
+            2 * sin(x * 6 * pi) + 2 * sin(x * 2 * pi) +
+            2 * sin(y * pi) + 4 * sin(y / 3 * pi) +
+            16 * sin(y / 12 * pi) + 32 * sin(y / 30 * pi)
         ) * 20 / 3)
     dLon_m = (300 + x + 2 * y + 0.1 * x * x + 0.1 * x * y +
-        0.1 * math.sqrt(abs(x)) + (
-            2 * math.sin(x * 6 * math.pi) + 2 * math.sin(x * 2 * math.pi) +
-            2 * math.sin(x * math.pi) + 4 * math.sin(x / 3 * math.pi) +
-            15 * math.sin(x / 12 * math.pi) + 30 * math.sin(x / 30 * math.pi)
+        0.1 * sqrt(abs(x)) + (
+            2 * sin(x * 6 * pi) + 2 * sin(x * 2 * pi) +
+            2 * sin(x * pi) + 4 * sin(x / 3 * pi) +
+            15 * sin(x / 12 * pi) + 30 * sin(x / 30 * pi)
         ) * 20 / 3)
 
-    radLat = math.radians(wgs.lat)
-    magic = 1 - GCJ_EE * math.pow(math.sin(radLat), 2) # just a common expr
+    radLat = radians(wgs.lat)
+    magic = 1 - GCJ_EE * pow(sin(radLat), 2) # just a common expr
 
     # [[:en:Latitude#Length_of_a_degree_of_latitude]]
-    lat_deg_arclen = math.radians((GCJ_A * (1 - GCJ_EE)) / math.pow(magic, 1.5))
+    lat_deg_arclen = radians((GCJ_A * (1 - GCJ_EE)) / pow(magic, 1.5))
     # [[:en:Longitude#Length_of_a_degree_of_longitude]]
-    lon_deg_arclen = math.radians(GCJ_A * math.cos(radLat) / math.sqrt(magic))
+    lon_deg_arclen = radians(GCJ_A * cos(radLat) / sqrt(magic))
 
     # The screwers pack their deviations into degrees and disappear.
     # Note how they are mixing WGS-84 and Krasovsky 1940 ellipsoids here...
@@ -131,37 +134,40 @@ def wgs_gcj(wgs, check_china=True):
                   wgs.lon + (dLon_m / lon_deg_arclen))
 
 def gcj_wgs(gcj, check_china=True):
-    '''rev_transform_rough; accuracy ~2e-6 deg (meter-level)'''
+    '''Transform GCJ-02 to WGS-84. Roundtrip ~2e-6 deg (meter-level).'''
     gcj = Coords(*gcj)
     return gcj - (wgs_gcj(gcj, check_china) - gcj)
 
 def gcj_bd(gcj, _dummy=False):
+    '''Transform GCJ-02 to BD-09.'''
     y, x = gcj
 
     # trivia: pycoordtrans actually describes how these values are calculated
-    r = math.sqrt(x * x + y * y) + 0.00002 * math.sin(math.radians(y) * 3000)
-    theta = math.atan2(y, x) + 0.000003 * math.cos(math.radians(x) * 3000)
+    r = sqrt(x * x + y * y) + 0.00002 * sin(radians(y) * 3000)
+    theta = atan2(y, x) + 0.000003 * cos(radians(x) * 3000)
 
     # Hard-coded default deviations again!
-    return Coords(r * math.sin(theta) + BD_DLAT, r * math.cos(theta) + BD_DLON)
+    return Coords(r * sin(theta) + BD_DLAT, r * cos(theta) + BD_DLON)
 
 # Yes, we can implement a "precise" one too.
 def bd_gcj(bd, _dummy=False):
-    '''accuracy ~1e-7 deg (decimeter-level; exceeds usual data accuracy)'''
+    '''Transform BD-09 to GCJ-02. Roundtrip ~2e-7 deg (decimeter-level).'''
     bd = Coords(*bd)
     x = bd.lon - BD_DLON
     y = bd.lat - BD_DLAT
 
     # trivia: pycoordtrans actually describes how these values are calculated
-    r = math.sqrt(x * x + y * y) - 0.00002 * math.sin(math.radians(y) * 3000)
-    theta = math.atan2(y, x) - 0.000003 * math.cos(math.radians(x) * 3000)
+    r = sqrt(x * x + y * y) - 0.00002 * sin(radians(y) * 3000)
+    theta = atan2(y, x) - 0.000003 * cos(radians(x) * 3000)
 
-    return Coords(r * math.sin(theta), r * math.cos(theta))
+    return Coords(r * sin(theta), r * cos(theta))
 
 def bd_wgs(bd, check_china=True):
+    '''Transform BD-09 to WGS-84. Roundtrip ~2e-6 deg (meter-level).'''
     return gcj_wgs(bd_gcj(bd), check_china)
 
 def wgs_bd(bd, check_china=True):
+    '''Transform WGS-84 to BD-09.'''
     return gcj_bd(wgs_gcj(bd, check_china))
 
 def _bored(fwd, rev):
@@ -183,6 +189,8 @@ def _bored(fwd, rev):
 
         return wgs
 
+    rev_bored.__name__ = rev.__name__ + '_bored'
+    rev_bored.__doc__ = rev.__doc__ + ' with iterative refinement for better accuracy.'
     return rev_bored
 
 # Precise functions using caijun 2014 method

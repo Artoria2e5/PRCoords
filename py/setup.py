@@ -2,7 +2,7 @@
 from __future__ import with_statement
 from setuptools import setup
 
-description="Public Domain library for rectifying Chinese coordinates (gcj-02/bd-09)"
+description = "Public Domain library for rectifying Chinese coordinates (gcj-02/bd-09)"
 
 try:
     with open("../README.md", "r") as f:
