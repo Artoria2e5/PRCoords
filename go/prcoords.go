@@ -3,7 +3,10 @@
 // inverses. Dedicated to the Public Domain under CC0.
 package prcoords
 
-import "math"
+import (
+	"math"
+	"strconv"
+)
 
 // pi is a variable so that pi/180 divides two float64 values at run time,
 // matching the reference implementation bit for bit.
@@ -19,6 +22,13 @@ func (p Coords) Add(q Coords) Coords { return Coords{p.Lat + q.Lat, p.Lon + q.Lo
 
 // Sub returns p-q.
 func (p Coords) Sub(q Coords) Coords { return Coords{p.Lat - q.Lat, p.Lon - q.Lon} }
+
+// String implements fmt.Stringer, following the Java port's
+// Coords[lat=..., lon=...] shape.
+func (p Coords) String() string {
+	return "Coords[lat=" + strconv.FormatFloat(p.Lat, 'g', -1, 64) +
+		", lon=" + strconv.FormatFloat(p.Lon, 'g', -1, 64) + "]"
+}
 
 // Abs returns the Euclidean norm of the pair, for deviation checks. The
 // coordinates are degree-sized, so a plain sqrt is safe and cheaper than
