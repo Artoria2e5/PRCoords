@@ -26,7 +26,7 @@ Languages
 - [x] PGSQL
 - [x] Typed Racket (`racket/`, package `prcoords`, Flonum types)
 - [x] Go (`go/`, module `github.com/Artoria2e5/PRCoords`, package path `.../go`)
-- [x] Lua 5.1+ (`lua/PRCoords.lua`, a plain `PRCoords` table)
+- [x] Lua 5.1+ (`lua/PRCoords.lua`, a plain `PRCoords` table; `lua/mediawiki.lua` is a Scribunto shim)
 - [x] Swift 5+ (`swift/`, SwiftPM package `PRCoords`, d4 sinpi approximation)
 
 (should I split them into submodules?)
