@@ -20,8 +20,10 @@ func (p Coords) Add(q Coords) Coords { return Coords{p.Lat + q.Lat, p.Lon + q.Lo
 // Sub returns p-q.
 func (p Coords) Sub(q Coords) Coords { return Coords{p.Lat - q.Lat, p.Lon - q.Lon} }
 
-// Abs returns the Euclidean norm of the pair, for deviation checks.
-func (p Coords) Abs() float64 { return math.Hypot(p.Lat, p.Lon) }
+// Abs returns the Euclidean norm of the pair, for deviation checks. The
+// coordinates are degree-sized, so a plain sqrt is safe and cheaper than
+// math.Hypot's overflow-scaled path.
+func (p Coords) Abs() float64 { return math.Sqrt(p.Lat*p.Lat + p.Lon*p.Lon) }
 
 const (
 	gcjA   = 6378245.0              // Krasovsky 1940 ellipsoid
