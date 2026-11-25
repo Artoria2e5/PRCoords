@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"strings"
 
-	"prcoords"
+	"github.com/Artoria2e5/PRCoords/go"
 )
 
 func main() {
