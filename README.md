@@ -26,7 +26,7 @@ Languages
 - [x] Java 8+ (`io.github.artoria2e5.prcoords`, with an optional JNI bridge to the C++ core)
 - [x] Matlab/Octave
 - [x] PGSQL
-- [x] Typed Racket (`racket/prcoords.rkt`, Flonum types)
+- [x] Typed Racket (`racket/`, package `prcoords`, Flonum types)
 
 (should I split them into submodules?)
 

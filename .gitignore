@@ -24,4 +24,6 @@ racket/compiled/
 haskell/*.hi
 haskell/*.o
 haskell/dist-newstyle
+compiled/
 
+racket/doc/

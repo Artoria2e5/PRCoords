@@ -3,7 +3,7 @@
 ;; Dumps the eight-column test vector layout for py/checkvecs.py:
 ;; input lat, input lon, then wgs_gcj, gcj_bd and wgs_bd of the input.
 
-(require "prcoords.rkt")
+(require "main.rkt")
 
 (define (emit lat lon)
   (define p (latlon lat lon))

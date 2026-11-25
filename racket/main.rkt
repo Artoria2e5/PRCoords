@@ -201,3 +201,28 @@
 (: bd-wgs-bored (-> latlon latlon))
 (define (bd-wgs-bored bd)
   (bored (lambda ([w : latlon]) (wgs-bd* w #f)) bd-wgs bd))
+
+(module+ test
+  (require typed/rackunit)
+
+  ;; Two points, six transforms each, against the Python reference.
+  (define (chk [got : latlon] [lat : Flonum] [lon : Flonum])
+    (check-= (latlon-lat got) lat 1e-12)
+    (check-= (latlon-lon got) lon 1e-12))
+
+  (define a (latlon 35.0 105.0))
+  (chk (wgs-gcj a) 34.99909863223526 105.00328624145706)
+  (chk (gcj-wgs a) 35.00090136776474 104.99671375854294)
+  (chk (gcj-bd a) 35.00630952256762 105.0063785678672)
+  (chk (bd-gcj a) 34.99370731767234 104.99361165598081)
+  (chk (wgs-bd a) 35.00540366845696 105.00966682831948)
+  (chk (bd-wgs a) 34.9946348980774 104.99035737281594)
+
+  (define b (latlon 30.0 120.0))
+  (chk (wgs-gcj b) 29.997534331696095 120.00466044559735)
+  (chk (gcj-wgs b) 30.002465668303905 119.99533955440265)
+  (chk (gcj-bd b) 30.006359999864998 120.00640999946)
+  (chk (bd-gcj b) 29.99366216605467 119.9935908161529)
+  (chk (wgs-bd b) 30.003883055512777 120.011070620552)
+  (chk (bd-wgs b) 29.99614733160918 119.98894747845797))
+
