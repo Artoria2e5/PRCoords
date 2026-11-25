@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0
+
+- Swift port added as a root SwiftPM package, `PRCoords` (Swift 5
+  language mode), with the same d4 sinpi approximation as the C++ core.
+- Lua port finished, with `deviation_m` as the metre-offset intermediate.
+
 ## 1.0.4
 
 - Go port added, published as the `github.com/Artoria2e5/PRCoords/go`
