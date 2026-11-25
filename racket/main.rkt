@@ -20,7 +20,10 @@
 
 ;; A point in degrees.
 (struct latlon ([lat : Flonum] [lon : Flonum])
-  #:transparent)
+  #:transparent
+  #:property prop:custom-write
+  (lambda (v out mode)
+    (fprintf out "(latlon ~s ~s)" (latlon-lat v) (latlon-lon v))))
 
 ;; Krasovsky 1940, the ellipsoid GCJ-02 pretends to use.
 (: gcj-a Flonum)
