@@ -16,18 +16,17 @@ Languages
   * Web demo: https://artoria2e5.github.io/PRCoords/demo
   * Now with AMD support and faux `__esModule` interop for Babel and TypeScript!
 - [x] Python ([`pip install prcoords`](https://pypi.org/project/prcoords/))
-- [x] \(Obj-\)C/C++ (C ABI)
-  * [x] Makefile with `install`
+- [x] \(Obj-\)C/C++ (C ABI) - simple Makefile with `install`
 - [ ] Ruby
 - [ ] Swift
 - [ ] C#
 - [x] Haskell (`haskell/PRCoords.hs`, GCJ-02 and BD-09)
-  * need to move googollee/eviltransform#54 here sometime.
 - [x] Java 8+ (`io.github.artoria2e5.prcoords`, with an optional JNI bridge to the C++ core)
 - [x] Matlab/Octave
 - [x] PGSQL
 - [x] Typed Racket (`racket/`, package `prcoords`, Flonum types)
-- [x] Go (`go/`, package `prcoords`)
+- [x] Go (`go/`, module `github.com/Artoria2e5/PRCoords`, package path `.../go`)
+- [x] Lua 5.1+ (`lua/PRCoords.lua`, a plain `PRCoords` table)
 
 (should I split them into submodules?)
 

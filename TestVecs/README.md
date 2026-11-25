@@ -41,9 +41,12 @@ or stdin and writes the same eight columns to stdout:
 
     cpp/vecs TestVecs/inputs.tsv
     node js/vecs.js TestVecs/inputs.tsv
-    octave-cli --quiet --path matlab matlab/vecs.m TestVecs/inputs.tsv
+    java -cp java/build/classes io.github.artoria2e5.prcoords.Vecs TestVecs/inputs.tsv
     racket racket/vecs.rkt TestVecs/inputs.tsv
-    (cd go && go run ./cmd/vecs ../TestVecs/inputs.tsv)
+    runghc haskell/Vecs.hs TestVecs/inputs.tsv
+    octave-cli --quiet --path matlab matlab/vecs.m TestVecs/inputs.tsv
+    go run ./go/cmd/vecs TestVecs/inputs.tsv
+    lua lua/vecs.lua TestVecs/inputs.tsv
 
 `py/checkvecs.py` compares such a dump with `vec.tsv`, either by running the
 command itself or by reading its output:
