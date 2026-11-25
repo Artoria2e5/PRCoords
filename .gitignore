@@ -27,3 +27,5 @@ haskell/dist-newstyle
 compiled/
 
 racket/doc/
+.build/
+.swiftpm/

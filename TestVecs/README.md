@@ -47,6 +47,7 @@ or stdin and writes the same eight columns to stdout:
     octave-cli --quiet --path matlab matlab/vecs.m TestVecs/inputs.tsv
     go run ./go/cmd/vecs TestVecs/inputs.tsv
     lua lua/vecs.lua TestVecs/inputs.tsv
+    swift run vecs TestVecs/inputs.tsv
 
 `py/checkvecs.py` compares such a dump with `vec.tsv`, either by running the
 command itself or by reading its output:
