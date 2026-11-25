@@ -13,7 +13,7 @@ except:
 
 setup(
     name="prcoords",
-    version="1.0.3",
+    version="1.0.4",
     author="Mingye Wang",
     author_email="arthur200126@gmail.com",
     description=description,
