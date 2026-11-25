@@ -36,7 +36,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from math import asin, sin, cos, sqrt, atan2, radians, hypot, pi, pow
+from math import asin, sin, cos, sqrt, atan2, radians, pi, pow
 import warnings
 import collections
 
@@ -68,7 +68,7 @@ class Coords(collections.namedtuple('Coords', 'lat lon')):
         return Coords(self.lat - other.lat, self.lon - other.lon)
 
     def __abs__(self):
-        return hypot(*self)
+        return sqrt(self.lat * self.lat + self.lon * self.lon)
 
     def distance(self, other):
         '''

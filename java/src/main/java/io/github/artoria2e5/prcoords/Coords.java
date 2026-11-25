@@ -20,7 +20,7 @@ public final class Coords {
 
     public Coords sub(Coords o) { return new Coords(lat - o.lat, lon - o.lon); }
 
-    public double abs() { return Math.hypot(lat, lon); }
+    public double abs() { return Math.sqrt(lat * lat + lon * lon); }
 
     /** Haversine over short distances, fine for checking conversion errors. */
     public double distance(Coords o) {
