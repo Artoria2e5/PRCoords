@@ -43,6 +43,7 @@ or stdin and writes the same eight columns to stdout:
     node js/vecs.js TestVecs/inputs.tsv
     octave-cli --quiet --path matlab matlab/vecs.m TestVecs/inputs.tsv
     racket racket/vecs.rkt TestVecs/inputs.tsv
+    (cd go && go run ./cmd/vecs ../TestVecs/inputs.tsv)
 
 `py/checkvecs.py` compares such a dump with `vec.tsv`, either by running the
 command itself or by reading its output:

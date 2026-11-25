@@ -27,6 +27,7 @@ Languages
 - [x] Matlab/Octave
 - [x] PGSQL
 - [x] Typed Racket (`racket/`, package `prcoords`, Flonum types)
+- [x] Go (`go/`, package `prcoords`)
 
 (should I split them into submodules?)
 
