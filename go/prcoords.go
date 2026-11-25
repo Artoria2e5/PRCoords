@@ -23,11 +23,12 @@ func (p Coords) Add(q Coords) Coords { return Coords{p.Lat + q.Lat, p.Lon + q.Lo
 // Sub returns p-q.
 func (p Coords) Sub(q Coords) Coords { return Coords{p.Lat - q.Lat, p.Lon - q.Lon} }
 
-// String implements fmt.Stringer, following the Java port's
-// Coords[lat=..., lon=...] shape.
+// String implements fmt.Stringer. The output is the repr-ish Coords(35,
+// 105.5) shape used by the other ports, not a Go composite literal: %#v
+// prints the struct syntax on its own.
 func (p Coords) String() string {
-	return "Coords[lat=" + strconv.FormatFloat(p.Lat, 'g', -1, 64) +
-		", lon=" + strconv.FormatFloat(p.Lon, 'g', -1, 64) + "]"
+	return "Coords(" + strconv.FormatFloat(p.Lat, 'g', -1, 64) +
+		", " + strconv.FormatFloat(p.Lon, 'g', -1, 64) + ")"
 }
 
 // Abs returns the Euclidean norm of the pair, for deviation checks. The
