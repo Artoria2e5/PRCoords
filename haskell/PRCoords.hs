@@ -1,4 +1,4 @@
-{-# LANGUAGE BangPatterns #-}
+{-# LANGUAGE Strict #-}
 
 --- | People's Rectified Coordinates: GCJ-02 and BD-09 conversion, plus the
 --- Caijun fixed-point refinement for the inverses.

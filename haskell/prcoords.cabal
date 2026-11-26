@@ -8,7 +8,7 @@ description:         People's Rectified Coordinates (PRCoords) is a cross-langua
                      implementation of "public secret" Chinese coordinate obfuscation
                      methods including GCJ-02 and BD-09, along with general
                      deobfuscation methods previously established in pycoordtrans,
-                     eviltransform, and geoChina. May trigger mental episodes.
+                     eviltransform, and geoChina.
 
 homepage:            https://github.com/Artoria2e5/PRCoords
 license:             CC0-1.0
@@ -16,7 +16,7 @@ author:              Mingye Wang
 maintainer:          arthur200126@gmail.com
 category:            Geography
 build-type:          Simple
-tested-with:         GHC == 9.6.7
+tested-with:         GHC == 9.6.7 || == 9.14.1
 extra-doc-files:     CHANGELOG.md
 
 source-repository head
@@ -40,7 +40,7 @@ library
   if flag(llvm)
     ghc-options:       -fllvm
   exposed-modules:     PRCoords
-  other-extensions:    BangPatterns
+  other-extensions:    Strict
   build-depends:       base >=4.9 && <5
   default-language:    Haskell2010
 
