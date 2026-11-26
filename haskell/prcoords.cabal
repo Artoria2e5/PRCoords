@@ -23,13 +23,31 @@ source-repository head
   type:                git
   location:            https://github.com/Artoria2e5/PRCoords
 
+common fastmath
+  ghc-options:         -optlc--enable-unsafe-fp-math
+                       -optlc--enable-no-nans-fp-math
+                       -optlc--enable-no-infs-fp-math
+                       -optlc--enable-no-signed-zeros-fp-math
+                       -optlc--enable-no-trapping-fp-math
+
+flag llvm
+  description:         Compile with the LLVM backend
+  default:             False
+  manual:              True
+
 library
+  import:              fastmath
+  if flag(llvm)
+    ghc-options:       -fllvm
   exposed-modules:     PRCoords
   other-extensions:    BangPatterns
   build-depends:       base >=4.9 && <5
   default-language:    Haskell2010
 
 executable vecs
+  import:              fastmath
+  if flag(llvm)
+    ghc-options:       -fllvm
   main-is:             Vecs.hs
   other-modules:       PRCoords
   ghc-options:         -rtsopts=all

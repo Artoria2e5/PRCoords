@@ -1,5 +1,4 @@
 {-# LANGUAGE BangPatterns #-}
-{-# OPTIONS_GHC -optc-ffast-math -optllc--enable-unsafe-fp-math -optllc--enable-no-nans-fp-math -optllc--enable-no-infs-fp-math #-}
 
 --- | People's Rectified Coordinates: GCJ-02 and BD-09 conversion, plus the
 --- Caijun fixed-point refinement for the inverses.
