@@ -1,6 +1,8 @@
 PRCoords
 ========
 
+[简体中文](README.zh.md) || [GitHub Main] / [Gitee Mirror]
+
 People's Rectified Coordinates (PRCoords) is a cross-language implementation of "public secret" Chinese coordinate obfuscation methods including GCJ-02 and BD-09, along with general deobfuscation methods previously established in [ChinaMapShift][], [eviltransform][], and [geoChina][]. (Referring to the process of replacing straight lines with wavy ones as a "transform" is euphemism overdone.)
 
 For a background on China's geographic obfuscation, see [Restrictions on geographic data in China](https://en.wikipedia.org/wiki/Restrictions_on_geographic_data_in_China#Coordinate_systems) and [中华人民共和国测绘限制](https://zh.wikipedia.org/wiki/中华人民共和国测绘限制) on Wikipedia.
@@ -8,6 +10,8 @@ For a background on China's geographic obfuscation, see [Restrictions on geograp
 [ChinaMapShift]: https://gist.github.com/anonymous/e7c6f67555099180ce1ae8da4ba2c513
 [geoChina]: https://github.com/caijun/geoChina/blob/master/R/cst.R
 [eviltransform]: https://github.com/googollee/eviltransform
+[GitHub Main]: https://github.com/Artoria2e5/PRCoords
+[Gitee Mirror]: https://gitee.com/artoria2e5/PRCoords
 
 Languages
 ---------
@@ -28,10 +32,6 @@ Languages
 - [x] Go (`go/`, module `github.com/Artoria2e5/PRCoords`, package path `.../go`)
 - [x] Lua 5.1+ (`lua/PRCoords.lua`, a plain `PRCoords` table; `lua/mediawiki.lua` is a Scribunto shim)
 - [x] Swift 5+ (`swift/`, SwiftPM package `PRCoords`, d4 sinpi approximation)
-
-(should I split them into submodules?)
-
-For languages not yet supported, we recommend you to check for [eviltransform][] (MIT) or [geoChina][] (GPLv3, R) instead.
 
 Tests
 -----
