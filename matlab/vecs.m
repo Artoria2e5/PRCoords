@@ -20,6 +20,7 @@ else
   fid = 0;
 end
 
+P = zeros (0, 2);
 while (true)
   line = fgetl (fid);
   if (~ ischar (line))
@@ -29,13 +30,22 @@ while (true)
   if (numel (p) < 2)
     continue;
   end
-  w = wgs_gcj (p (1:2)');
-  g = gcj_bd (p (1:2)');
-  b = wgs_bd (p (1:2)');
-  fprintf ('%.17g\t%.17g\t%.17g\t%.17g\t%.17g\t%.17g\t%.17g\t%.17g\n', ...
-           p (1), p (2), w (1), w (2), g (1), g (2), b (1), b (2));
+  P(end + 1, :) = p (1:2)';
 end
 
 if (fid ~= 0)
   fclose (fid);
 end
+
+if (isempty (P))
+  return;
+end
+
+% One vectorized pass over the whole input.  Note that the gcj_bd column is
+% gcj_bd applied to the input itself, matching TestVecs/vec.tsv; wgs_bd is
+% the ordinary composition.
+w = wgs_gcj (P);
+g = gcj_bd (P);
+b = wgs_bd (P);
+M = [P, w, g, b];
+fprintf ('%.17g\t%.17g\t%.17g\t%.17g\t%.17g\t%.17g\t%.17g\t%.17g\n', M');

@@ -1,6 +1,8 @@
 function r = wgs_gcj (w)
   % Apply the GCJ-02 distortion to WGS-84 coordinates.
-  wlat = w (1); wlon = w (2);
+  %
+  % Accepts a two-element point or an N-by-2 matrix of points.
+  [wlat, wlon] = prcoords_points (w);
 
   % Krasovsky 1940 ellipsoid
   GCJ_A = 6378245;
