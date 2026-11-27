@@ -1,0 +1,9 @@
+Package: prcoords
+Type: Package
+Title: People's Rectified Coordinates
+Version: 1.2.0
+Authors@R: person("Mingye", "Wang", email = "arthur126@gmail.com", role = c("aut", "cre"))
+Description: GCJ-02 and BD-09 coordinate obfuscation from and to WGS-84.
+License: CC0
+Encoding: UTF-8
+Depends: R (>= 3.1.0)

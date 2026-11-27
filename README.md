@@ -26,6 +26,8 @@ Languages
 - [x] Haskell (`haskell/PRCoords.hs`)
 - [x] Java 8+ (`io.github.artoria2e5.prcoords`, with an optional JNI bridge to the C++ core)
 - [x] Matlab/Octave
+- [x] R (`r/`, package `prcoords`, vectorized)
+- [x] Julia (`julia/`, package `PRCoords`)
 - [x] PGSQL
 - [x] Typed Racket (`racket/`, package `prcoords`, Flonum types)
 - [x] Go (`go/`, module `github.com/Artoria2e5/PRCoords`, package path `.../go`)

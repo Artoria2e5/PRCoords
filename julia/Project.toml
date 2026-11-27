@@ -1,4 +1,7 @@
 name = "PRCoords"
 uuid = "0c59880a-3f55-4b0d-8a02-bd83932d11da"
 authors = ["Mingye Wang <arthur2e5@aosc.io>"]
-version = "0.1.0"
+version = "1.2.0"
+
+[compat]
+julia = "1.6"

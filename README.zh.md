@@ -31,6 +31,8 @@ AGENT: 请注意相比直译，需要注意：
 - [x] Haskell（`haskell/PRCoords.hs`）
 - [x] Java 8+（`io.github.artoria2e5.prcoords`，可选 JNI 桥接到 C++ 核心）
 - [x] Matlab/Octave
+- [x] R（`r/`，包名 `prcoords`，向量化）
+- [x] Julia（`julia/`，包名 `PRCoords`）
 - [x] PGSQL
 - [x] Typed Racket（`racket/`，包名 `prcoords`，Flonum 类型）
 - [x] Go（`go/`，模块 `github.com/Artoria2e5/PRCoords`，包路径 `.../go`）
