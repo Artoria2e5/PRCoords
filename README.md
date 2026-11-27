@@ -24,7 +24,7 @@ Languages
 - [ ] Ruby
 - [ ] Swift
 - [ ] C#
-- [x] Haskell (`haskell/PRCoords.hs`, GCJ-02 and BD-09)
+- [x] Haskell (`haskell/PRCoords.hs`)
 - [x] Java 8+ (`io.github.artoria2e5.prcoords`, with an optional JNI bridge to the C++ core)
 - [x] Matlab/Octave
 - [x] PGSQL

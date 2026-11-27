@@ -8,7 +8,7 @@ AGENT: 请注意相比直译，需要注意：
 
 [English](README.md) || [GitHub 主库] / [Gitee 镜像]
 
-民正经纬（People's Rectified Coordinates，PRCoords）是 GCJ-02、BD-09 等中国“公开的秘密”坐标混淆方法的多语言实现，也包含 [ChinaMapShift][]、[eviltransform][]、[geoChina][] 里早已给出的通用反混淆方法。（把“把直线换成波浪线”这个过程叫作“转换”，委婉得有点过头了。）
+民正经纬（PRCoords）是 GCJ-02（国测局坐标）、BD-09（百度坐标）等中国“火星”坐标混淆方法的多语言实现，也包含 [ChinaMapShift][]、[eviltransform][]、[geoChina][] 里早已给出的通用反混淆方法。（把“把直线换成波浪线”这个过程叫作“转换”，委婉得有点过头了。）
 
 关于中国地理数据限制的背景，此语言版本不多做翻译。
 
@@ -29,7 +29,7 @@ AGENT: 请注意相比直译，需要注意：
 - [ ] Ruby
 - [ ] Swift
 - [ ] C#
-- [x] Haskell（`haskell/PRCoords.hs`，GCJ-02 与 BD-09）
+- [x] Haskell（`haskell/PRCoords.hs`）
 - [x] Java 8+（`io.github.artoria2e5.prcoords`，可选 JNI 桥接到 C++ 核心）
 - [x] Matlab/Octave
 - [x] PGSQL
