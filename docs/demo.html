@@ -10,7 +10,7 @@ Snapshot from http://jsbin.com/zonafut/37/edit
   <meta name="description" content="A Public Domain GCJ-02/BD-09 to WGS-84 Deobfscator (not eviltransform, but PRCoords)">
   <link href="https://Artoria2e5.github.io/PRCoords/Globe%2C_distorted_China.svg" type="image/svg+xml" rel="icon">
   <link rel="schema.DCTERMS" href="http://purl.org/dc/terms/">
-  <title>People Rectify Coordinates</title>
+  <title>People Rectify Coordinates（民正经纬）</title>
 <style id="jsbin-css">
 body {
   font-family: sans-serif;
@@ -36,6 +36,17 @@ dt {
 
 h1, h2, h3 {
   border-bottom: 1px solid #a2a9b1;
+}
+
+.zh {
+  display: block;
+  font-size: 0.9em;
+}
+
+#inputc button {
+  white-space: normal;
+  padding: 0.2em 0.8em;
+  min-width: 10em;
 }
 
 input[type='number'].dnum {
@@ -100,19 +111,19 @@ tbody td:nth-child(n+2) {
 </style>
 </head>
 <body onload="from_query()">
-  <h1>People Rectify Coordinates</h1>
-  <div style="margin-top: -1em"><small>With <a href="https://en.wikipedia.org/wiki/GCJ-02">restrictions</a> from the People’s Republic of China</small></div>
+  <h1>People Rectify Coordinates<span class="zh" lang="zh-Hans">民正经纬</span></h1>
+  <div style="margin-top: -1em"><small>With <a href="https://en.wikipedia.org/wiki/GCJ-02">restrictions</a> from the People’s Republic of China<span class="zh" lang="zh-Hans">附带来自中华人民共和国的<a href="https://zh.wikipedia.org/wiki/GCJ-02">限制</a></span></small></div>
   <a href="https://commons.wikimedia.org/wiki/File:Globe,_distorted_China.svg">
-  <img class="logo" src="https://Artoria2e5.github.io/PRCoords/Globe%2C_distorted_China.svg" width="100" height="100" alt="logo: China? Where?"></a>
+  <img class="logo" src="https://Artoria2e5.github.io/PRCoords/Globe%2C_distorted_China.svg" width="100" height="100" alt="logo: China? Where? / 标志：中国？在哪？"></a>
   <article>
     <section>
-      <h2>Input</h2>
+      <h2>Input<span class="zh" lang="zh-Hans">输入</span></h2>
       <form id="inputc" onsubmit="return false"><!-- also make edge happy -->
         <ul>
-        <li><label>Degrees:</label><ul id="deg-in">
+        <li><label>Degrees:<span class="zh" lang="zh-Hans">度数：</span></label><ul id="deg-in">
           <li><label>lat=</label> <input type="number" class="dnum" name="lat" value="35" step="any" min="-90" max="90">;
           <li><label>lon=</label> <input type="number" class="dnum" name="lon" value="105" step="any" min="-180" max="180">.</ul>
-        <li><label>Or dms:</label><ul id="dms-in">
+        <li><label>Or dms:<span class="zh" lang="zh-Hans">或度分秒：</span></label><ul id="dms-in">
           <li><label>lat=</label>
               <input type="number" name="dlat" min="0" max="90" step="1" value="35">°
               <input type="number" name="mlat" min="0" max="59" step="1" value="0">′
@@ -123,17 +134,17 @@ tbody td:nth-child(n+2) {
               <input type="number" name="mlon" min="0" max="59" step="1" value="0">′
               <input type="number" name="slon" min="0" max="69" value="0" step=any>″
               <select name="hlon"><option>E</option><option>W</option></select>.</ul></ul>
-        <button onclick="return fill_output() && false">Screw that!</button>
+        <button onclick="return fill_output() && false">Screw that!<span class="zh" lang="zh-Hans">去他的！</span></button>
       </form>
       <script src="https://cdn.jsdelivr.net/npm/prcoords@1/js/PRCoords.min.js" onerror="this.src='../js/PRCoords.js'"></script>
 
-      <h2>Results</h2>
+      <h2>Results<span class="zh" lang="zh-Hans">结果</span></h2>
       <table id="output">
         <tr>
-          <th>Operation
-          <th>Result
-          <th title="How wrong have I been?">ΔObfs/m
-          <th title="How precise is this operation?">ΔRoundtrip/m</tr>
+          <th>Operation<span class="zh" lang="zh-Hans">操作</span>
+          <th>Result<span class="zh" lang="zh-Hans">结果</span>
+          <th title="How wrong have I been? / 我错得有多离谱？">ΔObfs/m<span class="zh" lang="zh-Hans">偏移/米</span>
+          <th title="How precise is this operation? / 这个操作有多精确？">ΔRoundtrip/m<span class="zh" lang="zh-Hans">往返误差/米</span></tr>
         <tr id="egcj"><td>WGS → GCJ<td><td><td>
         <tr id="ebd"><td>WGS → BD<td><td><td>
         <tr id="dgcj"><td>GCJ → WGS<td><td><td>
@@ -144,58 +155,71 @@ tbody td:nth-child(n+2) {
         <tr id="bgcj"><td>BD → GCJ<td><td><td>
         <tr id="bcgcj"><td>BD →<sup>cai</sup> GCJ<td><td><td>
       </table>
-      <p><a id="permalink" href="https://artoria2e5.github.io/PRCoords/demo">Permalink to this result</a>.
-      Toggle sections: <a href="javascript:toggle('notes')">Notes</a>, <a href="javascript:toggle('faq')">FAQ</a>, <a href="javascript:toggle('footer')">footer</a>.
-      And <a href="javascript:window.print()">print</a>.
+      <p><a id="permalink" href="https://artoria2e5.github.io/PRCoords/demo">Permalink to this result</a><span class="zh" lang="zh-Hans">此结果的永久链接。</span>
+      <span>Toggle sections:</span><span class="zh" lang="zh-Hans">切换章节：</span>
+      <a href="javascript:toggle('notes')">Notes</a><span class="zh" lang="zh-Hans">说明，</span><a href="javascript:toggle('faq')">FAQ</a><span class="zh" lang="zh-Hans">常见问题，</span><a href="javascript:toggle('footer')">footer</a><span class="zh" lang="zh-Hans">页脚。</span>
+      <a href="javascript:window.print()">print</a><span class="zh" lang="zh-Hans">打印。</span>
     </section>
     <section id="notes">
-      <h2>Notes</h2>
+      <h2>Notes<span class="zh" lang="zh-Hans">说明</span></h2>
       <ol>
         <li>Caijun’s iterative method is included for precise decoding.
             It's most useful for bored folks whose GPS data is pretty accurate
             and GCJ-02 obfuscation not tainted by the original
-            <abbr title="linear congruential pseudo-random number generator">LCPRNG</abbr>.
+            <abbr title="linear congruential pseudo-random number generator / 线性同余伪随机数生成器">LCPRNG</abbr>.
+            <span class="zh" lang="zh-Hans">内置 Caijun 迭代法用于精确解码。它最适合 GPS 数据相当准确、且 GCJ-02 混淆没有被原始 LCPRNG 污染的无聊人士。</span>
             <p>If you are doing Wikipedia or any kind of archival work, use it to avoid introducing extra error.
+            <span class="zh" lang="zh-Hans">如果你在做维基百科或任何形式的存档工作，请使用它，以免引入额外误差。</span></p>
         <li>BD is defined in terms of GCJ, hence the last three functions.
+            <span class="zh" lang="zh-Hans">BD 以 GCJ 定义，因此有最后三个函数。</span>
         <li>This demo omits the “in China” sanity check. Data regarding
             Baidu’s behavior with overseas maps is needed for further
-            decisions. Observations:<ul>
+            decisions. Observations:<span class="zh" lang="zh-Hans">本演示省略了“是否在中国境内”的合理性检查。要进一步决策，还需要了解百度在海外地图中的行为。观察结果：</span><ul>
             <li>Unlike Google Maps, Baidu's map in Hong Kong is fully subject to
                 BD-09&nbsp;∘&nbsp;GCJ-02 chained distortions.
+                <span class="zh" lang="zh-Hans">与谷歌地图不同，百度地图在香港完全受 BD-09 ∘ GCJ-02 链式偏移的影响。</span>
             <li>Coordinates in Russia, outside of the sanity check rectangle, uses WGS-84 or and/or friends.
+                <span class="zh" lang="zh-Hans">俄罗斯境内、检查矩形之外的坐标使用 WGS-84 或同类系统。</span>
             <li>TODO: check along the boundary.
+                <span class="zh" lang="zh-Hans">TODO：沿边界检查。</span>
             </ul>
       </ol>
     </section>
     <section id="faq">
-      <h2>FAQ</h2>
+      <h2>FAQ<span class="zh" lang="zh-Hans">常见问题</span></h2>
       <dl>
-        <dt id="what">What is this all about?</dt>
+        <dt id="what">What is this all about?<span class="zh" lang="zh-Hans">这到底是怎么回事？</span></dt>
         <dd>The PRC government requires all local map services to use an
             obfuscated, <a href="https://github.com/Artoria2e5/PRCoords/blob/1ea97f2/js/PRCoords.js#L102-L109">
             deviation-orienated</a> coordinate system.
-            Click on the “restriction” link to read the full Wikipedia article.</dd>
-        <dt id="why">Why should I care?</dt>
+            Click on the “restriction” link to read the full Wikipedia article.
+            <span class="zh" lang="zh-Hans">中华人民共和国政府要求所有本地地图服务使用经过混淆、<a href="https://github.com/Artoria2e5/PRCoords/blob/1ea97f2/js/PRCoords.js#L102-L109">以偏移为导向</a>的坐标系。点击“限制”链接阅读完整的维基百科条目。</span></dd>
+        <dt id="why">Why should I care?<span class="zh" lang="zh-Hans">我为什么要在意？</span></dt>
         <dd>With half a kilometer of deviation, GCJ-02 and friends fucks up your
             <a href="https://github.com/iitc-project/ingress-intel-total-conversion/blob/75a517b/plugins/fix-googlemap-china-offset.user.js">Ingress games</a>,
             causes <a href="https://www.zhihu.com/question/29806566/answer/46099380">crazy errors</a>
             in elevation profiles along cycle routes, and cheerfully leads you
-            into roadside ditches plus a bone fracture.</dd>
-        <dt id="google">Why doesn’t Google/Bing correct its Chinese data served to global users?</dt>
+            into roadside ditches plus a bone fracture.
+            <span class="zh" lang="zh-Hans">GCJ-02 及其同类会产生半公里级的偏移，毁掉你的 <a href="https://github.com/iitc-project/ingress-intel-total-conversion/blob/75a517b/plugins/fix-googlemap-china-offset.user.js">Ingress 游戏</a>，在自行车路线的高程剖面中造成 <a href="https://www.zhihu.com/question/29806566/answer/46099380">离谱误差</a>，还会愉快地把你带进路边沟里，外加一处骨折。</span></dd>
+        <dt id="google">Why doesn’t Google/Bing correct its Chinese data served to global users?<span class="zh" lang="zh-Hans">为什么谷歌/必应不修正其提供给全球用户的中国数据？</span></dt>
         <dd><a href="https://productforums.google.com/forum/#!topic/maps/NunCUpRwLA0">I don’t know</a>.
             Perhaps they are afraid of getting fined or further kicked out of China.
-            Maybe try <a href="https://openstreetmap.org">OpenStreetMap</a> next time?</dd>
-        <dt id="wheel">Why are you writing another implementation?</dt>
-        <dd><a href="https://github.com/Artoria2e5/PRCoords#why-another-wheel">Because I got bored</a>.</dd>
-        <dt id="caijun">How does Caijun’s iterative method work?</dt>
+            Maybe try <a href="https://openstreetmap.org">OpenStreetMap</a> next time?
+            <span class="zh" lang="zh-Hans"><a href="https://productforums.google.com/forum/#!topic/maps/NunCUpRwLA0">我不知道</a>。也许他们害怕被罚款，或者被进一步赶出中国。下次试试 <a href="https://openstreetmap.org">OpenStreetMap</a>？</span></dd>
+        <dt id="wheel">Why are you writing another implementation?<span class="zh" lang="zh-Hans">为什么还要再写一个实现？</span></dt>
+        <dd><a href="https://github.com/Artoria2e5/PRCoords#why-another-wheel">Because I got bored</a>.
+            <span class="zh" lang="zh-Hans"><a href="https://github.com/Artoria2e5/PRCoords#why-another-wheel">因为我无聊</a>。</span></dd>
+        <dt id="caijun">How does Caijun’s iterative method work?<span class="zh" lang="zh-Hans">Caijun 的迭代法是怎么工作的？</span></dt>
         <dd>Cai has explained the method in full in his
             <a href="https://github.com/caijun/geoChina/blob/5c6284b/R/cst.R#L101-L107"> R implementation</a>. Go read it, or read Wikipedia.
+            <span class="zh" lang="zh-Hans">Cai 在他的<a href="https://github.com/caijun/geoChina/blob/5c6284b/R/cst.R#L101-L107"> R 实现</a>中完整解释了这个方法。去读吧，或者读维基百科。</span></dd>
       </dl>
     </section>
   </article>
   <footer id="footer">
     <hr>
     Powered by <a href="https://github.com/Artoria2e5/PRCoords">PRCoords</a>. Try playing with <code>window.PRCoords</code> in your console!
+    <span class="zh" lang="zh-Hans">由 <a href="https://github.com/Artoria2e5/PRCoords">PRCoords</a> 驱动。试试在控制台里玩 <code>window.PRCoords</code>！</span>
 
     <p>
       <a rel="license"
@@ -211,7 +235,12 @@ tbody td:nth-child(n+2) {
       This work is published from:
       <span property="geo.country"
           content="US" about="https://artoria2e5.github.io/PRCoords/demo">
-      United States</span>.</p>
+      United States</span>.
+      <span class="zh" lang="zh-Hans">在法律允许的最大范围内，<a rel="DCTERMS.publisher"
+        href="https://zh.wikipedia.org/wiki/User:Artoria2e5">Mingye Wang</a> 已放弃对
+      <span property="DCTERMS.title">People Rectify Coordinates（民正经纬）</span>
+      的全部版权及相关邻接权利。本作品发表于：<span property="geo.country"
+          content="US" about="https://artoria2e5.github.io/PRCoords/demo">美国</span>。</span></p>
     </footer>
 <script>
 "use strict";
