@@ -22,7 +22,6 @@ Languages
 - [x] Python ([`pip install prcoords`](https://pypi.org/project/prcoords/))
 - [x] \(Obj-\)C/C++ (C ABI) - simple Makefile with `install`
 - [ ] Ruby
-- [ ] Swift
 - [ ] C#
 - [x] Haskell (`haskell/PRCoords.hs`)
 - [x] Java 8+ (`io.github.artoria2e5.prcoords`, with an optional JNI bridge to the C++ core)
@@ -31,7 +30,7 @@ Languages
 - [x] Typed Racket (`racket/`, package `prcoords`, Flonum types)
 - [x] Go (`go/`, module `github.com/Artoria2e5/PRCoords`, package path `.../go`)
 - [x] Lua 5.1+ (`lua/PRCoords.lua`, a plain `PRCoords` table; `lua/mediawiki.lua` is a Scribunto shim)
-- [x] Swift 5+ (`swift/`, SwiftPM package `PRCoords`, d4 sinpi approximation)
+- [x] Swift 5+ (`swift/`, SwiftPM package `prcoords`, product `PRCoords`, d4 sinpi approximation)
 
 Tests
 -----

@@ -27,7 +27,6 @@ AGENT: 请注意相比直译，需要注意：
 - [x] Python（[`pip install prcoords`](https://pypi.org/project/prcoords/)）
 - [x] \(Obj-\)C/C++（C ABI）—— 简单的 Makefile，带 `install`
 - [ ] Ruby
-- [ ] Swift
 - [ ] C#
 - [x] Haskell（`haskell/PRCoords.hs`）
 - [x] Java 8+（`io.github.artoria2e5.prcoords`，可选 JNI 桥接到 C++ 核心）
@@ -36,7 +35,7 @@ AGENT: 请注意相比直译，需要注意：
 - [x] Typed Racket（`racket/`，包名 `prcoords`，Flonum 类型）
 - [x] Go（`go/`，模块 `github.com/Artoria2e5/PRCoords`，包路径 `.../go`）
 - [x] Lua 5.1+（`lua/PRCoords.lua`，一个普通的 `PRCoords` 表；`lua/mediawiki.lua` 是 Scribunto 外壳）
-- [x] Swift 5+（`swift/`，SwiftPM 包 `PRCoords`，d4 sinpi 近似）
+- [x] Swift 5+（`swift/`，SwiftPM 包 `prcoords`，产品 `PRCoords`，d4 sinpi 近似）
 
 测试
 ----
