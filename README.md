@@ -183,7 +183,7 @@ Unless otherwise mentioned, all files in this package, including this README fil
 are dual-licensed under:
 
 * [CC0 1.0 Public Domain Dedication](LICENSE)
-* [GNU General Public License (version 3 or up)](licenses/GPL-3.0.txt)
+* [GNU General Public License (version 3 or up)](LICENSE.gplv3)
 
 GPL is only included for fun here. Dual-licensing works under an "or" condition, so don't worry.
 
