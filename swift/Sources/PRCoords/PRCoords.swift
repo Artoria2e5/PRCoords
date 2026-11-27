@@ -1,7 +1,7 @@
 import Foundation
 
 /// Latitude and longitude in degrees.
-public struct Coords: Equatable, Sendable, CustomStringConvertible {
+public struct Coords: Hashable, Comparable, AdditiveArithmetic, Sendable, CustomStringConvertible {
     public var lat: Double
     public var lon: Double
 
@@ -10,8 +10,15 @@ public struct Coords: Equatable, Sendable, CustomStringConvertible {
         self.lon = lon
     }
 
+    public static let zero = Coords(0, 0)
+
     public var description: String {
         return "Coords(\(lat), \(lon))"
+    }
+
+    /// Lexicographic order by latitude, then longitude, matching the C++ port.
+    public static func < (a: Coords, b: Coords) -> Bool {
+        return a.lat < b.lat || (a.lat == b.lat && a.lon < b.lon)
     }
 
     public static func + (a: Coords, b: Coords) -> Coords {

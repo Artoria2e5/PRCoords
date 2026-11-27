@@ -3,7 +3,7 @@ package io.github.artoria2e5.prcoords;
 import java.util.Objects;
 
 /** Latitude and longitude in degrees. */
-public final class Coords {
+public final class Coords implements Comparable<Coords> {
     private final double lat;
     private final double lon;
 
@@ -43,6 +43,13 @@ public final class Coords {
 
     @Override
     public int hashCode() { return Objects.hash(lat, lon); }
+
+    /** Orders by latitude, then longitude, matching the C++ port. */
+    @Override
+    public int compareTo(Coords o) {
+        int c = Double.compare(lat, o.lat);
+        return c != 0 ? c : Double.compare(lon, o.lon);
+    }
 
     @Override
     public String toString() { return "Coords[lat=" + lat + ", lon=" + lon + "]"; }

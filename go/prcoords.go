@@ -30,6 +30,12 @@ func (p Coords) String() string {
 		", Lon: " + strconv.FormatFloat(p.Lon, 'g', -1, 64) + "}"
 }
 
+// Less orders by latitude, then longitude, matching the C++ port. It is
+// suitable as the less function for sort.Slice.
+func (p Coords) Less(q Coords) bool {
+	return p.Lat < q.Lat || (p.Lat == q.Lat && p.Lon < q.Lon)
+}
+
 // Abs returns the Euclidean norm of the pair, for deviation checks. The
 // coordinates are degree-sized, so a plain sqrt is safe and cheaper than
 // math.Hypot's overflow-scaled path.
