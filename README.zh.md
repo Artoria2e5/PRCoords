@@ -154,8 +154,8 @@ C++ 实现里可以打开几个偷工减料的选项：
 
 除另有说明外，本包内所有文件（包括这份 README）均以双许可证发布：
 
-* [CC0 1.0 公有领域贡献语](https://creativecommons.org/publicdomain/zero/1.0/)
-* [GNU 通用公共许可证（第 3 版或更高）](https://gnu.org/licenses/gpl.html)
+* [CC0 1.0 公有领域贡献语](LICENSE)
+* [GNU 通用公共许可证（第 3 版或更高）](licenses/GPL-3.0.txt)
 
 这里的 GPL 纯粹是图一乐。双许可按“或”的条件生效，不必担心。
 

@@ -182,8 +182,8 @@ License
 Unless otherwise mentioned, all files in this package, including this README file,
 are dual-licensed under:
 
-* [CC0 1.0 Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/)
-* [GNU General Public License (version 3 or up)](https://gnu.org/licenses/gpl.html)
+* [CC0 1.0 Public Domain Dedication](LICENSE)
+* [GNU General Public License (version 3 or up)](licenses/GPL-3.0.txt)
 
 GPL is only included for fun here. Dual-licensing works under an "or" condition, so don't worry.
 
