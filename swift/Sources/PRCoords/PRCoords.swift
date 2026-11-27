@@ -11,7 +11,7 @@ public struct Coords: Equatable, CustomStringConvertible {
     }
 
     public var description: String {
-        return "Coords(lat: \(lat), lon: \(lon))"
+        return "Coords(\(lat), \(lon))"
     }
 
     public static func + (a: Coords, b: Coords) -> Coords {
