@@ -26,4 +26,4 @@ p = gcj_wgs(Coords(lat, lon))       # bd_wgs for BD-09
 ArchGDAL.createpoint(p.lon, p.lat)
 ```
 
-GCJ-02 is not an EPSG CRS; keep the source CRS explicitly if you need one.
+The result is WGS-84; tag the layer's spatial reference as EPSG:4326.
