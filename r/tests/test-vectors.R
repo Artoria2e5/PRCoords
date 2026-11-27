@@ -1,0 +1,10 @@
+library(prcoords)
+
+p <- c(20.235733, 26.504442)
+q <- c(115.254019, 121.456316)
+w <- wgs_gcj(p, q)
+stopifnot(max(abs(w[, 1] - c(20.233449500423102, 26.50123691687214))) < 1e-12)
+stopifnot(max(abs(w[, 2] - c(115.25861410396281, 121.46051579173883))) < 1e-12)
+stopifnot(max(abs(gcj_wgs(w[, 1], w[, 2]) - cbind(p, q))) < 1e-4)
+stopifnot(all(in_china(c(35, 48.8566), c(105, 2.3522)) == c(TRUE, FALSE)))
+stopifnot(distance(35, 105, 35, 105) == 0)
