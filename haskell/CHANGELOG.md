@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.0
+
+- `Coords` gained ordering by latitude, then longitude. Swift adds
+  Hashable, Comparable and AdditiveArithmetic; Java implements Comparable;
+  Go has `Less`; Racket exports `latlon-compare`, `latlon<?` and
+  `latlon>?`.
+- The Swift package enables strict concurrency checking in Swift 5 mode,
+  and `Coords` is Sendable.
+- `LICENSE` is now the CC0 text, with the GPLv3 text kept as
+  `LICENSE.gplv3`.
+
 ## 1.1.1
 
 - The Swift package is named `prcoords`; the `PRCoords` product and
