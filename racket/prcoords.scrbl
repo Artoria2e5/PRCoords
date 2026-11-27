@@ -19,3 +19,13 @@ variant that takes an explicit China check, and the @tt{-bored} procedures run
 ten rounds of the Caijun fixed-point refinement.
 
 @defstruct[latlon ([lat Flonum] [lon Flonum])]{A point in degrees.}
+
+@defproc[(latlon-compare [a latlon] [b latlon]) exact-integer?]{
+ Returns @racket[-1], @racket[0] or @racket[1] as @racket[a] sorts before,
+ equal to or after @racket[b], by latitude then longitude.}
+
+@defproc[(latlon<? [a latlon] [b latlon]) boolean?]{
+ True when @racket[a] sorts before @racket[b].}
+
+@defproc[(latlon>? [a latlon] [b latlon]) boolean?]{
+ True when @racket[a] sorts after @racket[b].}

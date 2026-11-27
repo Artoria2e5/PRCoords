@@ -12,6 +12,7 @@
 (require racket/flonum)
 
 (provide latlon latlon? latlon-lat latlon-lon
+         latlon-compare latlon<? latlon>?
          in-china?
          wgs-gcj wgs-gcj* gcj-wgs gcj-wgs*
          gcj-bd bd-gcj wgs-bd wgs-bd* bd-wgs bd-wgs*
@@ -24,6 +25,22 @@
   #:property prop:custom-write
   (lambda (v out mode)
     (fprintf out "(latlon ~s ~s)" (latlon-lat v) (latlon-lon v))))
+
+;; Three-way comparison, latitude first then longitude, like the C++ port.
+(: latlon-compare (-> latlon latlon Integer))
+(define (latlon-compare a b)
+  (cond
+    [(fl< (latlon-lat a) (latlon-lat b)) -1]
+    [(fl> (latlon-lat a) (latlon-lat b)) 1]
+    [(fl< (latlon-lon a) (latlon-lon b)) -1]
+    [(fl> (latlon-lon a) (latlon-lon b)) 1]
+    [else 0]))
+
+(: latlon<? (-> latlon latlon Boolean))
+(define (latlon<? a b) (negative? (latlon-compare a b)))
+
+(: latlon>? (-> latlon latlon Boolean))
+(define (latlon>? a b) (positive? (latlon-compare a b)))
 
 ;; Krasovsky 1940, the ellipsoid GCJ-02 pretends to use.
 (: gcj-a Flonum)
@@ -227,5 +244,10 @@
   (chk (gcj-bd b) 30.006359999864998 120.00640999946)
   (chk (bd-gcj b) 29.99366216605467 119.9935908161529)
   (chk (wgs-bd b) 30.003883055512777 120.011070620552)
-  (chk (bd-wgs b) 29.99614733160918 119.98894747845797))
+  (chk (bd-wgs b) 29.99614733160918 119.98894747845797)
+
+  ;; Ordering: latitude first, then longitude.
+  (check-true (latlon<? (latlon 35.0 105.0) (latlon 35.0 106.0)))
+  (check-false (latlon<? (latlon 35.0 106.0) (latlon 35.0 105.0)))
+  (check-equal? (latlon-compare (latlon 35.0 105.0) (latlon 34.0 120.0)) 1))
 
