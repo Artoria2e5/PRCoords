@@ -75,7 +75,7 @@ PRCoords 的 API 以专门的坐标结构为输入和输出。API 名称中，WG
 
 PRCoords 通常只应作用于混淆后的输入数据，而这些数据主要是中国坐标。因此最初的实现里带了一个[非常非常粗略](https://news.ycombinator.com/item?id=10965506)的合理性检查，范围是墨卡托投影地图上的一个矩形。可以传入布尔值覆盖该检查；某些语言里也可能干脆没实现——那要看我有没有心情做这种傻事。
 
-还有一个“insane”检查，试图逼近 Google 与百度的畸变范围，供 [IITC](https://iitc.me) 使用：[`js/insane_is_in_china.js`](https://github.com/Artoria2e5/PRCoords/blob/master/js/insane_is_in_china.js)。它本质上是对一个 70 个顶点的多边形做射线投射检查。至于某个点是否属于被政府折腾过的中国数据，仍应由调用方自己判断。
+还有一个“insane”检查，试图逼近 Google 与百度的畸变范围，供 [IITC](https://iitc.me) 使用：[`js/insane_is_in_china.js`](https://github.com/Artoria2e5/PRCoords/blob/master/js/insane_is_in_china.js)。它本质上是对一个 70 个顶点的多边形做射线投射检查。至于某个点是否属于被依法折腾过的中国数据，仍应由调用方自己判断。
 
 常见问题
 --------
@@ -135,7 +135,7 @@ PROJCS["Baidu 2009, Pseudo-Mercator",
 
 `proj4` 本身当然看不懂这些投影，但 proj4js 的开发者把扩展做得[非常容易](https://github.com/proj4js/proj4js/issues/358)。这里有个[例子](https://runkit.com/artoria2e5/proj4-plugin-prcoords)（备份在 [`docs/proj4_plugin.js`](https://github.com/Artoria2e5/PRCoords/blob/master/docs/proj4_plugin.js)，以防 RunKit 下线），演示如何给 proj4js 加上 PRCoords 支持。
 
-### 该用快速浮点数学吗？
+### 该用快速浮点算数（`-ffast-math`）吗？
 
 该用。最初的 GCJ-02（“EMQ”版）里有个伪随机分量，本身就会带来最多 1 米的误差。你不可能做得比它更糟。
 
@@ -163,7 +163,7 @@ C++ 实现里可以打开几个偷工减料的选项：
 来源
 ----
 
-* EMQ 的 [Algorithm.Coords.Converter](https://archive.is/20130815104734/emq.googlecode.com/svn/emq/src/Algorithm/Coords/Converter.java) 大概就是 GCJ 的*那个*泄密源。它是一个“用于演示 GIS 系统”的 JSP 项目，多半出自某个政府外包商。
+* EMQ 的 [Algorithm.Coords.Converter](https://archive.is/20130815104734/emq.googlecode.com/svn/emq/src/Algorithm/Coords/Converter.java) 大概就是 GCJ 的*那个*泄密源。它是一个“用于演示 GIS 系统”的 JSP 项目，多半出自某个电网外包商。
   * GCJ 在两个轴上的偏移都带一点随机性：一次 `sin` 调用加一个 LCG。二者各带来最多 1 米误差。
 * [on4wp7](https://archive.is/20150702191259/https://on4wp7.codeplex.com/SourceControl/changeset/view/21483%23353936)（2013）是最早把 GCJ（正向）实现合理化的版本。
 * [ChinaMapShift][]（2014）想出了 GCJ 的快速迭代逆变换。我是先从 geoChina 那里知道的，然后在这里推广开。
