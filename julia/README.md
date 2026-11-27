@@ -1,5 +1,15 @@
 # PRCoords for Julia
 
+People's Rectified Coordinates (PRCoords) is a cross-language implementation of
+"public secret" Chinese coordinate obfuscation methods including GCJ-02 and
+BD-09, along with general deobfuscation methods previously established in
+ChinaMapShift, eviltransform, and geoChina.
+
+This directory is the Julia port, packaged as `PRCoords`.
+
+The full README, the other language ports and the test vectors live in the
+repository: [Artoria2e5/PRCoords](https://github.com/Artoria2e5/PRCoords).
+
 GCJ-02 and BD-09 are what Chinese maps serve; go back to WGS-84 with:
 
 ```julia
