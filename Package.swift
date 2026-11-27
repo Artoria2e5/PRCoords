@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "PRCoords",
+    name: "prcoords",
     products: [
         .library(name: "PRCoords", targets: ["PRCoords"]),
         .executable(name: "vecs", targets: ["vecs"]),

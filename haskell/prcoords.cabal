@@ -1,6 +1,6 @@
 cabal-version:       3.0
 name:                prcoords
-version:             1.1.0
+version:             1.1.1
 
 synopsis:            GCJ-02 and BD-09 coordinate obfuscation from and to WGS-84.
 

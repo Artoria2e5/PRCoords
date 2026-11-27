@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.1
+
+- The Swift package is named `prcoords`; the `PRCoords` product and
+  module names are unchanged.
+- `Coords.description` prints `Coords(lat, lon)`, matching the unlabeled
+  initializer, so the output is paste-able.
+
 ## 1.1.0
 
 - Swift port added as a root SwiftPM package, `PRCoords` (Swift 5
