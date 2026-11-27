@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.8
 import PackageDescription
 
 let package = Package(
@@ -8,8 +8,10 @@ let package = Package(
         .executable(name: "vecs", targets: ["vecs"]),
     ],
     targets: [
-        .target(name: "PRCoords", path: "swift/Sources/PRCoords"),
-        .target(name: "vecs", dependencies: ["PRCoords"], path: "swift/Sources/vecs"),
+        .target(name: "PRCoords", path: "swift/Sources/PRCoords",
+                swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]),
+        .executableTarget(name: "vecs", dependencies: ["PRCoords"], path: "swift/Sources/vecs",
+                swiftSettings: [.enableUpcomingFeature("StrictConcurrency")]),
     ],
     swiftLanguageVersions: [.v5]
 )

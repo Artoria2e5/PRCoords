@@ -1,7 +1,7 @@
 import Foundation
 
 /// Latitude and longitude in degrees.
-public struct Coords: Equatable, CustomStringConvertible {
+public struct Coords: Equatable, Sendable, CustomStringConvertible {
     public var lat: Double
     public var lon: Double
 
