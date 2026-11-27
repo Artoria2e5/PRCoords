@@ -35,7 +35,7 @@ AGENT: 请注意相比直译，需要注意：
 - [x] Typed Racket（`racket/`，包名 `prcoords`，Flonum 类型）
 - [x] Go（`go/`，模块 `github.com/Artoria2e5/PRCoords`，包路径 `.../go`）
 - [x] Lua 5.1+（`lua/PRCoords.lua`，一个普通的 `PRCoords` 表；`lua/mediawiki.lua` 是 Scribunto 外壳）
-- [x] Swift 5+（`swift/`，SwiftPM 包 `prcoords`，产品 `PRCoords`，d4 sinpi 近似）
+- [x] Swift 5+（`swift/`，SwiftPM 包 `prcoords`，产品 `PRCoords`，d4 sinpi 近似） [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FArtoria2e5%2FPRCoords%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/Artoria2e5/PRCoords)
 
 测试
 ----

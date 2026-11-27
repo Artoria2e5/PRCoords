@@ -30,7 +30,7 @@ Languages
 - [x] Typed Racket (`racket/`, package `prcoords`, Flonum types)
 - [x] Go (`go/`, module `github.com/Artoria2e5/PRCoords`, package path `.../go`)
 - [x] Lua 5.1+ (`lua/PRCoords.lua`, a plain `PRCoords` table; `lua/mediawiki.lua` is a Scribunto shim)
-- [x] Swift 5+ (`swift/`, SwiftPM package `prcoords`, product `PRCoords`, d4 sinpi approximation)
+- [x] Swift 5+ (`swift/`, SwiftPM package `prcoords`, product `PRCoords`, d4 sinpi approximation) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FArtoria2e5%2FPRCoords%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/Artoria2e5/PRCoords)
 
 Tests
 -----
