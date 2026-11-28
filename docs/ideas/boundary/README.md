@@ -52,6 +52,62 @@ Checks on that output:
 
 The land border stays within about 4 km of the original.
 
+Coarser presets
+---------------
+
+The polygon can be much smaller if the test only needs to answer "in the
+country, not close to the border".  At these tolerances the default box is
+too small: only the coast south of 40 N would get sea treatment, and the
+northern coast would be cut as if it were a land border.  Both presets
+extend the box to `--sea-lon 117 --sea-lat 41`, which also puts the short
+river border in the northeast on the coast side.  All measurements below
+use three decimals (the 0.001 deg grid is 110 m, far below the chord error,
+so precision does not cost anything here).
+
+About 300 points, 292 after rounding, 7 rings, 4.9 KB:
+
+    python simplify.py OSMB-....geojson.xz b300.geojson --precision 3 \
+        --land-area 0.05 --sea-area 2 --allow 0.3 --grow 0.1 \
+        --sea-lon 117 --sea-lat 41
+
+| measure | value |
+|---------|-------|
+| points | 292 (main ring 264) |
+| area | +2.4 deg^2, +0.25% |
+| median deviation | 0.025 deg |
+| p90 / p99 / max | 0.10 / 1.12 / 2.10 deg |
+| flips, boundary jitter | 2.6% false negative, 3.5% false positive |
+| city checks | unchanged, all twelve |
+| island rings | 6 of 12 survive |
+
+The long tail is one chord that skips the Bohai/Liaodong coast: the bay and
+the sea north of the chord count as land, and the 3,718 source vertices in
+that region end up 0.9 deg from the outline at the median, 2.1 deg at worst.  Everywhere else the deviation
+stays under 0.38 deg, the southern coast included (median 0.04).  The bay
+can be kept with a `--keep` disc, at the cost of leaving the 300-point
+budget.
+
+Near 128 points, 125 after rounding, 3 rings, 2.1 KB:
+
+    python simplify.py OSMB-....geojson.xz b128.geojson --precision 3 \
+        --land-area 0.3 --sea-area 3 --allow 0.5 --grow 0.2 \
+        --sea-lon 117 --sea-lat 41
+
+| measure | value |
+|---------|-------|
+| points | 125 (main ring 117) |
+| area | -2.3 deg^2, islands lost |
+| median / p90 / max | 0.063 / 0.22 / 0.68 deg |
+| flips, boundary jitter | 5.6% false negative, 6.4% false positive |
+| island rings | 2 of 12 survive |
+
+The land border breaks into chords a few tenths of a degree long, ten of
+the twelve island rings fall below the four-point floor, and the polygon
+loses more area than it gains.  Every city test still passes, but the flips
+around the border more than double.  Five kilobytes is already small, so
+300 is the better stopping point unless the polygon has to fit a fixed-size
+budget.
+
 Parameters
 ----------
 
