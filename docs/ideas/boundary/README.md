@@ -2,17 +2,18 @@ A smaller boundary for containment
 ==================================
 
 `OSMB-5900e60dcdf2caa109f3783d2dcde9203161950c.geojson.xz` is an OSM
-boundary export for the region, 152,796 points, and it is too detailed to
-ship inside a port.  What a containment test needs is a polygon that says
-yes on land and close to shore, no far away, and that never loses a coastal
+boundary export for the region.  It has 152,796 points, too many to ship
+inside a port.  A containment test needs much less: a polygon that says yes
+on land and close to shore, no far away, and that does not lose a coastal
 town to simplification.
 
 `simplify.py` derives that polygon:
 
     python simplify.py OSMB-....geojson.xz out.geojson      # xz works too
 
-Holes are dropped.  A lake is still part of the region, and the original
-file marks some islands as holes too, so keeping holes would deny them.
+Holes are dropped.  A lake is still part of the region, and the file also
+marks some islands as holes, so keeping holes would put those places
+outside.
 
 The simplification is Visvalingam-Whyatt, with the effective area limit
 split by side.  Land borders use a small limit (4e-4 deg^2 by default).
@@ -22,13 +23,12 @@ The coast uses 0.04 deg^2, with two safeguards:
   the original outline;
 * after thinning, the coast is shifted seaward by `--grow` (0.2 deg).
 
-The shift is what invents the new points: the result is not a subset of the
-input.  The test therefore prefers to include a little water over excluding
-a piece of land.
+The shift invents new points, so the result is not a subset of the input.
+The test prefers a little extra water to a missing piece of land.
 
-Two island groups east of the coast get land-grade detail inside small
-`--keep LAT,LON,R` discs.  They are the only places where the coast is
-sensitive enough to matter at this tolerance.
+Two island groups east of the coast keep land-grade detail inside small
+`--keep LAT,LON,R` discs; they are the only parts of the coast where the
+finer limit matters.
 
 Results
 -------
@@ -54,21 +54,20 @@ Checks on that output:
   (about 170 m), from the offset approximation;
 * the land border stays within about 4 km of the original.
 
-Big cities are not on the list.  They sit hundreds of kilometres from the
-border and pass any polygon.  The coordinates are in `towns.tsv`.
+Big cities are not on the list; they sit hundreds of kilometres from the
+border, where any polygon passes.  The coordinates are in `towns.tsv`.
 
 Coarser presets
 ---------------
 
-The polygon can be much smaller if the test only needs to answer "in the
+A much smaller polygon works if the test only needs to answer "in the
 country, not close to the border".  At these tolerances the default box is
 too small: only the coast south of 40 N would get sea treatment, and the
-northern coast would be cut as if it were a land border.  Both presets
-extend the box to `--sea-lon 117 --sea-lat 41`, which also puts the short
-river border in the northeast on the coast side.  All measurements below
-use three decimals (the 0.001 deg grid is 110 m, far below the chord error,
-so precision does not cost anything here), and the flip rates come from
-jittering every source boundary vertex by 0.3 deg and comparing containment.
+northern coast would be cut as a land border.  Both presets move the box to
+`--sea-lon 117 --sea-lat 41`, which also puts the short river border in the
+northeast on the coast side.  The measurements use three decimals; the
+0.001 deg grid is 110 m, far below the chord error.  Flip rates come from
+jittering every source boundary vertex by 0.3 deg.
 
 About 300 points, 292 after rounding, 7 rings, 4.9 KB:
 
@@ -86,13 +85,12 @@ About 300 points, 292 after rounding, 7 rings, 4.9 KB:
 | border towns | 22 of 30 agree |
 | island rings | 6 of 12 survive |
 
-The long tail is one chord that skips the Bohai/Liaodong coast: the bay and
-the sea north of the chord count as land, and the 3,718 source vertices in
-that region end up 0.9 deg from the outline at the median, 2.1 deg at worst.
-Everywhere else the deviation stays under 0.38 deg, the southern coast
-included (median 0.04).  The bay
-can be kept with a `--keep` disc, at the cost of leaving the 300-point
-budget.
+One chord skips the Bohai/Liaodong coast: the bay and the sea north of the
+chord count as land, and the 3,718 source vertices in that region sit
+0.9 deg from the outline at the median, 2.1 deg at worst.  Everywhere else,
+the southern coast included, the deviation stays under 0.38 deg (median
+0.04).  A `--keep` disc can hold the bay, at the cost of going over the
+300-point budget.
 
 Near 128 points, 125 after rounding, 3 rings, 2.1 KB:
 
@@ -109,19 +107,18 @@ Near 128 points, 125 after rounding, 3 rings, 2.1 KB:
 | island rings | 2 of 12 survive |
 | border towns | 18 of 30 agree |
 
-The land border breaks into chords a few tenths of a degree long, ten of
-the twelve island rings fall below the four-point floor, and the polygon
-loses more area than it gains.  Five kilobytes is already small, so 300 is
-the better stopping point on size alone.
+The land border becomes chords a few tenths of a degree long, ten of the
+twelve island rings fall below the four-point floor, and the polygon loses
+more area than it gains.  Five kilobytes is already small, so 300 is the
+better stopping point if size is the only concern.
 
-Neither preset is safe around a border.  The ~300 version disagrees with
-the source on eight of the 30 towns (Suifenhe and Sinuiju, plus
-Blagoveshchensk, Zabaikalsk, Zamyn-Uud, Muse, Boten and Mong Cai), and the
-~125 version on twelve.  Most of these are river borders: a chord across a
-bend can leave the neighbour's bank inside the polygon, or the town's own
-bank outside.  The 3,299-point default agrees everywhere.  Use a coarse
-preset only for tests far from the border, or add `--keep` discs on the
-borders that matter.
+Neither preset is safe near a border.  The ~300 version puts eight of the
+30 towns on the wrong side (Suifenhe and Sinuiju, plus Blagoveshchensk,
+Zabaikalsk, Zamyn-Uud, Muse, Boten and Mong Cai); the ~125 version, twelve.
+Most are river borders, where a chord across a bend can leave the
+neighbour's bank inside the polygon or the town's own bank outside.  The
+3,299-point default agrees everywhere.  Use a coarse preset far from the
+border, or add `--keep` discs where the border matters.
 
 Parameters
 ----------
