@@ -29,3 +29,4 @@ compiled/
 racket/doc/
 .build/
 .swiftpm/
+docs/ideas/boundary/OSMB-*.geojson
