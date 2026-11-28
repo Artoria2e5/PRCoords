@@ -52,9 +52,13 @@ setup(
     classifiers=[
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 3",
+        "Typing :: Typed",
         "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "Intended Audience :: Science/Research",
         "License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
         "Operating System :: OS Independent",
         "Topic :: Scientific/Engineering :: GIS",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
 )
