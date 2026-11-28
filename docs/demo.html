@@ -52,10 +52,23 @@ th .zh {
   font-size: 0.9em;
 }
 
+.horiz2 {
+  gap: 1em;
+  margin: 0;
+  padding: 0;
+  columns: 2 20em;
+}
+
+.horiz2 > li > ul {
+  padding: 2px;
+}
+
 #inputc button {
   white-space: normal;
   padding: 0.2em 0.8em;
   min-width: 10em;
+  margin: 0 auto;
+  display: block;
 }
 
 input[type='number'].dnum {
@@ -72,7 +85,7 @@ input[type='number'] {
 }
 
 input[type='number'][name^=s] {
-  width: 6em
+  width: 5em
 }
 
 #deg-in input[type='number'] {
@@ -103,6 +116,7 @@ td {
   padding: 0.2em 0.4em;
 }
 
+.horiz2 > li > ul > li,
 tbody td:nth-child(n+2) {
   font-family: monospace;
 }
@@ -128,7 +142,7 @@ tbody td:nth-child(n+2) {
     <section>
       <h2>Input<span class="zh" lang="zh-Hans">输入</span></h2>
       <form id="inputc" onsubmit="return false"><!-- also make edge happy -->
-        <ul>
+        <ul class="horiz2">
         <li><label>Degrees:<span class="zh" lang="zh-Hans">度数：</span></label><ul id="deg-in">
           <li><label>lat=</label> <input type="number" class="dnum" name="lat" value="35" step="any" min="-90" max="90">;
           <li><label>lon=</label> <input type="number" class="dnum" name="lon" value="105" step="any" min="-180" max="180">.</ul>
@@ -143,7 +157,7 @@ tbody td:nth-child(n+2) {
               <input type="number" name="mlon" min="0" max="59" step="1" value="0">′
               <input type="number" name="slon" min="0" max="69" value="0" step=any>″
               <select name="hlon"><option>E</option><option>W</option></select>.</ul></ul>
-        <button onclick="return fill_output() && false">Screw that!<span class="zh" lang="zh-Hans">给我整！</span></button>
+        <button onclick="return fill_output() && false">Screw that!<span class="zh" lang="zh-Hans">&nbsp;给我整！</span></button>
       </form>
       <script src="https://cdn.jsdelivr.net/npm/prcoords@1/js/PRCoords.min.js" onerror="this.src='../js/PRCoords.js'"></script>
 
