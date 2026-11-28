@@ -43,14 +43,19 @@ Defaults give 3,299 points, about 60 KB at four decimals (the input is
 
 Checks on that output:
 
-* Beijing, Tianjin, Qingdao, Shanghai, Xiamen, Haikou, Beihai, Dalian,
-  Yantai, Sanya, Lhasa and Urumqi stay inside;
-* Seoul, Hanoi, Taipei, Ulaanbaatar, Vientiane and Bangkok stay outside;
+* the source and the output agree on the side of 30 border towns: Dandong,
+  Hunchun, Suifenhe, Heihe, Mohe, Manzhouli, Erenhot, Khorgos, Alashankou,
+  Tashkurgan, Yadong, Zhangmu, Ruili, Wanding, Mohan, Hekou, Pingxiang and
+  Dongxing inside; Sinuiju, Kraskino, Pogranichny, Blagoveshchensk,
+  Zabaikalsk, Zamyn-Uud, Zharkent, Dostyk, Muse, Boten, Lao Cai and Mong Cai
+  outside;
 * the polygon area only grows, by about 4 deg^2, all of it sea;
 * 4 of the 3,410 coastal vertices end up outside, by at most 0.0015 deg
-  (about 170 m), from the offset approximation.
+  (about 170 m), from the offset approximation;
+* the land border stays within about 4 km of the original.
 
-The land border stays within about 4 km of the original.
+Big cities are not on the list.  They sit hundreds of kilometres from the
+border and pass any polygon.  The coordinates are in `towns.tsv`.
 
 Coarser presets
 ---------------
@@ -62,7 +67,8 @@ northern coast would be cut as if it were a land border.  Both presets
 extend the box to `--sea-lon 117 --sea-lat 41`, which also puts the short
 river border in the northeast on the coast side.  All measurements below
 use three decimals (the 0.001 deg grid is 110 m, far below the chord error,
-so precision does not cost anything here).
+so precision does not cost anything here), and the flip rates come from
+jittering every source boundary vertex by 0.3 deg and comparing containment.
 
 About 300 points, 292 after rounding, 7 rings, 4.9 KB:
 
@@ -77,13 +83,14 @@ About 300 points, 292 after rounding, 7 rings, 4.9 KB:
 | median deviation | 0.025 deg |
 | p90 / p99 / max | 0.10 / 1.12 / 2.10 deg |
 | flips, boundary jitter | 2.6% false negative, 3.5% false positive |
-| city checks | unchanged, all twelve |
+| border towns | 22 of 30 agree |
 | island rings | 6 of 12 survive |
 
 The long tail is one chord that skips the Bohai/Liaodong coast: the bay and
 the sea north of the chord count as land, and the 3,718 source vertices in
-that region end up 0.9 deg from the outline at the median, 2.1 deg at worst.  Everywhere else the deviation
-stays under 0.38 deg, the southern coast included (median 0.04).  The bay
+that region end up 0.9 deg from the outline at the median, 2.1 deg at worst.
+Everywhere else the deviation stays under 0.38 deg, the southern coast
+included (median 0.04).  The bay
 can be kept with a `--keep` disc, at the cost of leaving the 300-point
 budget.
 
@@ -100,13 +107,21 @@ Near 128 points, 125 after rounding, 3 rings, 2.1 KB:
 | median / p90 / max | 0.063 / 0.22 / 0.68 deg |
 | flips, boundary jitter | 5.6% false negative, 6.4% false positive |
 | island rings | 2 of 12 survive |
+| border towns | 18 of 30 agree |
 
 The land border breaks into chords a few tenths of a degree long, ten of
 the twelve island rings fall below the four-point floor, and the polygon
-loses more area than it gains.  Every city test still passes, but the flips
-around the border more than double.  Five kilobytes is already small, so
-300 is the better stopping point unless the polygon has to fit a fixed-size
-budget.
+loses more area than it gains.  Five kilobytes is already small, so 300 is
+the better stopping point on size alone.
+
+Neither preset is safe around a border.  The ~300 version disagrees with
+the source on eight of the 30 towns (Suifenhe and Sinuiju, plus
+Blagoveshchensk, Zabaikalsk, Zamyn-Uud, Muse, Boten and Mong Cai), and the
+~125 version on twelve.  Most of these are river borders: a chord across a
+bend can leave the neighbour's bank inside the polygon, or the town's own
+bank outside.  The 3,299-point default agrees everywhere.  Use a coarse
+preset only for tests far from the border, or add `--keep` discs on the
+borders that matter.
 
 Parameters
 ----------

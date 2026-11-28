@@ -1,0 +1,31 @@
+# town	lon	lat	side (in = source polygon counts it inside)
+Dandong	124.383	40.129	in
+Hunchun	130.365	42.863	in
+Suifenhe	131.150	44.400	in
+Heihe	127.490	50.250	in
+Mohe	122.530	52.970	in
+Manzhouli	117.450	49.600	in
+Erenhot	111.980	43.650	in
+Khorgos	80.420	44.200	in
+Alashankou	82.570	45.180	in
+Tashkurgan	75.230	37.770	in
+Yadong	88.900	27.480	in
+Zhangmu	85.950	28.020	in
+Ruili	97.850	24.010	in
+Wanding	98.060	24.080	in
+Mohan	101.680	21.190	in
+Hekou	103.950	22.540	in
+Pingxiang	106.750	22.100	in
+Dongxing	107.972	21.547	in
+Sinuiju	124.400	40.100	out
+Kraskino	131.060	42.710	out
+Pogranichny	131.380	44.410	out
+Blagoveshch	127.540	50.290	out
+Zabaikalsk	117.350	49.630	out
+Zamyn-Uud	111.900	43.720	out
+Zharkent	80.000	44.170	out
+Dostyk	82.480	45.250	out
+Muse	97.900	23.990	out
+Boten	101.660	21.170	out
+Lao Cai	103.960	22.500	out
+Mong Cai	107.960	21.520	out
